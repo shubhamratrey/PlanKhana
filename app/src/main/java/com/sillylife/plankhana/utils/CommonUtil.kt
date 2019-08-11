@@ -1,12 +1,16 @@
 package com.sillylife.plankhana.utils
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Environment
+import android.provider.MediaStore
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.DimenRes
 import com.sillylife.plankhana.PlanKhana
+import com.sillylife.plankhana.constants.Constants
 import com.sillylife.plankhana.models.User
 import java.io.File
 import java.io.IOException
@@ -88,6 +92,22 @@ object CommonUtil {
         }
 
         return app_installed
+    }
+
+    fun openPhoneGallery(activity:Activity?){
+        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        galleryIntent.type = "image/*"
+
+        try {
+            activity?.startActivityForResult(galleryIntent, Constants.RC_EPISODE_GALLERY)
+        } catch (e: ActivityNotFoundException) {
+            val getIntent = Intent(Intent.ACTION_GET_CONTENT)
+            getIntent.type = "image/*"
+
+            val chooserIntent = Intent.createChooser(getIntent, "Select Image")
+            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(galleryIntent))
+            activity?.startActivityForResult(chooserIntent, Constants.RC_EPISODE_GALLERY)
+        }
     }
 
     fun userDummyData(): ArrayList<User> {

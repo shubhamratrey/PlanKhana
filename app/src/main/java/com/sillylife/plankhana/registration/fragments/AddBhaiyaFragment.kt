@@ -1,5 +1,6 @@
 package com.sillylife.plankhana.registration.fragments
 
+import android.Manifest
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -11,11 +12,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.karumi.dexter.PermissionToken
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.constants.Constants
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.registration.activities.RegistrationActivity
 import com.sillylife.plankhana.services.AppDisposable
+import com.sillylife.plankhana.utils.CommonUtil
+import com.sillylife.plankhana.utils.DexterUtil
 import com.sillylife.plankhana.views.BaseFragment
 import com.sillylife.plankhana.views.adapter.AddUsersAdapter
 import com.theartofdev.edmodo.cropper.CropImage
@@ -54,7 +58,20 @@ class AddBhaiyaFragment : BaseFragment() {
         if (rcv.adapter == null) {
             val adapter = AddUsersAdapter(activity!!) { any, i ->
                 if (any is User) {
-                    choosePhotoFromGallery(any)
+                    tempUserId = any.id!!
+                    DexterUtil.with(activity!!, Manifest.permission.READ_EXTERNAL_STORAGE).setListener(object :
+                        DexterUtil.DexterUtilListener {
+                        override fun permissionGranted() {
+                            CommonUtil.openPhoneGallery(activity!!)
+                        }
+
+                        override fun permissionDenied(token: PermissionToken?) {
+                            // some time token can be null
+                            if (token != null) {
+                                showPermissionRequiredDialog(getString(R.string.files_permission_message))
+                            }
+                        }
+                    }).check()
                 }
             }
             val layoutManager = LinearLayoutManager(activity)
@@ -108,23 +125,6 @@ class AddBhaiyaFragment : BaseFragment() {
                     }
                 }
             }
-        }
-    }
-
-    private fun choosePhotoFromGallery(any: User) {
-        tempUserId = any.id!!
-        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        galleryIntent.type = "image/*"
-
-        try {
-            activity?.startActivityForResult(galleryIntent, Constants.RC_EPISODE_GALLERY)
-        } catch (e: ActivityNotFoundException) {
-            val getIntent = Intent(Intent.ACTION_GET_CONTENT)
-            getIntent.type = "image/*"
-
-            val chooserIntent = Intent.createChooser(getIntent, "Select Image")
-            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(galleryIntent))
-            activity?.startActivityForResult(chooserIntent, Constants.RC_EPISODE_GALLERY)
         }
     }
 }

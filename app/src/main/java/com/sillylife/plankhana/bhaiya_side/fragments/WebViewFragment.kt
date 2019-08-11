@@ -1,4 +1,4 @@
-package com.sillylife.plankhana.views
+package com.sillylife.plankhana.bhaiya_side.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.sillylife.plankhana.R
+import com.sillylife.plankhana.views.BaseFragment
 
 import kotlinx.android.synthetic.main.fragment_webview.*
 

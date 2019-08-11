@@ -29,4 +29,7 @@
     <string name="today">Today</string>
     <string name="please_cook_these_dishes_for_dinner_tonight">Please cook these dishes for dinner tonight</string>
     <string name="who_do_you_want_to_call">Who do you want to call?</string>
+    <string name="you_ll_get_to_eat_these_dishes_tonight">You’ll get to eat these dishes tonight</string>
+    <string name="change_plan">Change plan</string>
+    <string name="files_permission_message">Please provide permission to access files</string>
 </resources>

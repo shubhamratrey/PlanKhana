@@ -1,12 +1,17 @@
 package com.sillylife.plankhana.views
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.sillylife.plankhana.R
 import com.sillylife.plankhana.aunty_side.activities.AuntyActivity
 import com.sillylife.plankhana.bhaiya_side.activities.BhaiyaActivity
 import com.sillylife.plankhana.registration.activities.RegistrationActivity
+import com.sillylife.plankhana.widgets.CustomBottomSheetDialog
 
 open class BaseFragment : Fragment() {
 
@@ -36,5 +41,23 @@ open class BaseFragment : Fragment() {
                 is BhaiyaActivity -> (activity as BhaiyaActivity).addFragment(fragment, tag)
             }
         }
+    }
+
+    fun showPermissionRequiredDialog(title: String) {
+        CustomBottomSheetDialog(R.layout.bs_dialog_alert, title, "", true, layoutInflater, activity!!, true, false, getString(android.R.string.ok), "",
+            object : CustomBottomSheetDialog.Listener {
+                override fun onDone(view: CustomBottomSheetDialog) {
+                    val intent = Intent()
+                    intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                    val uri = Uri.fromParts("package", context!!.packageName, null)
+                    intent.data = uri
+                    startActivity(intent)
+                    view.dismiss()
+                }
+
+                override fun onCancel(view: CustomBottomSheetDialog) {
+                    view.dismiss()
+                }
+            }).show()
     }
 }

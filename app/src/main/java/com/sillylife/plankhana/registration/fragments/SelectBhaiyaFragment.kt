@@ -1,5 +1,6 @@
 package com.sillylife.plankhana.registration.fragments
 
+import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.content.ActivityNotFoundException
@@ -9,16 +10,21 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
+import android.provider.Settings
 import android.view.*
 import android.widget.Toast
+import com.karumi.dexter.PermissionToken
 import com.sillylife.plankhana.R
+import com.sillylife.plankhana.bhaiya_side.activities.BhaiyaActivity
 import com.sillylife.plankhana.constants.Constants
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.registration.activities.RegistrationActivity
 import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.utils.CommonUtil
+import com.sillylife.plankhana.utils.DexterUtil
 import com.sillylife.plankhana.views.BaseFragment
 import com.sillylife.plankhana.views.adapter.SelectBhaiyaAdapter
+import com.sillylife.plankhana.widgets.CustomBottomSheetDialog
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.bs_dialog_add_user.view.*
@@ -47,6 +53,11 @@ class SelectBhaiyaFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         nextBtn.text = getString(R.string.string_continue)
+        nextBtn.setOnClickListener {
+            val intent = Intent(activity, BhaiyaActivity::class.java)
+            startActivity(intent)
+            activity?.finish()
+        }
         setAdapter(CommonUtil.userDummyData())
     }
 
@@ -112,29 +123,25 @@ class SelectBhaiyaFragment : BaseFragment() {
             }
 
             sheetView?.changeImage?.setOnClickListener {
-                choosePhotoFromGallery()
+                DexterUtil.with(activity!!, Manifest.permission.READ_EXTERNAL_STORAGE).setListener(object :
+                    DexterUtil.DexterUtilListener {
+                    override fun permissionGranted() {
+                        CommonUtil.openPhoneGallery(activity!!)
+                    }
+
+                    override fun permissionDenied(token: PermissionToken?) {
+                        // some time token can be null
+                        if (token != null) {
+                            showPermissionRequiredDialog(getString(R.string.files_permission_message))
+                        }
+                    }
+                }).check()
             }
 
             sheetView?.nextBtn?.setOnClickListener {
                 adapter?.addBhaiyaData(User(adapter?.itemCount!!, sheetView?.input?.mInputEt?.text.toString(), imageUri.toString()))
                 dialog.dismiss()
             }
-        }
-    }
-
-    fun choosePhotoFromGallery() {
-        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        galleryIntent.type = "image/*"
-
-        try {
-            activity?.startActivityForResult(galleryIntent, Constants.RC_EPISODE_GALLERY)
-        } catch (e: ActivityNotFoundException) {
-            val getIntent = Intent(Intent.ACTION_GET_CONTENT)
-            getIntent.type = "image/*"
-
-            val chooserIntent = Intent.createChooser(getIntent, "Select Image")
-            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(galleryIntent))
-            activity?.startActivityForResult(chooserIntent, Constants.RC_EPISODE_GALLERY)
         }
     }
 
