@@ -85,27 +85,6 @@
         android:overScrollMode="never"
         tools:listitem="@layout/item_add_bhaiya" />
 
-    <com.sillylife.plankhana.widgets.xcardview.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="-20dp"
-        android:layout_marginTop="-20dp"
-        android:layout_marginEnd="-20dp"
-        android:layout_marginBottom="-20dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardElevation="@dimen/dp_15">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/nextBtn"
-            style="@style/ThemeButtonPrimary"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_margin="20dp"
-            android:letterSpacing="0"
-            android:text="@string/register" />
-
-    </com.sillylife.plankhana.widgets.xcardview.CardView>
+    <include layout="@layout/layout_bottom_button"/>
 
 </LinearLayout>

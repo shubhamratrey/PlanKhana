@@ -6,13 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.aunty_side.activities.AuntyActivity
-import com.sillylife.plankhana.registration.activities.RegistrationActivity
 import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.views.BaseFragment
-import kotlinx.android.synthetic.main.fragment_add_role.*
+import kotlinx.android.synthetic.main.fragment_select_role.*
+import kotlinx.android.synthetic.main.layout_bottom_button.*
 
 class SelectRoleFragment : BaseFragment() {
 
@@ -24,7 +23,7 @@ class SelectRoleFragment : BaseFragment() {
     var appDisposable: AppDisposable = AppDisposable()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return LayoutInflater.from(context).inflate(R.layout.fragment_add_role, null, false)
+        return LayoutInflater.from(context).inflate(R.layout.fragment_select_role, null, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,6 +39,7 @@ class SelectRoleFragment : BaseFragment() {
             dining.isSelected = false
         }
 
+        nextBtn.text = getString(R.string.proceed)
         nextBtn.setOnClickListener {
             if (cooking.isSelected) {
                 val intent = Intent(activity, AuntyActivity::class.java)

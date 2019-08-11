@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.views.BaseActivity
-import com.sillylife.plankhana.registration.fragments.AddUsersFragment
+import com.sillylife.plankhana.registration.fragments.AddBhaiyaFragment
 import com.sillylife.plankhana.registration.fragments.FindOrRegisterFragment
 import com.sillylife.plankhana.registration.fragments.SelectBhaiyaFragment
 import com.sillylife.plankhana.utils.FragmentHelper
@@ -40,7 +40,7 @@ class RegistrationActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val fragment = supportFragmentManager.findFragmentById(R.id.container)
-        if (fragment is AddUsersFragment) {
+        if (fragment is AddBhaiyaFragment) {
             fragment.onActivityResult(requestCode, resultCode, data)
         } else if (fragment is SelectBhaiyaFragment) {
             fragment.onActivityResult(requestCode, resultCode, data)

@@ -14,15 +14,16 @@ import android.widget.Toast
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.constants.Constants
 import com.sillylife.plankhana.models.User
+import com.sillylife.plankhana.registration.activities.RegistrationActivity
 import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.views.BaseFragment
-import com.sillylife.plankhana.registration.activities.RegistrationActivity
 import com.sillylife.plankhana.views.adapter.SelectBhaiyaAdapter
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.bs_dialog_add_user.view.*
 import kotlinx.android.synthetic.main.fragment_select_bhaiya.*
 import kotlinx.android.synthetic.main.item_bhaiya_layout.view.*
+import kotlinx.android.synthetic.main.layout_bottom_button.*
 
 class SelectBhaiyaFragment : BaseFragment() {
 
@@ -44,6 +45,7 @@ class SelectBhaiyaFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        nextBtn.text = getString(R.string.string_continue)
 
         val list: ArrayList<User> = ArrayList()
         list.add(User(0, "SHubh", imageUrl))
@@ -73,7 +75,7 @@ class SelectBhaiyaFragment : BaseFragment() {
 
     fun openAddUserFragment(key: String) {
         if (activity is RegistrationActivity) {
-            (activity as RegistrationActivity).addFragment(AddUsersFragment.newInstance(), AddUsersFragment.TAG)
+            (activity as RegistrationActivity).addFragment(AddBhaiyaFragment.newInstance(), AddBhaiyaFragment.TAG)
         }
     }
 

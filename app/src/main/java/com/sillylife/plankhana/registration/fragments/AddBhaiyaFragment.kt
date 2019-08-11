@@ -14,24 +14,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.constants.Constants
 import com.sillylife.plankhana.models.User
+import com.sillylife.plankhana.registration.activities.RegistrationActivity
 import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.views.BaseFragment
-import com.sillylife.plankhana.registration.activities.RegistrationActivity
 import com.sillylife.plankhana.views.adapter.AddUsersAdapter
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.fragment_add_users.*
+import kotlinx.android.synthetic.main.layout_bottom_button.*
 
-class AddUsersFragment : BaseFragment() {
+class AddBhaiyaFragment : BaseFragment() {
 
     companion object {
-        var TAG = AddUsersFragment::class.java.simpleName
-        fun newInstance(): AddUsersFragment {
-            val fragment = AddUsersFragment()
-            return fragment
+        var TAG = AddBhaiyaFragment::class.java.simpleName
+        fun newInstance(): AddBhaiyaFragment {
+            return AddBhaiyaFragment()
         }
-
-        private const val RC_GALLERY = 123
     }
 
     var appDisposable: AppDisposable = AppDisposable()
@@ -51,7 +49,7 @@ class AddUsersFragment : BaseFragment() {
         list.add(User(tempId, "", ""))
         setAdapter(list)
 
-
+        nextBtn.text = getString(R.string.register)
         nextBtn.setOnClickListener {
             addFragment(SelectRoleFragment.newInstance(), SelectRoleFragment.TAG)
         }

@@ -68,9 +68,9 @@ class FindOrRegisterFragment : BaseFragment() {
     fun openAddUserFragment() {
         setView()
         if (isRegistered) {
-            addFragment(SelectRoleFragment.newInstance(), AddUsersFragment.TAG)
+            addFragment(SelectRoleFragment.newInstance(), AddBhaiyaFragment.TAG)
         } else {
-            addFragment(AddUsersFragment.newInstance(), AddUsersFragment.TAG)
+            addFragment(AddBhaiyaFragment.newInstance(), AddBhaiyaFragment.TAG)
         }
     }
 
