@@ -16,6 +16,7 @@ import com.sillylife.plankhana.constants.Constants
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.registration.activities.RegistrationActivity
 import com.sillylife.plankhana.services.AppDisposable
+import com.sillylife.plankhana.utils.CommonUtil
 import com.sillylife.plankhana.views.BaseFragment
 import com.sillylife.plankhana.views.adapter.SelectBhaiyaAdapter
 import com.theartofdev.edmodo.cropper.CropImage
@@ -35,8 +36,8 @@ class SelectBhaiyaFragment : BaseFragment() {
     var appDisposable: AppDisposable = AppDisposable()
     var adapter: SelectBhaiyaAdapter? = null
     private var isCommentDialogShown = false
+    private var sheetView: View? = null
     private var imageUri: Uri? = null
-    private val imageUrl = "https://media-doselect.s3.amazonaws.com/avatar_image/1V4XB5PzwqAqJV2aoKw3QnVyM/download.png"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return LayoutInflater.from(context).inflate(R.layout.fragment_select_bhaiya, null, false)
@@ -46,14 +47,7 @@ class SelectBhaiyaFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         nextBtn.text = getString(R.string.string_continue)
-
-        val list: ArrayList<User> = ArrayList()
-        list.add(User(0, "SHubh", imageUrl))
-        list.add(User(1, "Shivam", imageUrl))
-        list.add(User(2, "Rohit", imageUrl))
-        list.add(User(3, "Shashank", imageUrl))
-        setAdapter(list)
-
+        setAdapter(CommonUtil.userDummyData())
     }
 
     private fun setAdapter(list: ArrayList<User>) {
@@ -72,14 +66,6 @@ class SelectBhaiyaFragment : BaseFragment() {
             rcv.adapter = adapter
         }
     }
-
-    fun openAddUserFragment(key: String) {
-        if (activity is RegistrationActivity) {
-            (activity as RegistrationActivity).addFragment(AddBhaiyaFragment.newInstance(), AddBhaiyaFragment.TAG)
-        }
-    }
-
-    var sheetView: View? = null
 
     private fun showAddBhaiyaPopup() {
         if (isAdded && activity != null) {
@@ -190,10 +176,6 @@ class SelectBhaiyaFragment : BaseFragment() {
                 }
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     override fun onDestroy() {

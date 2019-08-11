@@ -7,6 +7,7 @@ import android.os.Environment
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.DimenRes
 import com.sillylife.plankhana.PlanKhana
+import com.sillylife.plankhana.models.User
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -87,5 +88,16 @@ object CommonUtil {
         }
 
         return app_installed
+    }
+
+    fun userDummyData(): ArrayList<User> {
+        val imageUrl = "https://media-doselect.s3.amazonaws.com/avatar_image/1V4XB5PzwqAqJV2aoKw3QnVyM/download.png"
+        val list: ArrayList<User> = ArrayList()
+        list.add(User(0, "Shubh", imageUrl))
+        list.add(User(1, "Shivam", imageUrl))
+        list.add(User(2, "Rohit", imageUrl))
+        list.add(User(3, "Shashank", imageUrl))
+        list.add(User(4, "Rajat", imageUrl))
+        return list
     }
 }

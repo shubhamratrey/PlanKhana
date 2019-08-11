@@ -65,17 +65,13 @@ class FindOrRegisterFragment : BaseFragment() {
         }
     }
 
-    fun openAddUserFragment() {
+    private fun openAddUserFragment() {
         setView()
         if (isRegistered) {
             addFragment(SelectRoleFragment.newInstance(), AddBhaiyaFragment.TAG)
         } else {
             addFragment(AddBhaiyaFragment.newInstance(), AddBhaiyaFragment.TAG)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     override fun onDestroy() {

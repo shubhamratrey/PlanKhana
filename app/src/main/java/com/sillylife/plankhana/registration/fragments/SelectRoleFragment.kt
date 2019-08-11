@@ -53,10 +53,6 @@ class SelectRoleFragment : BaseFragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         appDisposable.dispose()

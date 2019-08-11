@@ -43,19 +43,14 @@ class AddBhaiyaFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val imageUrl = "https://media-doselect.s3.amazonaws.com/avatar_image/1V4XB5PzwqAqJV2aoKw3QnVyM/download.png"
-        val list: ArrayList<User> = ArrayList()
-        list.add(User(tempId, "", ""))
-        setAdapter(list)
-
+        setAdapter()
         nextBtn.text = getString(R.string.register)
         nextBtn.setOnClickListener {
             addFragment(SelectRoleFragment.newInstance(), SelectRoleFragment.TAG)
         }
     }
 
-    private fun setAdapter(list: ArrayList<User>) {
+    private fun setAdapter() {
         if (rcv.adapter == null) {
             val adapter = AddUsersAdapter(activity!!) { any, i ->
                 if (any is User) {
@@ -70,10 +65,6 @@ class AddBhaiyaFragment : BaseFragment() {
 
             rcv.adapter = adapter
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     override fun onDestroy() {
