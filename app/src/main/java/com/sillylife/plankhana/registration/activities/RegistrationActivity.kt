@@ -1,21 +1,22 @@
-package com.sillylife.plankhana.views.activities
+package com.sillylife.plankhana.registration.activities
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.models.User
-import com.sillylife.plankhana.views.fragments.AddUsersFragment
-import com.sillylife.plankhana.views.fragments.FindOrRegisterFragment
-import com.sillylife.plankhana.views.fragments.SelectBhaiyaFragment
+import com.sillylife.plankhana.views.BaseActivity
+import com.sillylife.plankhana.registration.fragments.AddUsersFragment
+import com.sillylife.plankhana.registration.fragments.FindOrRegisterFragment
+import com.sillylife.plankhana.registration.fragments.SelectBhaiyaFragment
 import com.sillylife.sillynews.utils.FragmentHelper
 
 
-class MainActivity : BaseActivity() {
+class RegistrationActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_registration)
 
         FragmentHelper.replace(R.id.container, supportFragmentManager, FindOrRegisterFragment.newInstance(), FindOrRegisterFragment.TAG)
 

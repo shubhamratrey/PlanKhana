@@ -1,4 +1,4 @@
-package com.sillylife.plankhana.views.fragments
+package com.sillylife.plankhana.views
 
 import android.os.Bundle
 import android.view.LayoutInflater

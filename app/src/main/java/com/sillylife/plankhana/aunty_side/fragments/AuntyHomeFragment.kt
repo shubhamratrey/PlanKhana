@@ -1,4 +1,4 @@
-package com.sillylife.plankhana.views.fragments
+package com.sillylife.plankhana.aunty_side.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,16 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.services.AppDisposable
+import com.sillylife.plankhana.views.BaseFragment
 
-class HomeFragment : BaseFragment() {
+class AuntyHomeFragment : BaseFragment() {
 
     companion object {
-        fun newInstance() = HomeFragment()
+        fun newInstance() = AuntyHomeFragment()
     }
 
     var appDisposable: AppDisposable = AppDisposable()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return LayoutInflater.from(context).inflate(R.layout.fragment_home, null, false)
+        return LayoutInflater.from(context).inflate(R.layout.fragment_home_cook, null, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

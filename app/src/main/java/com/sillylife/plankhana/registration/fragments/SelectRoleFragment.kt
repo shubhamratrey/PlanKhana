@@ -1,5 +1,6 @@
-package com.sillylife.plankhana.views.fragments
+package com.sillylife.plankhana.registration.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +8,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.sillylife.plankhana.R
+import com.sillylife.plankhana.aunty_side.activities.AuntyActivity
+import com.sillylife.plankhana.registration.activities.RegistrationActivity
 import com.sillylife.plankhana.services.AppDisposable
-import com.sillylife.plankhana.views.activities.MainActivity
+import com.sillylife.plankhana.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_add_role.*
 
 class SelectRoleFragment : BaseFragment() {
@@ -39,18 +42,14 @@ class SelectRoleFragment : BaseFragment() {
 
         nextBtn.setOnClickListener {
             if (cooking.isSelected) {
-                showToast("COOKING", Toast.LENGTH_SHORT)
+                val intent = Intent(activity, AuntyActivity::class.java)
+                startActivity(intent)
+                activity?.finish()
             } else if (dining.isSelected) {
                 addFragment(SelectBhaiyaFragment.newInstance(), SelectBhaiyaFragment.TAG)
             } else {
                 showToast("Please select your role", Toast.LENGTH_SHORT)
             }
-        }
-    }
-
-    fun addFragment(fragment: Fragment, tag: String) {
-        if (activity is MainActivity) {
-            (activity as MainActivity).addFragment(fragment, tag)
         }
     }
 

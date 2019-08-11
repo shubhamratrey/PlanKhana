@@ -35,7 +35,7 @@
                 android:text="@string/what_do_you_do"
                 tools:text="@string/what_do_you_do" />
 
-            <com.sillylife.plankhana.views.widgets.UIComponentCloseBtn
+            <com.sillylife.plankhana.widgets.UIComponentCloseBtn
                 android:id="@+id/closeBtn"
                 android:layout_width="44dp"
                 android:layout_height="44dp"
@@ -60,7 +60,7 @@
             android:layout_marginStart="25dp"
             android:layout_marginEnd="25dp">
 
-            <com.sillylife.plankhana.views.widgets.xcardview.CardView
+            <com.sillylife.plankhana.widgets.xcardview.CardView
                 android:layout_width="135dp"
                 android:layout_height="135dp"
                 app:cardBackgroundColor="@color/redAlert"
@@ -81,7 +81,7 @@
                         app:srcCompat="@drawable/ic_dining" />
 
                 </LinearLayout>
-            </com.sillylife.plankhana.views.widgets.xcardview.CardView>
+            </com.sillylife.plankhana.widgets.xcardview.CardView>
 
             <FrameLayout
                 android:id="@+id/dining"
@@ -112,7 +112,7 @@
             android:layout_marginEnd="25dp"
             android:layout_marginRight="25dp">
 
-            <com.sillylife.plankhana.views.widgets.xcardview.CardView
+            <com.sillylife.plankhana.widgets.xcardview.CardView
                 android:layout_width="135dp"
                 android:layout_height="135dp"
                 app:cardBackgroundColor="@color/redAlert"
@@ -133,7 +133,7 @@
                         app:srcCompat="@drawable/ic_cooking" />
 
                 </LinearLayout>
-            </com.sillylife.plankhana.views.widgets.xcardview.CardView>
+            </com.sillylife.plankhana.widgets.xcardview.CardView>
 
             <FrameLayout
                 android:id="@+id/cooking"
@@ -160,7 +160,7 @@
 
     </LinearLayout>
 
-    <com.sillylife.plankhana.views.widgets.xcardview.CardView
+    <com.sillylife.plankhana.widgets.xcardview.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -181,6 +181,6 @@
             android:letterSpacing="0"
             android:text="@string/proceed" />
 
-    </com.sillylife.plankhana.views.widgets.xcardview.CardView>
+    </com.sillylife.plankhana.widgets.xcardview.CardView>
 
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.sillylife.plankhana.views.fragments
+package com.sillylife.plankhana.registration.fragments
 
 import android.app.Activity
 import android.app.Dialog
@@ -15,9 +15,8 @@ import com.sillylife.plankhana.R
 import com.sillylife.plankhana.constants.Constants
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.services.AppDisposable
-import com.sillylife.plankhana.utils.rxevents.RxBus
-import com.sillylife.plankhana.utils.rxevents.RxEvent
-import com.sillylife.plankhana.views.activities.MainActivity
+import com.sillylife.plankhana.views.BaseFragment
+import com.sillylife.plankhana.registration.activities.RegistrationActivity
 import com.sillylife.plankhana.views.adapter.SelectBhaiyaAdapter
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
@@ -73,8 +72,8 @@ class SelectBhaiyaFragment : BaseFragment() {
     }
 
     fun openAddUserFragment(key: String) {
-        if (activity is MainActivity) {
-            (activity as MainActivity).addFragment(AddUsersFragment.newInstance(key), AddUsersFragment.TAG)
+        if (activity is RegistrationActivity) {
+            (activity as RegistrationActivity).addFragment(AddUsersFragment.newInstance(), AddUsersFragment.TAG)
         }
     }
 
@@ -155,7 +154,7 @@ class SelectBhaiyaFragment : BaseFragment() {
         super.onActivityResult(requestCode, resultCode, data)
         var mActivity: Activity? = null
         when (activity) {
-            is MainActivity -> mActivity = activity as MainActivity
+            is RegistrationActivity -> mActivity = activity as RegistrationActivity
         }
 
         if (resultCode == Activity.RESULT_OK) {

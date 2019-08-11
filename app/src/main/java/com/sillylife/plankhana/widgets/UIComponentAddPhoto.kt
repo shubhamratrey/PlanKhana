@@ -1,4 +1,4 @@
-package com.sillylife.plankhana.views.widgets
+package com.sillylife.plankhana.widgets
 
 import android.content.Context
 import android.net.Uri

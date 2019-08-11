@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sillylife.plankhana.views.widgets.xcardview;
+package com.sillylife.plankhana.widgets.xcardview;
 
 import android.content.Context;
 import android.content.res.ColorStateList;

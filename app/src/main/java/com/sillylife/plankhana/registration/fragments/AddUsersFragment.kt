@@ -1,4 +1,4 @@
-package com.sillylife.plankhana.views.fragments
+package com.sillylife.plankhana.registration.fragments
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
@@ -15,7 +15,8 @@ import com.sillylife.plankhana.R
 import com.sillylife.plankhana.constants.Constants
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.services.AppDisposable
-import com.sillylife.plankhana.views.activities.MainActivity
+import com.sillylife.plankhana.views.BaseFragment
+import com.sillylife.plankhana.registration.activities.RegistrationActivity
 import com.sillylife.plankhana.views.adapter.AddUsersAdapter
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
@@ -25,11 +26,8 @@ class AddUsersFragment : BaseFragment() {
 
     companion object {
         var TAG = AddUsersFragment::class.java.simpleName
-        fun newInstance(key: String?): AddUsersFragment {
+        fun newInstance(): AddUsersFragment {
             val fragment = AddUsersFragment()
-            val args = Bundle()
-            args.putString(Constants.KEY, key)
-            fragment.arguments = args
             return fragment
         }
 
@@ -55,26 +53,22 @@ class AddUsersFragment : BaseFragment() {
 
 
         nextBtn.setOnClickListener {
-            if (activity is MainActivity) {
-                (activity as MainActivity).addFragment(SelectRoleFragment.newInstance(), SelectRoleFragment.TAG)
-            }
+            addFragment(SelectRoleFragment.newInstance(), SelectRoleFragment.TAG)
         }
     }
 
     private fun setAdapter(list: ArrayList<User>) {
         if (rcv.adapter == null) {
-            val layoutManager = LinearLayoutManager(activity)
-            if (rcv.itemDecorationCount == 0) {
-                rcv.addItemDecoration(AddUsersAdapter.ItemDecoration())
-            }
-            rcv.layoutManager = layoutManager
-
-
             val adapter = AddUsersAdapter(activity!!) { any, i ->
                 if (any is User) {
                     choosePhotoFromGallery(any)
                 }
             }
+            val layoutManager = LinearLayoutManager(activity)
+            if (rcv.itemDecorationCount == 0) {
+                rcv.addItemDecoration(AddUsersAdapter.ItemDecoration())
+            }
+            rcv.layoutManager = layoutManager
 
             rcv.adapter = adapter
         }
@@ -93,7 +87,7 @@ class AddUsersFragment : BaseFragment() {
         super.onActivityResult(requestCode, resultCode, data)
         var mActivity: Activity? = null
         when (activity) {
-            is MainActivity -> mActivity = activity as MainActivity
+            is RegistrationActivity -> mActivity = activity as RegistrationActivity
         }
 
         if (resultCode == Activity.RESULT_OK) {
@@ -128,7 +122,7 @@ class AddUsersFragment : BaseFragment() {
         }
     }
 
-    fun choosePhotoFromGallery(any: User) {
+    private fun choosePhotoFromGallery(any: User) {
         tempUserId = any.id!!
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         galleryIntent.type = "image/*"

@@ -1,4 +1,4 @@
-package com.sillylife.plankhana.views.activities
+package com.sillylife.plankhana.views
 
 import android.app.PendingIntent
 import android.app.SearchableInfo

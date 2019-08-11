@@ -1,9 +1,10 @@
-package com.sillylife.plankhana.views.fragments
+package com.sillylife.plankhana.views
 
 import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.sillylife.plankhana.registration.activities.RegistrationActivity
 
 open class BaseFragment : Fragment() {
 
@@ -23,5 +24,13 @@ open class BaseFragment : Fragment() {
             Toast.makeText(activity, message, length).show()
         }
 
+    }
+
+    fun addFragment(fragment: Fragment, tag: String) {
+        if (activity != null && !activity?.isFinishing!!) {
+            if (activity is RegistrationActivity) {
+                (activity as RegistrationActivity).addFragment(fragment, tag)
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <com.sillylife.plankhana.views.widgets.UIComponentInputField
+    <com.sillylife.plankhana.widgets.UIComponentInputField
         android:id="@+id/input"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

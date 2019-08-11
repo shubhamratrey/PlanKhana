@@ -1,13 +1,12 @@
-package com.sillylife.plankhana.views.fragments
+package com.sillylife.plankhana.registration.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.services.AppDisposable
-import com.sillylife.plankhana.views.activities.MainActivity
+import com.sillylife.plankhana.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_find_or_register.*
 
 class FindOrRegisterFragment : BaseFragment() {
@@ -62,14 +61,16 @@ class FindOrRegisterFragment : BaseFragment() {
         nextBtn.setOnClickListener {
             nextBtnProgress.visibility = View.VISIBLE
             nextBtn.text = ""
-            openAddUserFragment("")
+            openAddUserFragment()
         }
     }
 
-    fun openAddUserFragment(key: String) {
-        if (activity is MainActivity && !isRegistered) {
-            setView()
-            (activity as MainActivity).addFragment(AddUsersFragment.newInstance(key), AddUsersFragment.TAG)
+    fun openAddUserFragment() {
+        setView()
+        if (isRegistered) {
+            addFragment(SelectRoleFragment.newInstance(), AddUsersFragment.TAG)
+        } else {
+            addFragment(AddUsersFragment.newInstance(), AddUsersFragment.TAG)
         }
     }
 

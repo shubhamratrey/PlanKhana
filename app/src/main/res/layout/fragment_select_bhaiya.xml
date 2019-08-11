@@ -22,8 +22,7 @@
             android:layout_marginLeft="24dp"
             android:layout_marginTop="26dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="@dimen/dp_5">
+            android:layout_marginRight="20dp">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/headerTv"
@@ -35,7 +34,7 @@
                 android:text="@string/who_are_you"
                 tools:text="@string/who_are_you" />
 
-            <com.sillylife.plankhana.views.widgets.UIComponentCloseBtn
+            <com.sillylife.plankhana.widgets.UIComponentCloseBtn
                 android:id="@+id/closeBtn"
                 android:layout_width="44dp"
                 android:layout_height="44dp"
@@ -61,7 +60,7 @@
         android:id="@+id/rcv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/dp_15"
+        android:layout_marginTop="@dimen/dp_20"
         android:layout_weight="1"
         android:overScrollMode="never"
         android:paddingStart="24dp"
@@ -70,7 +69,7 @@
         android:paddingRight="@dimen/dp_20"
         tools:listitem="@layout/item_bhaiya" />
 
-    <com.sillylife.plankhana.views.widgets.xcardview.CardView
+    <com.sillylife.plankhana.widgets.xcardview.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -91,6 +90,6 @@
             android:letterSpacing="0"
             android:text="@string/string_continue" />
 
-    </com.sillylife.plankhana.views.widgets.xcardview.CardView>
+    </com.sillylife.plankhana.widgets.xcardview.CardView>
 
 </LinearLayout>
