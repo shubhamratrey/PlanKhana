@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#282E34</color>
+    <color name="colorPrimaryDark">#80474B53</color>
+    <color name="colorAccent">#282E34</color>
+
+    <color name="textHeading">#1C0A41</color>
+    <color name="textSubHeading">#7f1c0a41</color>
+    <color name="clickableTextColor">#4A90E2</color>
+    <color name="sideTextColor">#7E8494</color>
+
+    <color name="seperator">#D8D8D8</color>
+    <color name="seperator20Opaque">#3ed8d8d8</color>
+    <color name="imgSliderBg">#ececec</color>
+
+    <color name="orange">#FB4A5A</color>
+    <color name="common_bg">#F7F9FC</color>
+    <color name="primaryStroke">#CBCBCB</color>
+    <color name="redAlert">#CE3044</color>
+
+    <color name="orangeGradient">
+        <item name="android:startColor">#FF6533</item>
+        <item name="android:endColor">#FA1D41</item>
+        <item name="android:angle">275</item>
+    </color>
+    <color name="white">#fff</color>
+    <color name="white60">#99FFFFFF</color>
+    <color name="black">#000</color>
+    <color name="black_fade">#9b000000</color>
+    <color name="black_alpha30">#4D000000</color>
+
+    <color name="link">#4A90E2</color>
+
+    <color name="player_bg">#85000000</color>
+
+    <color name="player_button_color">#282E34</color>
+
+    <!-- Background color for light CardView. -->
+    <color name="cardview_light_background">#FFFFFFFF</color>
+    <!-- Background color for dark CardView. -->
+    <color name="cardview_dark_background">#FF424242</color>
+    <!-- Shadow color for the first pixels around CardView. -->
+    <color name="cardview_shadow_start_color">#1e8386a3</color>
+    <!-- Shadow color for the furthest pixels around CardView. -->
+    <color name="cardview_shadow_end_color">#018386A3</color>
+
+    <color name="waveform_selected">#f5a623</color>
+    <color name="waveform_unselected">#CBCBCB</color>
+    <color name="waveform_unselected_bkgnd_overlay">#333333</color>
+    <color name="selection_border">#FF6533</color>
+    <color name="playback_indicator">#000000</color>
+    <color name="grid_line">#66ffffff</color>
+    <color name="timecode">#aa000000</color>
+    <color name="timecode_shadow">#ddffffdd</color>
+</resources>

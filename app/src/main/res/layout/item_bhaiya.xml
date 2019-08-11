@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/dp_15">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/bhaiyaPhotoIv"
+            android:layout_width="@dimen/dp_90"
+            android:layout_height="@dimen/dp_90"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/d_circle_white_with_stroke" />
+
+        <FrameLayout
+            android:id="@+id/tick"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="@dimen/dp_2"
+            android:layout_marginRight="@dimen/dp_2"
+            android:background="@drawable/d_orange_circular_gradient"
+            android:visibility="gone">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_12"
+                android:layout_height="@dimen/dp_12"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_checked" />
+        </FrameLayout>
+    </FrameLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/bhaiyaNameTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_5"
+        android:fontFamily="@font/roboto_regular"
+        android:gravity="center"
+        android:textColor="@color/textHeading"
+        tools:text="@string/register" />
+</LinearLayout>

@@ -1,0 +1,61 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="dp_1">1dp</dimen>
+    <dimen name="dp_1_5">1.5dp</dimen>
+    <dimen name="dp_2">2dp</dimen>
+    <dimen name="dp_3">3dp</dimen>
+    <dimen name="dp_4">4dp</dimen>
+    <dimen name="dp_5">5dp</dimen>
+    <dimen name="dp_6">6dp</dimen>
+    <dimen name="dp_7">7dp</dimen>
+    <dimen name="dp_8">8dp</dimen>
+    <dimen name="dp_9">9dp</dimen>
+    <dimen name="dp_10">10dp</dimen>
+    <dimen name="dp_11">11dp</dimen>
+    <dimen name="dp_12">12dp</dimen>
+    <dimen name="dp_14">14dp</dimen>
+    <dimen name="dp_13">13dp</dimen>
+    <dimen name="dp_15">15dp</dimen>
+    <dimen name="dp_16">16dp</dimen>
+    <dimen name="dp_18">18dp</dimen>
+    <dimen name="dp_20">20dp</dimen>
+    <dimen name="dp_24">24dp</dimen>
+    <dimen name="dp_30">30dp</dimen>
+    <dimen name="dp_35">35dp</dimen>
+    <dimen name="dp_50">50dp</dimen>
+    <dimen name="dp_70">70dp</dimen>
+    <dimen name="dp_80">80dp</dimen>
+    <dimen name="dp_90">90dp</dimen>
+    <dimen name="dp_100">100dp</dimen>
+
+    <dimen name="sp_16">16sp</dimen>
+    <dimen name="sp_25">25sp</dimen>
+
+    <dimen name="dp_minus_10">-10dp</dimen>
+    <dimen name="dp_minus_5">-5dp</dimen>
+
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="pv_pin_view_item_size">48dp</dimen>
+    <dimen name="pv_pin_view_item_radius">5dp</dimen>
+    <dimen name="pv_pin_view_item_spacing">5dp</dimen>
+    <dimen name="pv_pin_view_item_line_width">2dp</dimen>
+    <dimen name="pv_pin_view_cursor_width">2dp</dimen>
+
+    <dimen name="vertical_spacing">@dimen/dp_20</dimen>
+    <dimen name="horizontal_spacing">@dimen/dp_20</dimen>
+
+    <dimen name="image_icon_size_256">256dp</dimen>
+
+    <!-- Default radius for CardView corners. -->
+    <dimen name="cardview_default_radius">2dp</dimen>
+    <!-- Elevation value to use for CardViews. Pre-L, it is equal to shadow size. -->
+    <dimen name="cardview_default_elevation">2dp</dimen>
+    <!-- Inset shadow for RoundRectDrawableWithShadow. It is used to avoid gaps between the card
+     and the shadow. -->
+    <dimen name="cardview_compat_inset_shadow">1dp</dimen>
+    <dimen name="app_text_size_large">16sp</dimen>
+    <dimen name="app_text_size_large_x">18sp</dimen>
+
+</resources>

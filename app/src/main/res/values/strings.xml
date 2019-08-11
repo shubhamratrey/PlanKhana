@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">PlanKhana</string>
+
+    <string name="click_here">Click Here</string>
+    <string name="register_your_house">Register your House</string>
+    <string name="already_have_a_house_key">Already have a house key?</string>
+    <string name="find_your_house">Find your house</string>
+    <string name="step_1_of_2_generate_house_key">Step 1 of 2 : Generate House Key</string>
+    <string name="step_2_of_2_add_bhaiyas">Step 2 of 2 : Add Bhaiyas</string>
+    <string name="register">Register</string>
+    <string name="don_t_have_a_house_key">Don’t have a house key?</string>
+    <string name="enter_a_unique_house_key">Enter a unique house key</string>
+    <string name="enter_your_house_key">Enter your house key</string>
+    <string name="generate">Generate</string>
+    <string name="find">Find</string>
+    <string name="bhaiya_number">Bhaiya %s</string>
+    <string name="add_a_bhaiya">Add a Bhaiya</string>
+    <string name="failed">Failed</string>
+    <string name="what_do_you_do">What do you do</string>
+    <string name="proceed">Proceed</string>
+    <string name="choose_who_you_are_to_set_food_plan">Choose who you are to set food plan</string>
+    <string name="string_continue">Continue</string>
+    <string name="who_are_you">Who are you?</string>
+    <string name="add_new">+ Add New</string>
+    <string name="add_bhaiya">Add Bhaiya</string>
+    <string name="add">Add</string>
+</resources>

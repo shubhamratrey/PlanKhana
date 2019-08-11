@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="@dimen/dp_5">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/headerTv"
+                style="@style/HeadingText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/what_do_you_do"
+                tools:text="@string/what_do_you_do" />
+
+            <com.sillylife.plankhana.views.widgets.UIComponentCloseBtn
+                android:id="@+id/closeBtn"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_gravity="end"
+                android:visibility="visible"
+                app:setImageResource="@drawable/ic_close" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp">
+
+            <com.sillylife.plankhana.views.widgets.xcardview.CardView
+                android:layout_width="135dp"
+                android:layout_height="135dp"
+                app:cardBackgroundColor="@color/redAlert"
+                app:cardCornerRadius="@dimen/dp_5"
+                app:cardElevation="@dimen/dp_7"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="73dp"
+                        android:layout_height="73dp"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_dining" />
+
+                </LinearLayout>
+            </com.sillylife.plankhana.views.widgets.xcardview.CardView>
+
+            <FrameLayout
+                android:id="@+id/dining"
+                android:layout_width="121dp"
+                android:layout_height="115dp"
+                android:layout_marginStart="@dimen/dp_7"
+                android:layout_marginLeft="@dimen/dp_7"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/d_input_field">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="73dp"
+                    android:layout_height="73dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_6"
+                    app:srcCompat="@drawable/ic_dining" />
+
+            </FrameLayout>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="25dp">
+
+            <com.sillylife.plankhana.views.widgets.xcardview.CardView
+                android:layout_width="135dp"
+                android:layout_height="135dp"
+                app:cardBackgroundColor="@color/redAlert"
+                app:cardCornerRadius="@dimen/dp_5"
+                app:cardElevation="@dimen/dp_7"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="73dp"
+                        android:layout_height="73dp"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_cooking" />
+
+                </LinearLayout>
+            </com.sillylife.plankhana.views.widgets.xcardview.CardView>
+
+            <FrameLayout
+                android:id="@+id/cooking"
+                android:layout_width="121dp"
+                android:layout_height="115dp"
+                android:layout_marginStart="@dimen/dp_7"
+                android:layout_marginLeft="@dimen/dp_7"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/d_input_field">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="73dp"
+                    android:layout_height="73dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_6"
+                    app:srcCompat="@drawable/ic_cooking" />
+
+            </FrameLayout>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <com.sillylife.plankhana.views.widgets.xcardview.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="-20dp"
+        android:layout_marginTop="-20dp"
+        android:layout_marginEnd="-20dp"
+        android:layout_marginBottom="-20dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardElevation="@dimen/dp_15">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/nextBtn"
+            style="@style/ThemeButtonPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_margin="20dp"
+            android:letterSpacing="0"
+            android:text="@string/proceed" />
+
+    </com.sillylife.plankhana.views.widgets.xcardview.CardView>
+
+</LinearLayout>

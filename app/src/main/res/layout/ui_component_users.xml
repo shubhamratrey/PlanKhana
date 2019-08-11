@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lrLyt"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="7dp"
+        android:orientation="horizontal">
+
+
+    </LinearLayout>
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/fansCountTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:fontFamily="@font/roboto_regular"
+        android:text="sacsvsdvds"
+        android:textColor="@color/textSubHeading"
+        android:textSize="12sp" />
+
+</LinearLayout>

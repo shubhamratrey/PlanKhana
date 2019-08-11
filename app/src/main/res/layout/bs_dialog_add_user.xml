@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bs_common"
+    android:orientation="vertical"
+    app:behavior_hideable="true"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="@dimen/dp_14"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/dialogTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/roboto_medium"
+                android:text="@string/add_bhaiya"
+                android:textColor="@color/textHeading"
+                android:textSize="25sp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/closeBtn"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:padding="@dimen/dp_10"
+                app:srcCompat="@drawable/ic_close" />
+        </LinearLayout>
+
+        <include
+            layout="@layout/item_bhaiya_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_14"
+            android:layout_marginEnd="@dimen/dp_14" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/nextBtn"
+            style="@style/ThemeButtonPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="@dimen/dp_14"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:letterSpacing="0"
+            android:text="@string/add" />
+
+    </LinearLayout>
+</FrameLayout>
