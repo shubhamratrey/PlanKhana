@@ -1,4 +1,4 @@
-package com.sillylife.sillynews.utils
+package com.sillylife.plankhana.utils
 
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment

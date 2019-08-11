@@ -9,7 +9,7 @@ import com.sillylife.plankhana.views.BaseActivity
 import com.sillylife.plankhana.registration.fragments.AddUsersFragment
 import com.sillylife.plankhana.registration.fragments.FindOrRegisterFragment
 import com.sillylife.plankhana.registration.fragments.SelectBhaiyaFragment
-import com.sillylife.sillynews.utils.FragmentHelper
+import com.sillylife.plankhana.utils.FragmentHelper
 
 
 class RegistrationActivity : BaseActivity() {

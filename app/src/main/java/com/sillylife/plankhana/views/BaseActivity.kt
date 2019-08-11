@@ -178,10 +178,4 @@ open class BaseActivity : AppCompatActivity() {
 
         return voiceIntent
     }
-
-    fun showToast(message: String, length: Int) {
-        if (this != null && !isFinishing) {
-            Toast.makeText(this, message, length).show()
-        }
-    }
 }
