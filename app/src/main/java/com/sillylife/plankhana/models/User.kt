@@ -15,6 +15,10 @@ data class User(@SerializedName("id") var id: Int? = null,
         return name != null && !name.isNullOrBlank()
     }
 
+    constructor(id: Int?) : this(null, null, null) {
+        this.id = id
+    }
+
     constructor(id: Int?, imageUrl: String?) : this(null, null, null) {
         this.id = id
         this.imageUrl = imageUrl

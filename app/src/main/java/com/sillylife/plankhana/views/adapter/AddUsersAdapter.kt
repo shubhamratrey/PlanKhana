@@ -19,7 +19,8 @@ import kotlinx.android.synthetic.main.item_add_bhaiya.*
 import kotlinx.android.synthetic.main.item_bhaiya_layout.*
 
 
-class AddUsersAdapter(val context: Context, val listener: (Any, Int) -> Unit) : RecyclerView.Adapter<AddUsersAdapter.ViewHolder>() {
+class AddUsersAdapter(val context: Context, val listener: (Any, Int) -> Unit) :
+    RecyclerView.Adapter<AddUsersAdapter.ViewHolder>() {
 
     val commonItemLists = ArrayList<Any>()
     private val TAG = AddUsersAdapter::class.java.simpleName
@@ -33,7 +34,7 @@ class AddUsersAdapter(val context: Context, val listener: (Any, Int) -> Unit) : 
     }
 
     init {
-        commonItemLists.add(User(tempId, "", ""))
+        commonItemLists.add(User(tempId))
         commonItemLists.add(ADD_BHAIYA_BTN)
     }
 
@@ -64,12 +65,12 @@ class AddUsersAdapter(val context: Context, val listener: (Any, Int) -> Unit) : 
         } else if (holder.itemViewType == ADD_BHAIYA_BTN) {
             holder.addBhaiyaBtn.setOnClickListener {
                 if (tempName != null && !CommonUtil.textIsEmpty(tempName) && tempImageUrl != null && !CommonUtil.textIsEmpty(tempImageUrl)) {
-                    updateItem(User(tempId, tempName, tempImageUrl))
+//                    updateItem(User(tempId, tempName, tempImageUrl))
                     tempName = null
                     tempImageUrl = null
 
                     tempId += 1
-                    addBhaiyaData(User(tempId, "", ""))
+                    addBhaiyaData(User(tempId))
                 }
             }
         }
@@ -81,12 +82,16 @@ class AddUsersAdapter(val context: Context, val listener: (Any, Int) -> Unit) : 
         if (item.imageUrl != null && !CommonUtil.textIsEmpty(item.imageUrl)) {
             holder.bgImageIv.setImageURI(Uri.parse(item.imageUrl))
             ImageManager.loadImage(holder.bgImageIv, item.imageUrl)
+        } else {
+            holder.bgImageIv.setImageBitmap(null)
         }
 
         holder.input.setTitleHint(context.getString(R.string.bhaiya_number, (holder.adapterPosition + 1).toString()))
         holder.input.mInputEt?.imeOptions = EditorInfo.IME_ACTION_DONE
         if (!CommonUtil.textIsEmpty(item.name)) {
             holder.input.setTitle(item.name!!)
+        } else {
+            holder.input.setTitle("")
         }
 
         holder.changeImage.setOnClickListener {
@@ -95,7 +100,6 @@ class AddUsersAdapter(val context: Context, val listener: (Any, Int) -> Unit) : 
 
         holder.input.mInputEt?.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                tempName = holder.input.mInputEt?.text.toString()
                 CommonUtil.hideKeyboard(context)
             }
             false
@@ -111,6 +115,7 @@ class AddUsersAdapter(val context: Context, val listener: (Any, Int) -> Unit) : 
             }
 
             override fun afterTextChanged(editable: Editable) {
+                (commonItemLists[holder.adapterPosition] as User).name = editable.toString()
                 tempName = editable.toString()
             }
         })
@@ -142,7 +147,7 @@ class AddUsersAdapter(val context: Context, val listener: (Any, Int) -> Unit) : 
     fun updateImageUrl(items: User) {
         for (i in commonItemLists.indices) {
             if (commonItemLists[i] is User && items.id == (commonItemLists[i] as User).id) {
-                commonItemLists[i] = User(items.id, tempName, items.imageUrl)
+                (commonItemLists[i] as User).imageUrl = items.imageUrl
                 tempImageUrl = items.imageUrl
                 notifyItemChanged(i)
                 break
