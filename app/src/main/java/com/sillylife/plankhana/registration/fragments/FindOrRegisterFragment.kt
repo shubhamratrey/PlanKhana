@@ -9,8 +9,10 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
+import com.sillylife.plankhana.AddHouseKeyMutation
 import com.sillylife.plankhana.GetAllHouseIdsQuery
 import com.sillylife.plankhana.R
+import com.sillylife.plankhana.SearchHouseKeyQuery
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.views.BaseFragment
@@ -45,41 +47,45 @@ class FindOrRegisterFragment : BaseFragment() {
     }
 
     fun setView() {
+        if (!isAdded){
+            return
+        }
         if (isRegistered) {
-            stepProgressTv.visibility = View.GONE
-            stepProgressLl.visibility = View.GONE
+            stepProgressTv?.visibility = View.GONE
+            stepProgressLl?.visibility = View.GONE
 
-            nameEt.setTitleHint(getString(R.string.enter_your_house_key))
-            nextBtn.text = getString(R.string.find)
-            headerTv.text = getString(R.string.find_your_house)
+            nameEt?.setTitleHint(getString(R.string.enter_your_house_key))
+            nextBtn?.text = getString(R.string.find)
+            headerTv?.text = getString(R.string.find_your_house)
 
-            bottomText.text = getString(R.string.don_t_have_a_house_key)
-            bottomSubtext.text = getString(R.string.register)
+            bottomText?.text = getString(R.string.don_t_have_a_house_key)
+            bottomSubtext?.text = getString(R.string.register)
 
         } else {
-            stepProgressTv.visibility = View.VISIBLE
-            stepProgressLl.visibility = View.VISIBLE
+            stepProgressTv?.visibility = View.VISIBLE
+            stepProgressLl?.visibility = View.VISIBLE
 
-            nameEt.setTitleHint(getString(R.string.enter_a_unique_house_key))
-            nextBtn.text = getString(R.string.generate)
-            headerTv.text = getString(R.string.register_your_house)
+            nameEt?.setTitleHint(getString(R.string.enter_a_unique_house_key))
+            nextBtn?.text = getString(R.string.generate)
+            headerTv?.text = getString(R.string.register_your_house)
 
-            bottomText.text = getString(R.string.already_have_a_house_key)
-            bottomSubtext.text = getString(R.string.find_your_house)
+            bottomText?.text = getString(R.string.already_have_a_house_key)
+            bottomSubtext?.text = getString(R.string.find_your_house)
         }
 
-        findOrRegisterBtn.setOnClickListener {
+        findOrRegisterBtn?.setOnClickListener {
             isRegistered = !isRegistered
             setView()
         }
 
-        nextBtnProgress.visibility = View.GONE
-        nextBtn.setOnClickListener {
-            nextBtnProgress.visibility = View.VISIBLE
-            nextBtn.text = ""
-            openAddUserFragment()
+        nextBtnProgress?.visibility = View.GONE
+        nextBtn?.setOnClickListener {
+            nextBtnProgress?.visibility = View.VISIBLE
+            nextBtn?.text = ""
+//            openAddUserFragment()
 //            viewModel?.getAllHouseKeys()
-            searchHouseId()
+//            searchHouseId()
+            searchHouseKey(nameEt.mInputEt?.text.toString())
         }
     }
 
@@ -103,6 +109,48 @@ class FindOrRegisterFragment : BaseFragment() {
 //                    listItems = userList.toMutableList()
 //
 //                    iModuleListener.onHouseKeyResultApiSuccess(response.data())
+                }
+            })
+    }
+
+    fun addHouseKey(key: String) {
+        // Init Query
+        val keyMutation = AddHouseKeyMutation.builder().key(key).build()
+
+//         Apollo runs query on background thread
+        ApolloService.buildApollo().mutate(keyMutation)?.enqueue(object :
+            ApolloCall.Callback<AddHouseKeyMutation.Data>() {
+            override fun onFailure(error: ApolloException) {
+//                iModuleListener.onHouseKeyAddedApiFailure(error.toString())
+            }
+
+            override fun onResponse(@NotNull response: Response<AddHouseKeyMutation.Data>) {
+                response.data()
+//                iModuleListener.onHouseKeyAddedApiSuccess(response.data())
+//                Network.apolloClient.enableSubscriptions()
+            }
+        })
+
+    }
+
+    fun searchHouseKey(key: String) {
+        val getNewPublicTodosQuery = SearchHouseKeyQuery.builder().key(key).build()
+        ApolloService.buildApollo().query(getNewPublicTodosQuery)
+            .responseFetcher(ApolloResponseFetchers.NETWORK_ONLY)
+            .enqueue(object : ApolloCall.Callback<SearchHouseKeyQuery.Data>() {
+                override fun onFailure(error: ApolloException) {
+//                    iModuleListener.onHouseKeyResultApiFailure(error.toString())
+                }
+
+                override fun onResponse(@NotNull response: Response<SearchHouseKeyQuery.Data>) {
+                    mutableListOf(response.data()!!).flatMap { data ->
+                        data.plankhana_houses_house().map { data ->
+                            data.id()
+                            activity?.runOnUiThread {
+                                openAddUserFragment()
+                            }
+                        }
+                    }
                 }
             })
     }

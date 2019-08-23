@@ -4,6 +4,7 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
+import com.sillylife.plankhana.AddHouseKeyMutation
 import com.sillylife.plankhana.GetAllHouseIdsQuery
 import com.sillylife.plankhana.SearchHouseKeyQuery
 import com.sillylife.plankhana.models.responses.FindOrRegisterResponse
@@ -58,20 +59,20 @@ class FindOrRegisterModule(val iModuleListener: IModuleListener) : BaseModule() 
 
     fun addHouseKey(key: String) {
         // Init Query
-//        val addTodoMutation = AddTodoMutation.builder().todo(key).isPublic(true).build()
+        val addTodoMutation = AddHouseKeyMutation.builder().key(key).build()
 
-        // Apollo runs query on background thread
-//        appDisposable.add(apolloClient.mutate(addTodoMutation)?.enqueue(object :
-//                ApolloCall.Callback<AddTodoMutation.Data>() {
-//            override fun onFailure(error: ApolloException) {
-//                iModuleListener.onHouseKeyAddedApiFailure(error.toString())
-//            }
-//
-//            override fun onResponse(@NotNull response: Response<AddTodoMutation.Data>) {
+//         Apollo runs query on background thread
+        apolloClient.mutate(addTodoMutation)?.enqueue(object :
+            ApolloCall.Callback<AddHouseKeyMutation.Data>() {
+            override fun onFailure(error: ApolloException) {
+                iModuleListener.onHouseKeyAddedApiFailure(error.toString())
+            }
+
+            override fun onResponse(@NotNull response: Response<AddHouseKeyMutation.Data>) {
 //                iModuleListener.onHouseKeyAddedApiSuccess(response.data())
-////                Network.apolloClient.enableSubscriptions()
-//            }
-//        }))
+//                Network.apolloClient.enableSubscriptions()
+            }
+        })
 
     }
 
