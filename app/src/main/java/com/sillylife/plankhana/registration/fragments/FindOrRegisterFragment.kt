@@ -1,13 +1,21 @@
 package com.sillylife.plankhana.registration.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.apollographql.apollo.ApolloCall
+import com.apollographql.apollo.api.Response
+import com.apollographql.apollo.exception.ApolloException
+import com.apollographql.apollo.fetcher.ApolloResponseFetchers
+import com.sillylife.plankhana.GetAllHouseIdsQuery
 import com.sillylife.plankhana.R
+import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_find_or_register.*
+import org.jetbrains.annotations.NotNull
 
 class FindOrRegisterFragment : BaseFragment() {
 
@@ -16,15 +24,23 @@ class FindOrRegisterFragment : BaseFragment() {
         fun newInstance() = FindOrRegisterFragment()
     }
 
+    //    private var viewModel: FindOrRegisterViewModel? = null
     var appDisposable: AppDisposable = AppDisposable()
     private var isRegistered: Boolean = false
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return LayoutInflater.from(context).inflate(R.layout.fragment_find_or_register, null, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//        viewModel = ViewModelProviders.of(this, FragmentViewModelFactory(this@FindOrRegisterFragment))
+//                .get(FindOrRegisterViewModel::class.java)
+
         setView()
     }
 
@@ -62,7 +78,33 @@ class FindOrRegisterFragment : BaseFragment() {
             nextBtnProgress.visibility = View.VISIBLE
             nextBtn.text = ""
             openAddUserFragment()
+//            viewModel?.getAllHouseKeys()
+            searchHouseId()
         }
+    }
+
+    fun searchHouseId() {
+        val query = GetAllHouseIdsQuery.builder().build()
+        ApolloService.buildApollo().query(query)
+            .responseFetcher(ApolloResponseFetchers.NETWORK_ONLY)
+            .enqueue(object : ApolloCall.Callback<GetAllHouseIdsQuery.Data>() {
+                override fun onFailure(error: ApolloException) {
+                    Log.d(TAG, error.toString())
+                }
+
+                override fun onResponse(@NotNull response: Response<GetAllHouseIdsQuery.Data>) {
+//                    val userList = mutableListOf(response.data()!!).flatMap { data ->
+//                        data.plankhana_houses_house().map { data ->
+//                            data.id()
+//                        }
+//                    }
+                    response.data()
+
+//                    listItems = userList.toMutableList()
+//
+//                    iModuleListener.onHouseKeyResultApiSuccess(response.data())
+                }
+            })
     }
 
     private fun openAddUserFragment() {
@@ -76,6 +118,7 @@ class FindOrRegisterFragment : BaseFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+//        viewModel?.onDestroy()
         appDisposable.dispose()
     }
 }

@@ -3,6 +3,7 @@ package com.sillylife.plankhana
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import androidx.multidex.MultiDexApplication
+import com.apollographql.apollo.ApolloClient
 import com.sillylife.plankhana.services.*
 import com.sillylife.plankhana.utils.rxevents.RxBus
 import com.sillylife.plankhana.utils.rxevents.RxEvent
@@ -27,9 +28,7 @@ class PlanKhana : MultiDexApplication(), ConnectivityReceiverListener {
     }
 
     @Volatile
-    private var mIAPIService: IAPIService? = null
-    @Volatile
-    private var mIAPIServiceCache: IAPIService? = null
+    private var mApolloClient: ApolloClient? = null
 
     private var connectivityReceiver: ConnectivityReceiver? = null
 
@@ -56,19 +55,11 @@ class PlanKhana : MultiDexApplication(), ConnectivityReceiverListener {
     }
 
     @Synchronized
-    fun getAPIService(): IAPIService {
-        if (mIAPIService == null) {
-            mIAPIService = APIService.build()
+    fun getApolloService(): ApolloClient {
+        if (mApolloClient == null) {
+            mApolloClient = ApolloService.buildApollo()
         }
-        return mIAPIService!!
-    }
-
-    @Synchronized
-    fun getAPIService(cacheEnabled: Boolean): IAPIService {
-        if (mIAPIService == null) {
-            mIAPIService = APIService.build()
-        }
-        return if (cacheEnabled) mIAPIServiceCache!! else mIAPIService!!
+        return mApolloClient!!
     }
 
 }

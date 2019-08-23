@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+// Apollo
+// This must go AFTER com.android.application plugin and BEFORE Kotlin plugin
+apply plugin: 'com.apollographql.android'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
@@ -31,6 +34,11 @@ android {
     androidExtensions {
         experimental = true
     }
+}
+
+repositories {
+    jcenter()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 }
 
 dependencies {
@@ -83,4 +91,15 @@ dependencies {
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.0'
 
     implementation "com.karumi:dexter:$versions.dexter"
+
+    // Apollo
+    implementation "com.apollographql.apollo:apollo-runtime:$apolloVersion"
+    implementation "com.apollographql.apollo:apollo-android-support:$apolloVersion"
+    implementation "com.apollographql.apollo:apollo-rx2-support:$apolloVersion"
+    compileOnly 'org.jetbrains:annotations:13.0'
+    testCompileOnly 'org.jetbrains:annotations:13.0'
+
+    // IMPORTANT: Without this project will not build
+    // (because @Generated annotation in generated classes is unknown)
+    implementation 'javax.annotation:jsr250-api:1.0'
 }

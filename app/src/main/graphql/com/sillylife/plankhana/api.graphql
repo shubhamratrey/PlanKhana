@@ -1,0 +1,37 @@
+#query searchHouseKey($key:String!){
+#    plankhana_houses_house(where: {house_key: {_eq: $key!!}})
+#}
+#
+#
+#mutation generateHouseKey($key:String!){
+#    insert_plankhana_houses_house(objects: {house_key: $key}) {
+#        affected_rows
+#        returning {
+#            id
+#        }
+#    }
+#}
+
+query searchHouseKey($key:String!){
+    plankhana_houses_house(where: {house_key: {_eq: $key}}) {
+        id
+    }
+}
+
+query getAllHouseIds{
+    plankhana_houses_house {
+        id
+    }
+}
+
+
+
+#subscription GetOnlineUsers {
+#    online_users(order_by: {user: {name: asc }}) {
+#        id
+#        user {
+#            name
+#        }
+#    }
+#}
+
