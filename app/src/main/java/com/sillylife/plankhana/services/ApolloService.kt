@@ -77,17 +77,6 @@ object ApolloService {
         return httpClient.build()
     }
 
-    private fun interceptorWithOutBearer(): Interceptor {
-        return Interceptor { chain ->
-            val original = chain.request()
-            val requestBuilder = original.newBuilder()
-            requestBuilder.addHeader("content-type", "application/json")
-            val request = requestBuilder.build()
-            val response = chain.proceed(request)
-            response
-        }
-    }
-
     private fun interceptor(cacheDuration: Long): Interceptor {
         return Interceptor { chain ->
             val original = chain.request()

@@ -43,6 +43,16 @@ open class BaseFragment : Fragment() {
         }
     }
 
+    fun replaceFragment(fragment: Fragment, tag: String) {
+        if (activity != null && !activity?.isFinishing!!) {
+            when (activity) {
+                is RegistrationActivity -> (activity as RegistrationActivity).replaceFragment(fragment, tag)
+                is AuntyActivity -> (activity as AuntyActivity).replaceFragment(fragment, tag)
+                is BhaiyaActivity -> (activity as BhaiyaActivity).replaceFragment(fragment, tag)
+            }
+        }
+    }
+
     fun showPermissionRequiredDialog(title: String) {
         CustomBottomSheetDialog(R.layout.bs_dialog_alert, title, "", true, layoutInflater, activity!!, true, false, getString(android.R.string.ok), "",
             object : CustomBottomSheetDialog.Listener {

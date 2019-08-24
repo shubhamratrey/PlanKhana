@@ -22,4 +22,11 @@ class AuntyActivity : BaseActivity() {
         }
         FragmentHelper.add(R.id.container, supportFragmentManager, fragment, tag)
     }
+
+    fun replaceFragment(fragment: Fragment, tag: String) {
+        if (isFinishing) {
+            return
+        }
+        FragmentHelper.replace(R.id.container, supportFragmentManager, fragment, tag)
+    }
 }

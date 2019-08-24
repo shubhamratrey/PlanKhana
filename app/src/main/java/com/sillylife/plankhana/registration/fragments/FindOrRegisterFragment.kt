@@ -5,16 +5,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.sillylife.plankhana.AddHouseKeyMutation
-import com.sillylife.plankhana.GetAllHouseIdsQuery
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.SearchHouseKeyQuery
 import com.sillylife.plankhana.services.ApolloService
-import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_find_or_register.*
 import org.jetbrains.annotations.NotNull
@@ -26,28 +25,19 @@ class FindOrRegisterFragment : BaseFragment() {
         fun newInstance() = FindOrRegisterFragment()
     }
 
-    //    private var viewModel: FindOrRegisterViewModel? = null
-    var appDisposable: AppDisposable = AppDisposable()
     private var isRegistered: Boolean = false
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return LayoutInflater.from(context).inflate(R.layout.fragment_find_or_register, null, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        viewModel = ViewModelProviders.of(this, FragmentViewModelFactory(this@FindOrRegisterFragment))
-//                .get(FindOrRegisterViewModel::class.java)
-
         setView()
     }
 
-    fun setView() {
-        if (!isAdded){
+    private fun setView() {
+        if (!isAdded) {
             return
         }
         if (isRegistered) {
@@ -80,93 +70,80 @@ class FindOrRegisterFragment : BaseFragment() {
 
         nextBtnProgress?.visibility = View.GONE
         nextBtn?.setOnClickListener {
-            nextBtnProgress?.visibility = View.VISIBLE
-            nextBtn?.text = ""
-//            openAddUserFragment()
-//            viewModel?.getAllHouseKeys()
-//            searchHouseId()
-            searchHouseKey(nameEt.mInputEt?.text.toString())
+            if (nameEt.mInputEt?.text?.length!! > 3) {
+                nextBtnProgress?.visibility = View.VISIBLE
+                nextBtn?.text = ""
+                searchHouseKey(nameEt.mInputEt?.text.toString())
+            } else {
+                showToast("Please enter more then 3 letters", Toast.LENGTH_SHORT)
+            }
         }
+        nameEt?.loginClick {
+            isRegistered = !isRegistered
+            setView()
+        }
+        nameEt?.setNormalStateAll()
+        nameEt?.setTitle("")
+        nameEt?.toggleLoginVisibility(false, "")
     }
 
-    fun searchHouseId() {
-        val query = GetAllHouseIdsQuery.builder().build()
+    /**
+     * isRegistered that means he/she finding house key
+     */
+    private fun searchHouseKey(key: String) {
+        val query = SearchHouseKeyQuery.builder().key(key).build()
         ApolloService.buildApollo().query(query)
-            .responseFetcher(ApolloResponseFetchers.NETWORK_ONLY)
-            .enqueue(object : ApolloCall.Callback<GetAllHouseIdsQuery.Data>() {
-                override fun onFailure(error: ApolloException) {
-                    Log.d(TAG, error.toString())
-                }
+                .responseFetcher(ApolloResponseFetchers.NETWORK_ONLY)
+                .enqueue(object : ApolloCall.Callback<SearchHouseKeyQuery.Data>() {
+                    override fun onFailure(error: ApolloException) {
+                        Log.d(TAG, error.toString())
+                    }
 
-                override fun onResponse(@NotNull response: Response<GetAllHouseIdsQuery.Data>) {
-//                    val userList = mutableListOf(response.data()!!).flatMap { data ->
-//                        data.plankhana_houses_house().map { data ->
-//                            data.id()
-//                        }
-//                    }
-                    response.data()
+                    override fun onResponse(@NotNull response: Response<SearchHouseKeyQuery.Data>) {
+                        if (!isAdded) {
+                            return
+                        }
 
-//                    listItems = userList.toMutableList()
-//
-//                    iModuleListener.onHouseKeyResultApiSuccess(response.data())
-                }
-            })
-    }
-
-    fun addHouseKey(key: String) {
-        // Init Query
-        val keyMutation = AddHouseKeyMutation.builder().key(key).build()
-
-//         Apollo runs query on background thread
-        ApolloService.buildApollo().mutate(keyMutation)?.enqueue(object :
-            ApolloCall.Callback<AddHouseKeyMutation.Data>() {
-            override fun onFailure(error: ApolloException) {
-//                iModuleListener.onHouseKeyAddedApiFailure(error.toString())
-            }
-
-            override fun onResponse(@NotNull response: Response<AddHouseKeyMutation.Data>) {
-                response.data()
-//                iModuleListener.onHouseKeyAddedApiSuccess(response.data())
-//                Network.apolloClient.enableSubscriptions()
-            }
-        })
-
-    }
-
-    fun searchHouseKey(key: String) {
-        val getNewPublicTodosQuery = SearchHouseKeyQuery.builder().key(key).build()
-        ApolloService.buildApollo().query(getNewPublicTodosQuery)
-            .responseFetcher(ApolloResponseFetchers.NETWORK_ONLY)
-            .enqueue(object : ApolloCall.Callback<SearchHouseKeyQuery.Data>() {
-                override fun onFailure(error: ApolloException) {
-//                    iModuleListener.onHouseKeyResultApiFailure(error.toString())
-                }
-
-                override fun onResponse(@NotNull response: Response<SearchHouseKeyQuery.Data>) {
-                    mutableListOf(response.data()!!).flatMap { data ->
-                        data.plankhana_houses_house().map { data ->
-                            data.id()
-                            activity?.runOnUiThread {
-                                openAddUserFragment()
+                        activity?.runOnUiThread {
+                            if (isRegistered) {
+                                if (mutableListOf(response.data())[0]?.plankhana_houses_house()?.size!! >= 1) {
+                                    replaceFragment(SelectRoleFragment.newInstance(), AddBhaiyaFragment.TAG)
+                                } else {
+                                    nameEt.setErrorState()
+                                    nameEt.setTitleHint(getString(R.string.new_house_key))
+                                    nextBtnProgress?.visibility = View.GONE
+                                    nextBtn?.text = getString(R.string.find)
+                                    nameEt?.toggleLoginVisibility(true, getString(R.string.generate_now))
+                                }
+                            } else {
+                                if (mutableListOf(response.data())[0]?.plankhana_houses_house()?.size!! >= 1) {
+                                    nameEt.setErrorState()
+                                    nameEt.setTitleHint(getString(R.string.house_key_already_exists))
+                                    nextBtnProgress?.visibility = View.GONE
+                                    nextBtn?.text = getString(R.string.generate)
+                                    nameEt?.toggleLoginVisibility(true, getString(R.string.login_now))
+                                } else {
+                                    addHouseKey(key)
+                                }
                             }
                         }
                     }
+                })
+    }
+
+    private fun addHouseKey(key: String) {
+        val keyMutation = AddHouseKeyMutation.builder().key(key).build()
+        ApolloService.buildApollo().mutate(keyMutation)?.enqueue(object :
+                ApolloCall.Callback<AddHouseKeyMutation.Data>() {
+            override fun onFailure(error: ApolloException) {
+                Log.d(TAG, error.toString())
+            }
+
+            override fun onResponse(@NotNull response: Response<AddHouseKeyMutation.Data>) {
+                if (isAdded) {
+                    replaceFragment(AddBhaiyaFragment.newInstance(), AddBhaiyaFragment.TAG)
                 }
-            })
-    }
-
-    private fun openAddUserFragment() {
-        setView()
-        if (isRegistered) {
-            addFragment(SelectRoleFragment.newInstance(), AddBhaiyaFragment.TAG)
-        } else {
-            addFragment(AddBhaiyaFragment.newInstance(), AddBhaiyaFragment.TAG)
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-//        viewModel?.onDestroy()
-        appDisposable.dispose()
+            }
+        })
     }
 }

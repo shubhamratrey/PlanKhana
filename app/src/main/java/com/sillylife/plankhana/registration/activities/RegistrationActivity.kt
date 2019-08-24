@@ -37,6 +37,13 @@ class RegistrationActivity : BaseActivity() {
         FragmentHelper.add(R.id.container, supportFragmentManager, fragment, tag)
     }
 
+    fun replaceFragment(fragment: Fragment, tag: String) {
+        if (isFinishing) {
+            return
+        }
+        FragmentHelper.replace(R.id.container, supportFragmentManager, fragment, tag)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val fragment = supportFragmentManager.findFragmentById(R.id.container)
