@@ -75,7 +75,7 @@ class FindOrRegisterFragment : BaseFragment() {
                 nextBtn?.text = ""
                 searchHouseKey(nameEt.mInputEt?.text.toString())
             } else {
-                showToast("Please enter more then 3 letters", Toast.LENGTH_SHORT)
+                showToast(getString(R.string.please_enter_more_then), Toast.LENGTH_SHORT)
             }
         }
         nameEt?.loginClick {

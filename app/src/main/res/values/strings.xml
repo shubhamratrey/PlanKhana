@@ -36,4 +36,5 @@
     <string name="house_key_already_exists">House key already exists</string>
     <string name="login_now">Login Now</string>
     <string name="generate_now">Generate Now</string>
+    <string name="please_enter_more_then">Please enter more then 3 letters</string>
 </resources>
