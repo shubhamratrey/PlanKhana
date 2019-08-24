@@ -4,16 +4,29 @@ query searchHouseKey($key:String!){
     }
 }
 
-query getAllHouseIds{
-    plankhana_houses_house {
-        id
-    }
-}
-
 mutation addHouseKey($key:String!) {
     insert_plankhana_houses_house(objects: {house_key: $key}) {
         returning {
             id
+        }
+    }
+}
+
+query getHouseResidentList($houseId:Int!, $userType:String!) {
+    plankhana_houses_houseresident(where: {house_id: {_eq: $houseId}, users_userprofile: {user_type: {_eq: $userType}}}) {
+        users_userprofile {
+            username
+            id
+            display_picture
+        }
+    }
+}
+
+mutation addResident($houseId:Int!, $residentPicture:String!, $residentName:String!, $residentPhoneNumber:String!, $userType:String!){
+    insert_plankhana_houses_houseresident(objects: {house_id: $houseId, users_userprofile: {data: {display_picture: $residentPicture, username: $residentName, phone: $residentPhoneNumber, user_type: $userType}}}) {
+        returning {
+            id
+            user_id
         }
     }
 }

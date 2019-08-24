@@ -32,8 +32,4 @@ class FindOrRegisterViewModel(fragment: BaseFragment) : BaseViewModel(), FindOrR
     fun addHouseKey(key: String) {
         module.addHouseKey(key)
     }
-
-    fun getAllHouseKeys(){
-        module.searchHouseId()
-    }
 }
