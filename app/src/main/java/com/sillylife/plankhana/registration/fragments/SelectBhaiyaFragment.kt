@@ -49,6 +49,7 @@ class SelectBhaiyaFragment : BaseFragment() {
     var appDisposable: AppDisposable = AppDisposable()
     var adapter: SelectBhaiyaAdapter? = null
     private var isCommentDialogShown = false
+    private var addResidentBottomSheet:Dialog? = null
     private var sheetView: View? = null
     private var imageUri: Uri? = null
     private val testingHouseID = 2
@@ -115,14 +116,14 @@ class SelectBhaiyaFragment : BaseFragment() {
 
     private fun showAddBhaiyaPopup() {
         if (isAdded && activity != null) {
-            val dialog = Dialog(activity!!)
+            addResidentBottomSheet = Dialog(activity!!)
             sheetView = LayoutInflater.from(activity!!).inflate(R.layout.bs_dialog_add_user, null, false)
-            dialog.setContentView(sheetView!!)
-            dialog.setCancelable(false)
-            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-            dialog.window?.setGravity(Gravity.BOTTOM)
-            dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-            dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
+            addResidentBottomSheet?.setContentView(sheetView!!)
+            addResidentBottomSheet?.setCancelable(false)
+            addResidentBottomSheet?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            addResidentBottomSheet?.window?.setGravity(Gravity.BOTTOM)
+            addResidentBottomSheet?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            addResidentBottomSheet?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
 
             sheetView?.input?.setTitleHint(context?.getString(R.string.bhaiya_number, (adapter?.itemCount!!).toString())!!)
 
@@ -140,7 +141,7 @@ class SelectBhaiyaFragment : BaseFragment() {
                     val height = size.y
                     if (isCommentDialogShown && (location[1] + sheetView?.height!!) >= (height - resources.getDimensionPixelSize(R.dimen.dp_90))) {
                         isCommentDialogShown = false
-                        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+                        addResidentBottomSheet?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
                         sheetView?.input?.mInputEt?.clearFocus()
                         view?.viewTreeObserver?.removeOnGlobalLayoutListener { }
                     }
@@ -151,10 +152,10 @@ class SelectBhaiyaFragment : BaseFragment() {
             }, 250)
 
 
-            dialog.show()
+            addResidentBottomSheet?.show()
 
             sheetView?.closeBtn?.setOnClickListener {
-                dialog.dismiss()
+                addResidentBottomSheet?.dismiss()
             }
 
             sheetView?.changeImage?.setOnClickListener {
@@ -179,9 +180,7 @@ class SelectBhaiyaFragment : BaseFragment() {
                     ImageUploadTask(imageUri?.path!!, ImageType.USER_IMAGE, object : ImageUploadTask.Callback {
                         override fun onUploadSuccess(imageUri: Uri) {
                             adapter?.addBhaiyaData(User(adapter?.itemCount!!, sheetView?.input?.mInputEt?.text.toString(), imageUri.toString()))
-//                            addResident(sheetView?.input?.mInputEt?.text.toString())
-                            dialog.dismiss()
-                            sheetView?.nextBtn?.isEnabled = true
+                            addResident(sheetView?.input?.mInputEt?.text.toString(), imageUri.toString(), Math.random().toString())
                         }
 
                         override fun onUploadFailure(error: String) {
@@ -214,12 +213,12 @@ class SelectBhaiyaFragment : BaseFragment() {
         }
     }
 
-    private fun addResident(residentName: String) {
+    private fun addResident(residentName: String, residentPicture: String, residentNumber: String) {
         val keyMutation = AddResidentMutation.builder()
                 .houseId(testingHouseID)
                 .residentName(residentName)
-                .residentPhoneNumber("1232")
-                .residentPicture("https://media-doselect.s3.amazonaws.com/avatar_image/1V4XB5PzwqAqJV2aoKw3QnVyM/download.png")
+                .residentPhoneNumber(residentNumber)
+                .residentPicture(residentPicture)
                 .userType(UserType.RESIDENT.type)
                 .build()
         ApolloService.buildApollo().mutate(keyMutation)?.enqueue(object :
@@ -229,7 +228,8 @@ class SelectBhaiyaFragment : BaseFragment() {
             }
 
             override fun onResponse(@NotNull response: Response<AddResidentMutation.Data>) {
-
+                addResidentBottomSheet?.dismiss()
+                sheetView?.nextBtn?.isEnabled = true
             }
         })
     }

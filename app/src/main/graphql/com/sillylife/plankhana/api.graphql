@@ -23,10 +23,9 @@ query getHouseResidentList($houseId:Int!, $userType:String!) {
 }
 
 mutation addResident($houseId:Int!, $residentPicture:String!, $residentName:String!, $residentPhoneNumber:String!, $userType:String!){
-    insert_plankhana_houses_houseuser(objects: {house_id: $houseId, users_userprofile: {data: {display_picture: $residentPicture, username: $residentName, phone: $residentPhoneNumber, user_type: $userType}}}) {
+    insert_plankhana_houses_houseuser(objects: {users_userprofile: {data: {display_picture: $residentPicture, username: $residentName, user_type: $userType, phone: $residentPhoneNumber}}, house_id: $houseId}) {
         returning {
             id
-            user_id
         }
     }
 }
