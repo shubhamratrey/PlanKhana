@@ -16,10 +16,13 @@ import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.karumi.dexter.PermissionToken
+import com.sillylife.plankhana.AddResidentMutation
 import com.sillylife.plankhana.GetHouseResidentListQuery
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.constants.Constants
+import com.sillylife.plankhana.enums.ImageType
 import com.sillylife.plankhana.enums.UserType
+import com.sillylife.plankhana.managers.ImageUploadTask
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.registration.activities.RegistrationActivity
 import com.sillylife.plankhana.services.ApolloService
@@ -48,6 +51,7 @@ class SelectBhaiyaFragment : BaseFragment() {
     private var isCommentDialogShown = false
     private var sheetView: View? = null
     private var imageUri: Uri? = null
+    private val testingHouseID = 2
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return LayoutInflater.from(context).inflate(R.layout.fragment_select_bhaiya, null, false)
@@ -55,19 +59,19 @@ class SelectBhaiyaFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHouseResidents(2)
+        setHouseResidents(testingHouseID)
 
         nextBtn.text = getString(R.string.string_continue)
         nextBtn.setOnClickListener {
-//            val intent = Intent(activity, BhaiyaActivity::class.java)
+            //            val intent = Intent(activity, BhaiyaActivity::class.java)
 //            startActivity(intent)
 //            activity?.finish()
         }
     }
 
-    private fun setHouseResidents(id:Int) {
-        progress?.visibility =View.VISIBLE
-        val list:ArrayList<User> = ArrayList()
+    private fun setHouseResidents(id: Int) {
+        progress?.visibility = View.VISIBLE
+        val list: ArrayList<User> = ArrayList()
         val query = GetHouseResidentListQuery.builder().houseId(id).userType(UserType.RESIDENT.type).build()
         ApolloService.buildApollo().query(query)
                 .responseFetcher(ApolloResponseFetchers.NETWORK_ONLY)
@@ -81,7 +85,7 @@ class SelectBhaiyaFragment : BaseFragment() {
                             return
                         }
                         response.data()?.plankhana_houses_houseresident()?.toMutableList()
-                        for(user in response.data()?.plankhana_houses_houseresident()?.toMutableList()!!){
+                        for (user in response.data()?.plankhana_houses_houseresident()?.toMutableList()!!) {
                             list.add(User(user.users_userprofile().id(), user.users_userprofile().username(), user.users_userprofile().display_picture()))
                         }
                         activity?.runOnUiThread {
@@ -90,7 +94,6 @@ class SelectBhaiyaFragment : BaseFragment() {
                     }
                 })
     }
-
 
     private fun setAdapter(list: ArrayList<User>) {
         if (rcv.adapter == null) {
@@ -106,7 +109,7 @@ class SelectBhaiyaFragment : BaseFragment() {
             }
             rcv.layoutManager = SelectBhaiyaAdapter.WrapContentGridLayoutManager(context!!, 3)
             rcv.adapter = adapter
-            progress?.visibility =View.GONE
+            progress?.visibility = View.GONE
         }
     }
 
@@ -156,7 +159,7 @@ class SelectBhaiyaFragment : BaseFragment() {
 
             sheetView?.changeImage?.setOnClickListener {
                 DexterUtil.with(activity!!, Manifest.permission.READ_EXTERNAL_STORAGE).setListener(object :
-                    DexterUtil.DexterUtilListener {
+                        DexterUtil.DexterUtilListener {
                     override fun permissionGranted() {
                         CommonUtil.openPhoneGallery(activity!!)
                     }
@@ -171,10 +174,64 @@ class SelectBhaiyaFragment : BaseFragment() {
             }
 
             sheetView?.nextBtn?.setOnClickListener {
-                adapter?.addBhaiyaData(User(adapter?.itemCount!!, sheetView?.input?.mInputEt?.text.toString(), imageUri.toString()))
-                dialog.dismiss()
+                if (validate()) {
+                    sheetView?.nextBtn?.isEnabled = false
+                    ImageUploadTask(imageUri?.path!!, ImageType.USER_IMAGE, object : ImageUploadTask.Callback {
+                        override fun onUploadSuccess(imageUri: Uri) {
+                            adapter?.addBhaiyaData(User(adapter?.itemCount!!, sheetView?.input?.mInputEt?.text.toString(), imageUri.toString()))
+//                            addResident(sheetView?.input?.mInputEt?.text.toString())
+                            dialog.dismiss()
+                            sheetView?.nextBtn?.isEnabled = true
+                        }
+
+                        override fun onUploadFailure(error: String) {
+
+                        }
+
+                        override fun onProgress(progress: Double) {
+
+                        }
+
+                    })
+
+                }
             }
         }
+    }
+
+    fun validate(): Boolean {
+        return if (sheetView?.input?.mInputEt?.text?.length!! <= 3 && imageUri == null) {
+            showToast("Please enter correct name & upload photo", Toast.LENGTH_SHORT)
+            false
+        } else if (sheetView?.input?.mInputEt?.text?.length!! <= 3) {
+            showToast("Please enter correct name", Toast.LENGTH_SHORT)
+            false
+        } else if (imageUri == null) {
+            showToast("Please upload Photo", Toast.LENGTH_SHORT)
+            false
+        } else {
+            true
+        }
+    }
+
+    private fun addResident(residentName: String) {
+        val keyMutation = AddResidentMutation.builder()
+                .houseId(testingHouseID)
+                .residentName(residentName)
+                .residentPhoneNumber("1232")
+                .residentPicture("https://media-doselect.s3.amazonaws.com/avatar_image/1V4XB5PzwqAqJV2aoKw3QnVyM/download.png")
+                .userType(UserType.RESIDENT.type)
+                .build()
+        ApolloService.buildApollo().mutate(keyMutation)?.enqueue(object :
+                ApolloCall.Callback<AddResidentMutation.Data>() {
+            override fun onFailure(error: ApolloException) {
+                Log.d(TAG, error.toString())
+            }
+
+            override fun onResponse(@NotNull response: Response<AddResidentMutation.Data>) {
+
+            }
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
