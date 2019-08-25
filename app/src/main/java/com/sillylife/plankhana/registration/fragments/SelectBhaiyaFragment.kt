@@ -174,9 +174,12 @@ class SelectBhaiyaFragment : BaseFragment() {
                 }).check()
             }
 
+            sheetView?.nextBtnProgress?.visibility = View.GONE
             sheetView?.nextBtn?.setOnClickListener {
                 if (validate()) {
                     sheetView?.nextBtn?.isEnabled = false
+                    sheetView?.nextBtn?.text = ""
+                    sheetView?.nextBtnProgress?.visibility = View.VISIBLE
                     ImageUploadTask(imageUri?.path!!, ImageType.USER_IMAGE, object : ImageUploadTask.Callback {
                         override fun onUploadSuccess(imageUri: Uri) {
                             adapter?.addBhaiyaData(User(adapter?.itemCount!!, sheetView?.input?.mInputEt?.text.toString(), imageUri.toString()))
@@ -230,6 +233,7 @@ class SelectBhaiyaFragment : BaseFragment() {
             override fun onResponse(@NotNull response: Response<AddResidentMutation.Data>) {
                 addResidentBottomSheet?.dismiss()
                 sheetView?.nextBtn?.isEnabled = true
+                sheetView?.nextBtn?.text = getString(R.string.add)
             }
         })
     }
