@@ -55,7 +55,6 @@ class SelectBhaiyaFragment : BaseFragment() {
     private var addResidentBottomSheet: Dialog? = null
     private var sheetView: View? = null
     private var imageUri: Uri? = null
-    private val testingHouseID = 2
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return LayoutInflater.from(context).inflate(R.layout.fragment_select_bhaiya, null, false)
@@ -63,7 +62,7 @@ class SelectBhaiyaFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHouseResidents(testingHouseID)
+        setHouseResidents(Constants.HOUSE_ID)
 
         nextBtn.text = getString(R.string.string_continue)
         nextBtn.setOnClickListener {
@@ -221,7 +220,7 @@ class SelectBhaiyaFragment : BaseFragment() {
 
     private fun addResident(residentName: String, residentPicture: String, residentNumber: String) {
         val keyMutation = AddResidentMutation.builder()
-                .houseId(testingHouseID)
+                .houseId(Constants.HOUSE_ID)
                 .residentName(residentName)
                 .residentPhoneNumber(residentNumber)
                 .residentPicture(residentPicture)
@@ -244,7 +243,7 @@ class SelectBhaiyaFragment : BaseFragment() {
     private fun addResidentList(residentName: String, residentPicture: String, residentNumber: String) {
         val list: ArrayList<Plankhana_houses_houseuser_insert_input> = ArrayList()
 
-        list.add(MapObjects.addResident(testingHouseID, residentName, residentPicture, residentNumber, UserType.RESIDENT))
+        list.add(MapObjects.addResident(Constants.HOUSE_ID, residentName, residentPicture, residentNumber, UserType.RESIDENT))
 
         val keyMutation = AddResidentListMutation.builder().houseUser(list).build()
 

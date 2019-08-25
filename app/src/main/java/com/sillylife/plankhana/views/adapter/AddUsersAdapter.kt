@@ -155,6 +155,15 @@ class AddUsersAdapter(val context: Context, val listener: (Any, Int) -> Unit) :
         }
     }
 
+    fun getUserList():ArrayList<User>{
+        val tempUserList: ArrayList<User> = ArrayList()
+        for (user in commonItemLists!!) {
+            if (user is User) {
+                tempUserList.add(user)
+            }
+        }
+        return  tempUserList
+    }
 
     class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer
 

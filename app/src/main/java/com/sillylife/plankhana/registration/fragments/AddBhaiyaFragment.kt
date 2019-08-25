@@ -2,21 +2,28 @@ package com.sillylife.plankhana.registration.fragments
 
 import android.Manifest
 import android.app.Activity
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.apollographql.apollo.ApolloCall
+import com.apollographql.apollo.api.Response
+import com.apollographql.apollo.exception.ApolloException
 import com.karumi.dexter.PermissionToken
+import com.sillylife.plankhana.AddResidentListMutation
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.constants.Constants
+import com.sillylife.plankhana.managers.UploadUsersTask
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.registration.activities.RegistrationActivity
+import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.utils.CommonUtil
 import com.sillylife.plankhana.utils.DexterUtil
@@ -26,6 +33,7 @@ import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.fragment_add_users.*
 import kotlinx.android.synthetic.main.layout_bottom_button.*
+import org.jetbrains.annotations.NotNull
 
 class AddBhaiyaFragment : BaseFragment() {
 
@@ -40,6 +48,7 @@ class AddBhaiyaFragment : BaseFragment() {
     private var tempId = 0
     private var imageUri: Uri? = null
     private var tempUserId = 0
+    private var adapter: AddUsersAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return LayoutInflater.from(context).inflate(R.layout.fragment_add_users, null, false)
@@ -50,17 +59,23 @@ class AddBhaiyaFragment : BaseFragment() {
         setAdapter()
         nextBtn.text = getString(R.string.register)
         nextBtn.setOnClickListener {
-            addFragment(SelectRoleFragment.newInstance(), SelectRoleFragment.TAG)
+            if (adapter != null) {
+                if (adapter?.getUserList()?.size!! > 0 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    addUsers(adapter?.getUserList()!!)
+                } else {
+                    showToast("Please add user.", Toast.LENGTH_SHORT)
+                }
+            }
         }
     }
 
     private fun setAdapter() {
         if (rcv.adapter == null) {
-            val adapter = AddUsersAdapter(activity!!) { any, i ->
+            adapter = AddUsersAdapter(activity!!) { any, i ->
                 if (any is User) {
                     tempUserId = any.id!!
                     DexterUtil.with(activity!!, Manifest.permission.READ_EXTERNAL_STORAGE).setListener(object :
-                        DexterUtil.DexterUtilListener {
+                            DexterUtil.DexterUtilListener {
                         override fun permissionGranted() {
                             CommonUtil.openPhoneGallery(activity!!)
                         }
@@ -79,9 +94,27 @@ class AddBhaiyaFragment : BaseFragment() {
                 rcv.addItemDecoration(AddUsersAdapter.ItemDecoration())
             }
             rcv.layoutManager = layoutManager
-
             rcv.adapter = adapter
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    fun addUsers(userList: ArrayList<User>) {
+        appDisposable.add(UploadUsersTask(userList, Constants.HOUSE_ID).callable {
+            val keyMutation = AddResidentListMutation.builder().houseUser(it).build()
+            ApolloService.buildApollo().mutate(keyMutation)?.enqueue(object :
+                    ApolloCall.Callback<AddResidentListMutation.Data>() {
+                override fun onFailure(error: ApolloException) {
+                    Log.d(SelectBhaiyaFragment.TAG, error.toString())
+                }
+
+                override fun onResponse(@NotNull response: Response<AddResidentListMutation.Data>) {
+                    if (isAdded) {
+                        replaceFragment(SelectRoleFragment.newInstance(), SelectRoleFragment.TAG)
+                    }
+                }
+            })
+        })
     }
 
     override fun onDestroy() {
