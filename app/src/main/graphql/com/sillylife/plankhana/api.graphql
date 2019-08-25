@@ -29,3 +29,11 @@ mutation addResident($houseId:Int!, $residentPicture:String!, $residentName:Stri
         }
     }
 }
+
+mutation addResidentList($houseUser: [plankhana_houses_houseuser_insert_input!]!) {
+    insert_plankhana_houses_houseuser(objects: $houseUser) {
+        returning {
+            id
+        }
+    }
+}

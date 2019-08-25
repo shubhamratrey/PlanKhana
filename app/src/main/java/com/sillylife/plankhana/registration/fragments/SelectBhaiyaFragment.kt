@@ -16,6 +16,7 @@ import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.karumi.dexter.PermissionToken
+import com.sillylife.plankhana.AddResidentListMutation
 import com.sillylife.plankhana.AddResidentMutation
 import com.sillylife.plankhana.GetHouseResidentListQuery
 import com.sillylife.plankhana.R
@@ -27,8 +28,10 @@ import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.registration.activities.RegistrationActivity
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
+import com.sillylife.plankhana.type.Plankhana_houses_houseuser_insert_input
 import com.sillylife.plankhana.utils.CommonUtil
 import com.sillylife.plankhana.utils.DexterUtil
+import com.sillylife.plankhana.utils.MapObjects
 import com.sillylife.plankhana.views.BaseFragment
 import com.sillylife.plankhana.views.adapter.SelectBhaiyaAdapter
 import com.theartofdev.edmodo.cropper.CropImage
@@ -49,7 +52,7 @@ class SelectBhaiyaFragment : BaseFragment() {
     var appDisposable: AppDisposable = AppDisposable()
     var adapter: SelectBhaiyaAdapter? = null
     private var isCommentDialogShown = false
-    private var addResidentBottomSheet:Dialog? = null
+    private var addResidentBottomSheet: Dialog? = null
     private var sheetView: View? = null
     private var imageUri: Uri? = null
     private val testingHouseID = 2
@@ -183,7 +186,7 @@ class SelectBhaiyaFragment : BaseFragment() {
                     ImageUploadTask(imageUri?.path!!, ImageType.USER_IMAGE, object : ImageUploadTask.Callback {
                         override fun onUploadSuccess(imageUri: Uri) {
                             adapter?.addBhaiyaData(User(adapter?.itemCount!!, sheetView?.input?.mInputEt?.text.toString(), imageUri.toString()))
-                            addResident(sheetView?.input?.mInputEt?.text.toString(), imageUri.toString(), Math.random().toString())
+                            addResidentList(sheetView?.input?.mInputEt?.text.toString(), imageUri.toString(), Math.random().toString())
                         }
 
                         override fun onUploadFailure(error: String) {
@@ -231,6 +234,27 @@ class SelectBhaiyaFragment : BaseFragment() {
             }
 
             override fun onResponse(@NotNull response: Response<AddResidentMutation.Data>) {
+                addResidentBottomSheet?.dismiss()
+                sheetView?.nextBtn?.isEnabled = true
+                sheetView?.nextBtn?.text = getString(R.string.add)
+            }
+        })
+    }
+
+    private fun addResidentList(residentName: String, residentPicture: String, residentNumber: String) {
+        val list: ArrayList<Plankhana_houses_houseuser_insert_input> = ArrayList()
+
+        list.add(MapObjects.addResident(testingHouseID, residentName, residentPicture, residentNumber, UserType.RESIDENT))
+
+        val keyMutation = AddResidentListMutation.builder().houseUser(list).build()
+
+        ApolloService.buildApollo().mutate(keyMutation)?.enqueue(object :
+                ApolloCall.Callback<AddResidentListMutation.Data>() {
+            override fun onFailure(error: ApolloException) {
+                Log.d(TAG, error.toString())
+            }
+
+            override fun onResponse(@NotNull response: Response<AddResidentListMutation.Data>) {
                 addResidentBottomSheet?.dismiss()
                 sheetView?.nextBtn?.isEnabled = true
                 sheetView?.nextBtn?.text = getString(R.string.add)
