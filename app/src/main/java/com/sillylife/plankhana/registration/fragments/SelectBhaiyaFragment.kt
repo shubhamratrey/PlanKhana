@@ -3,34 +3,38 @@ package com.sillylife.plankhana.registration.fragments
 import android.Manifest
 import android.app.Activity
 import android.app.Dialog
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.provider.MediaStore
-import android.provider.Settings
+import android.util.Log
 import android.view.*
 import android.widget.Toast
+import com.apollographql.apollo.ApolloCall
+import com.apollographql.apollo.api.Response
+import com.apollographql.apollo.exception.ApolloException
+import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.karumi.dexter.PermissionToken
+import com.sillylife.plankhana.GetHouseResidentListQuery
 import com.sillylife.plankhana.R
-import com.sillylife.plankhana.bhaiya_side.activities.BhaiyaActivity
 import com.sillylife.plankhana.constants.Constants
+import com.sillylife.plankhana.enums.UserType
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.registration.activities.RegistrationActivity
+import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.utils.CommonUtil
 import com.sillylife.plankhana.utils.DexterUtil
 import com.sillylife.plankhana.views.BaseFragment
 import com.sillylife.plankhana.views.adapter.SelectBhaiyaAdapter
-import com.sillylife.plankhana.widgets.CustomBottomSheetDialog
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.bs_dialog_add_user.view.*
 import kotlinx.android.synthetic.main.fragment_select_bhaiya.*
 import kotlinx.android.synthetic.main.item_bhaiya_layout.view.*
 import kotlinx.android.synthetic.main.layout_bottom_button.*
+import org.jetbrains.annotations.NotNull
 
 class SelectBhaiyaFragment : BaseFragment() {
 
@@ -51,15 +55,42 @@ class SelectBhaiyaFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHouseResidents(2)
 
         nextBtn.text = getString(R.string.string_continue)
         nextBtn.setOnClickListener {
-            val intent = Intent(activity, BhaiyaActivity::class.java)
-            startActivity(intent)
-            activity?.finish()
+//            val intent = Intent(activity, BhaiyaActivity::class.java)
+//            startActivity(intent)
+//            activity?.finish()
         }
-        setAdapter(CommonUtil.userDummyData())
     }
+
+    private fun setHouseResidents(id:Int) {
+        progress?.visibility =View.VISIBLE
+        val list:ArrayList<User> = ArrayList()
+        val query = GetHouseResidentListQuery.builder().houseId(id).userType(UserType.RESIDENT.type).build()
+        ApolloService.buildApollo().query(query)
+                .responseFetcher(ApolloResponseFetchers.NETWORK_ONLY)
+                .enqueue(object : ApolloCall.Callback<GetHouseResidentListQuery.Data>() {
+                    override fun onFailure(error: ApolloException) {
+                        Log.d(TAG, error.toString())
+                    }
+
+                    override fun onResponse(@NotNull response: Response<GetHouseResidentListQuery.Data>) {
+                        if (!isAdded) {
+                            return
+                        }
+                        response.data()?.plankhana_houses_houseresident()?.toMutableList()
+                        for(user in response.data()?.plankhana_houses_houseresident()?.toMutableList()!!){
+                            list.add(User(user.users_userprofile().id(), user.users_userprofile().username(), user.users_userprofile().display_picture()))
+                        }
+                        activity?.runOnUiThread {
+                            setAdapter(list)
+                        }
+                    }
+                })
+    }
+
 
     private fun setAdapter(list: ArrayList<User>) {
         if (rcv.adapter == null) {
@@ -75,6 +106,7 @@ class SelectBhaiyaFragment : BaseFragment() {
             }
             rcv.layoutManager = SelectBhaiyaAdapter.WrapContentGridLayoutManager(context!!, 3)
             rcv.adapter = adapter
+            progress?.visibility =View.GONE
         }
     }
 
