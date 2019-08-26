@@ -24,6 +24,7 @@ import com.sillylife.plankhana.constants.Constants
 import com.sillylife.plankhana.enums.ImageType
 import com.sillylife.plankhana.enums.UserType
 import com.sillylife.plankhana.managers.ImageUploadTask
+import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.registration.activities.RegistrationActivity
 import com.sillylife.plankhana.services.ApolloService
@@ -55,6 +56,7 @@ class SelectBhaiyaFragment : BaseFragment() {
     private var addResidentBottomSheet: Dialog? = null
     private var sheetView: View? = null
     private var imageUri: Uri? = null
+    private var houseId: Int = -1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return LayoutInflater.from(context).inflate(R.layout.fragment_select_bhaiya, null, false)
@@ -62,7 +64,8 @@ class SelectBhaiyaFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setHouseResidents(Constants.HOUSE_ID)
+        houseId = SharedPreferenceManager.getHouseId()!!
+        setHouseResidents(houseId)
 
         nextBtn.text = getString(R.string.string_continue)
         nextBtn.setOnClickListener {
@@ -220,7 +223,7 @@ class SelectBhaiyaFragment : BaseFragment() {
 
     private fun addResident(residentName: String, residentPicture: String, residentNumber: String) {
         val keyMutation = AddResidentMutation.builder()
-                .houseId(Constants.HOUSE_ID)
+                .houseId(houseId)
                 .residentName(residentName)
                 .residentPhoneNumber(residentNumber)
                 .residentPicture(residentPicture)
@@ -243,7 +246,7 @@ class SelectBhaiyaFragment : BaseFragment() {
     private fun addResidentList(residentName: String, residentPicture: String, residentNumber: String) {
         val list: ArrayList<Plankhana_houses_houseuser_insert_input> = ArrayList()
 
-        list.add(MapObjects.addResident(Constants.HOUSE_ID, residentName, residentPicture, residentNumber, UserType.RESIDENT))
+        list.add(MapObjects.addResident(houseId, residentName, residentPicture, residentNumber, UserType.RESIDENT))
 
         val keyMutation = AddResidentListMutation.builder().houseUser(list).build()
 

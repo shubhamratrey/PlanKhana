@@ -13,6 +13,7 @@ import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.sillylife.plankhana.AddHouseKeyMutation
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.SearchHouseKeyQuery
+import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_find_or_register.*
@@ -107,6 +108,7 @@ class FindOrRegisterFragment : BaseFragment() {
                         activity?.runOnUiThread {
                             if (isRegistered) {
                                 if (mutableListOf(response.data())[0]?.plankhana_houses_house()?.size!! >= 1) {
+                                    SharedPreferenceManager.setHouseId(response.data()?.plankhana_houses_house()!![0]?.id()!!)
                                     replaceFragment(SelectRoleFragment.newInstance(), AddBhaiyaFragment.TAG)
                                 } else {
                                     nameEt.setErrorState()

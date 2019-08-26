@@ -21,6 +21,7 @@ import com.sillylife.plankhana.AddResidentListMutation
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.constants.Constants
 import com.sillylife.plankhana.managers.UploadUsersTask
+import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.registration.activities.RegistrationActivity
 import com.sillylife.plankhana.services.ApolloService
@@ -45,7 +46,6 @@ class AddBhaiyaFragment : BaseFragment() {
     }
 
     var appDisposable: AppDisposable = AppDisposable()
-    private var tempId = 0
     private var imageUri: Uri? = null
     private var tempUserId = 0
     private var adapter: AddUsersAdapter? = null
@@ -57,11 +57,13 @@ class AddBhaiyaFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setAdapter()
-        nextBtn.text = getString(R.string.register)
-        nextBtn.setOnClickListener {
+        nextBtn?.text = getString(R.string.register)
+        nextBtn?.setOnClickListener {
             if (adapter != null) {
                 if (adapter?.getUserList()?.size!! > 0 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     addUsers(adapter?.getUserList()!!)
+                    nextBtnProgress?.visibility = View.VISIBLE
+                    nextBtn?.text = ""
                 } else {
                     showToast("Please add user.", Toast.LENGTH_SHORT)
                 }
@@ -70,7 +72,7 @@ class AddBhaiyaFragment : BaseFragment() {
     }
 
     private fun setAdapter() {
-        if (rcv.adapter == null) {
+        if (rcv?.adapter == null) {
             adapter = AddUsersAdapter(activity!!) { any, i ->
                 if (any is User) {
                     tempUserId = any.id!!
@@ -90,31 +92,38 @@ class AddBhaiyaFragment : BaseFragment() {
                 }
             }
             val layoutManager = LinearLayoutManager(activity)
-            if (rcv.itemDecorationCount == 0) {
-                rcv.addItemDecoration(AddUsersAdapter.ItemDecoration())
+            if (rcv?.itemDecorationCount == 0) {
+                rcv?.addItemDecoration(AddUsersAdapter.ItemDecoration())
             }
-            rcv.layoutManager = layoutManager
-            rcv.adapter = adapter
+            rcv?.layoutManager = layoutManager
+            rcv?.adapter = adapter
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     fun addUsers(userList: ArrayList<User>) {
-        appDisposable.add(UploadUsersTask(userList, Constants.HOUSE_ID).callable {
-            val keyMutation = AddResidentListMutation.builder().houseUser(it).build()
-            ApolloService.buildApollo().mutate(keyMutation)?.enqueue(object :
+        val houseID = SharedPreferenceManager.getHouseId()!!
+        if (houseID > 0){
+            appDisposable.add(UploadUsersTask(userList, houseID).callable {
+                val keyMutation = AddResidentListMutation.builder().houseUser(it).build()
+                ApolloService.buildApollo().mutate(keyMutation)?.enqueue(object :
                     ApolloCall.Callback<AddResidentListMutation.Data>() {
-                override fun onFailure(error: ApolloException) {
-                    Log.d(SelectBhaiyaFragment.TAG, error.toString())
-                }
-
-                override fun onResponse(@NotNull response: Response<AddResidentListMutation.Data>) {
-                    if (isAdded) {
-                        replaceFragment(SelectRoleFragment.newInstance(), SelectRoleFragment.TAG)
+                    override fun onFailure(error: ApolloException) {
+                        nextBtnProgress?.visibility = View.GONE
+                        nextBtn?.text = getString(R.string.register)
+                        Log.d(SelectBhaiyaFragment.TAG, error.toString())
                     }
-                }
+
+                    override fun onResponse(@NotNull response: Response<AddResidentListMutation.Data>) {
+                        if (isAdded) {
+                            nextBtnProgress?.visibility = View.GONE
+                            nextBtn?.text = getString(R.string.register)
+                            replaceFragment(SelectRoleFragment.newInstance(), SelectRoleFragment.TAG)
+                        }
+                    }
+                })
             })
-        })
+        }
     }
 
     override fun onDestroy() {
