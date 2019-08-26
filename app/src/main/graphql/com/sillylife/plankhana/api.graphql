@@ -37,3 +37,69 @@ mutation addResidentList($houseUser: [plankhana_houses_houseuser_insert_input!]!
         }
     }
 }
+
+query getHouseDishesList ($houseId:Int!, $dayOfWeek:String!){
+    plankhana_users_userdishweekplan_aggregate(distinct_on: dish_id, where: {house_id: {_eq: $houseId}, users_planweekday: {day_of_week: {_eq: $dayOfWeek}}}) {
+        nodes {
+            dishes_dish {
+                dish_name
+                dish_image
+                id
+                users_userdishweekplans(where: {house_id: {_eq: $houseId}, users_planweekday: {day_of_week: {_eq: $dayOfWeek}}}) {
+                    users_userprofile {
+                        username
+                        id
+                        display_picture
+                    }
+                }
+            }
+        }
+    }
+}
+
+query getHouseUserDishesList ($houseId:Int!, $userId:Int!, ,$dayOfWeek:String!){
+    plankhana_users_userdishweekplan(where: {house_id: {_eq: $houseId}, user_id: {_eq: $userId}, users_planweekday: {day_of_week: {_eq: $dayOfWeek}}}) {
+        dish_id
+        dishes_dish {
+            dish_image
+            dish_name
+        }
+    }
+}
+
+query getDishCategories {
+    plankhana_dishes_category {
+        category
+        id
+    }
+}
+
+query GetDishes($categoryId:Int!) {
+    plankhana_dishes_dish(where: {category_id: {_eq: $categoryId}}) {
+        id
+        dish_name
+        dish_image
+    }
+}
+
+query GetDayOfWeek($dayOfWeek:String!) {
+    plankhana_users_planweekday(where: {day_of_week: {_eq: $dayOfWeek}}) {
+        id
+    }
+}
+
+
+mutation AddDeleteHouseUserDishes($insertDishes: [plankhana_users_userdishweekplan_insert_input!]!) {
+    insert_plankhana_users_userdishweekplan(objects: $insertDishes) {
+        returning {
+            dishes_dish {
+                dish_image
+                dish_name
+                id
+            }
+        }
+    }
+    delete_plankhana_users_userdishweekplan(where: {user_id: {_eq: 9}, dish_id: {_in: [2,1]}, house_id: {_eq: 3}, weekday_id: {_eq: 1}}) {
+        affected_rows
+    }
+}
