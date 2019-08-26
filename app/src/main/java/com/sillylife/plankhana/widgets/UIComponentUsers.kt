@@ -48,13 +48,13 @@ class UIComponentUsers : FrameLayout {
     }
 
     fun setUserImage(list: ArrayList<User>?) {
-        for (i in 0 until list?.size!!) {
+        list?.forEachIndexed { i, user ->
             val frameLayout = FrameLayout(context)
             frameLayout.layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
             frameLayout.setBackgroundResource(R.drawable.d_circle_white)
             val imageView = AppCompatImageView(context)
-            imageView.layoutParams = LinearLayout.LayoutParams(CommonUtil.dpToPx(20),CommonUtil.dpToPx(20))
-            ImageManager.loadImageCircular(imageView, list[i].imageUrl)
+            imageView.layoutParams = LinearLayout.LayoutParams(CommonUtil.dpToPx(20), CommonUtil.dpToPx(20))
+            ImageManager.loadImageCircular(imageView, user.imageUrl)
 
             frameLayout.addView(imageView)
             val p = context.resources.getDimensionPixelSize(R.dimen.dp_1_5)

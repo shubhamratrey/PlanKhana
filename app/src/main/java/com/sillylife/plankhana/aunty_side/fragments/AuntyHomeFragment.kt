@@ -25,6 +25,7 @@ import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.utils.DateUtil
 import com.sillylife.plankhana.views.BaseFragment
+import com.sillylife.plankhana.views.adapter.HouseDishesAdapter
 import com.sillylife.plankhana.views.adapter.UserListAdapter
 import kotlinx.android.synthetic.main.bs_user_list.view.*
 import kotlinx.android.synthetic.main.fragment_aunty_home.*
@@ -50,15 +51,16 @@ class AuntyHomeFragment : BaseFragment() {
         houseId = SharedPreferenceManager.getHouseId()!!
 
         setHouseResidents()
+        getHouseDishes(WeekDay.MONDAY)
         nextBtn.setOnClickListener {
             showUserList(userList)
-//            getHouseDishes(WeekDay.MONDAY)
         }
 
         DateUtil.today()
     }
 
     private fun getHouseDishes(weekDay: WeekDay) {
+        progress?.visibility = View.VISIBLE
         val list: ArrayList<Dish> = ArrayList()
         val query = GetHouseDishesListQuery.builder().houseId(houseId).dayOfWeek(weekDay.day).build()
         ApolloService.buildApollo().query(query)
@@ -81,10 +83,22 @@ class AuntyHomeFragment : BaseFragment() {
                             list.add(Dish(dishes.dishes_dish().id(), dishes.dishes_dish().dish_name(), dishes.dishes_dish().dish_image(), userList))
                         }
                         activity?.runOnUiThread {
-                            list.size
+                            setAdapter(list)
                         }
                     }
                 })
+    }
+
+    fun setAdapter(list: ArrayList<Dish>?) {
+        if (list != null) {
+            val adapter = HouseDishesAdapter(context!!, list) { any, pos ->
+
+            }
+            rcv?.layoutManager = HouseDishesAdapter.WrapContentGridLayoutManager(context!!, 3)
+            rcv?.addItemDecoration(HouseDishesAdapter.GridItemDecoration(context?.resources?.getDimensionPixelSize(R.dimen.dp_15)!!, 3))
+            progress?.visibility = View.GONE
+            rcv?.adapter = adapter
+        }
     }
 
     private fun setHouseResidents() {
