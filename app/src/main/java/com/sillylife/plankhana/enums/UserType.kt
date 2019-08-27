@@ -1,7 +1,8 @@
 package com.sillylife.plankhana.enums
 
 enum class UserType constructor(val type: String) {
-    RESIDENT("resident");
+    RESIDENT("resident"),
+    COOK("cook");
 
     companion object {
         fun getByType(type: String): UserType {

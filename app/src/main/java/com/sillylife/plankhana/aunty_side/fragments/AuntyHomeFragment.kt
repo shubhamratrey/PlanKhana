@@ -26,6 +26,8 @@ import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.views.BaseFragment
 import com.sillylife.plankhana.views.adapter.HouseDishesAdapter
 import com.sillylife.plankhana.views.adapter.UserListAdapter
+import com.sillylife.plankhana.views.adapter.item_decorator.GridItemDecoration
+import com.sillylife.plankhana.views.adapter.item_decorator.WrapContentGridLayoutManager
 import kotlinx.android.synthetic.main.bs_user_list.view.*
 import kotlinx.android.synthetic.main.fragment_aunty_home.*
 import org.jetbrains.annotations.NotNull
@@ -88,11 +90,11 @@ class AuntyHomeFragment : BaseFragment() {
 
     fun setAdapter(list: ArrayList<Dish>?) {
         if (list != null) {
-            val adapter = HouseDishesAdapter(context!!, list) { any, pos ->
+            val adapter = HouseDishesAdapter(context!!, UserType.COOK, list) { any, pos ->
 
             }
-            rcv?.layoutManager = HouseDishesAdapter.WrapContentGridLayoutManager(context!!, 3)
-            rcv?.addItemDecoration(HouseDishesAdapter.GridItemDecoration(context?.resources?.getDimensionPixelSize(R.dimen.dp_15)!!, 3))
+            rcv?.layoutManager = WrapContentGridLayoutManager(context!!, 3)
+            rcv?.addItemDecoration(GridItemDecoration(context?.resources?.getDimensionPixelSize(R.dimen.dp_15)!!, 3))
             progress?.visibility = View.GONE
             rcv?.adapter = adapter
         }

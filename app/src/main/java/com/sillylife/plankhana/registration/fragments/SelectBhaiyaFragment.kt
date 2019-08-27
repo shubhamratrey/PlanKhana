@@ -35,6 +35,8 @@ import com.sillylife.plankhana.utils.DexterUtil
 import com.sillylife.plankhana.utils.MapObjects
 import com.sillylife.plankhana.views.BaseFragment
 import com.sillylife.plankhana.views.adapter.SelectBhaiyaAdapter
+import com.sillylife.plankhana.views.adapter.item_decorator.GridItemDecoration
+import com.sillylife.plankhana.views.adapter.item_decorator.WrapContentGridLayoutManager
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.bs_dialog_add_user.view.*
@@ -111,9 +113,9 @@ class SelectBhaiyaFragment : BaseFragment() {
                 }
             }
             if (rcv.itemDecorationCount == 0) {
-                rcv.addItemDecoration(SelectBhaiyaAdapter.GridItemDecoration(context?.resources?.getDimensionPixelSize(R.dimen.dp_8)!!, 3))
+                rcv.addItemDecoration(GridItemDecoration(context?.resources?.getDimensionPixelSize(R.dimen.dp_8)!!, 3))
             }
-            rcv.layoutManager = SelectBhaiyaAdapter.WrapContentGridLayoutManager(context!!, 3)
+            rcv.layoutManager = WrapContentGridLayoutManager(context!!, 3)
             rcv.adapter = adapter
             progress?.visibility = View.GONE
         }

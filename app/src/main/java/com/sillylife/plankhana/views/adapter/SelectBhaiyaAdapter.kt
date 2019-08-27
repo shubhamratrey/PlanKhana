@@ -1,12 +1,10 @@
 package com.sillylife.plankhana.views.adapter
 
 import android.content.Context
-import android.graphics.Rect
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.models.User
@@ -106,57 +104,4 @@ class SelectBhaiyaAdapter(val context: Context, list: ArrayList<User>, val liste
 
     class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer
 
-    class GridItemDecoration(gridSpacingPx: Int, gridSize: Int) : RecyclerView.ItemDecoration() {
-        private var mSizeGridSpacingPx: Int = gridSpacingPx
-        private var mGridSize: Int = gridSize
-
-        private var mNeedLeftSpacing = false
-
-        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-            val frameWidth = ((parent.width - mSizeGridSpacingPx.toFloat() * (mGridSize - 1)) / mGridSize).toInt()
-            val padding = parent.width / mGridSize - frameWidth
-            val itemPosition = (view.layoutParams as RecyclerView.LayoutParams).viewAdapterPosition
-            if (itemPosition < mGridSize) {
-                outRect.top = 0
-            } else {
-                outRect.top = mSizeGridSpacingPx / 2
-            }
-            if (itemPosition % mGridSize == 0) {
-                outRect.left = 0
-                outRect.right = padding
-                mNeedLeftSpacing = true
-            } else if ((itemPosition + 1) % mGridSize == 0) {
-                mNeedLeftSpacing = false
-                outRect.right = 0
-                outRect.left = padding
-            } else if (mNeedLeftSpacing) {
-                mNeedLeftSpacing = false
-                outRect.left = mSizeGridSpacingPx - padding
-                if ((itemPosition + 2) % mGridSize == 0) {
-                    outRect.right = mSizeGridSpacingPx - padding
-                } else {
-                    outRect.right = mSizeGridSpacingPx / 2
-                }
-            } else if ((itemPosition + 2) % mGridSize == 0) {
-                mNeedLeftSpacing = false
-                outRect.left = mSizeGridSpacingPx / 2
-                outRect.right = mSizeGridSpacingPx - padding
-            } else {
-                mNeedLeftSpacing = false
-                outRect.left = mSizeGridSpacingPx / 2
-                outRect.right = mSizeGridSpacingPx / 2
-            }
-            outRect.bottom = 0
-        }
-    }
-
-    class WrapContentGridLayoutManager(mContext: Context, spanCount: Int) : GridLayoutManager(mContext, spanCount) {
-        override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State) {
-            try {
-                super.onLayoutChildren(recycler, state)
-            } catch (e: IndexOutOfBoundsException) {
-                e.printStackTrace()
-            }
-        }
-    }
 }
