@@ -142,6 +142,8 @@ class FindOrRegisterFragment : BaseFragment() {
 
             override fun onResponse(@NotNull response: Response<AddHouseKeyMutation.Data>) {
                 if (isAdded) {
+                    SharedPreferenceManager.setHouseId(response.data()?.insert_plankhana_houses_house()?.returning()!![0]?.id()!!)
+                    SharedPreferenceManager.setUserRegistrationRequired(true)
                     replaceFragment(AddBhaiyaFragment.newInstance(), AddBhaiyaFragment.TAG)
                 }
             }

@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.sillylife.plankhana.R
+import com.sillylife.plankhana.enums.UserType
+import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.views.activities.AuntyActivity
 import com.sillylife.plankhana.services.AppDisposable
 import kotlinx.android.synthetic.main.fragment_select_role.*
@@ -41,6 +43,7 @@ class SelectRoleFragment : BaseFragment() {
         nextBtn.text = getString(R.string.proceed)
         nextBtn.setOnClickListener {
             if (cooking.isSelected) {
+                SharedPreferenceManager.setUserType(UserType.COOK)
                 val intent = Intent(activity, AuntyActivity::class.java)
                 startActivity(intent)
                 activity?.finish()

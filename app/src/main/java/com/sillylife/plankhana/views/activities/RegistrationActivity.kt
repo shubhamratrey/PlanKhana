@@ -4,11 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.sillylife.plankhana.R
+import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.views.fragments.AddBhaiyaFragment
 import com.sillylife.plankhana.views.fragments.FindOrRegisterFragment
 import com.sillylife.plankhana.views.fragments.SelectBhaiyaFragment
 import com.sillylife.plankhana.utils.FragmentHelper
+import com.sillylife.plankhana.views.fragments.SelectRoleFragment
 
 
 class RegistrationActivity : BaseActivity() {
@@ -17,16 +19,14 @@ class RegistrationActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
 
-        FragmentHelper.replace(R.id.container, supportFragmentManager, FindOrRegisterFragment.newInstance(), FindOrRegisterFragment.TAG)
-
-        val imageUrl = "https://media-doselect.s3.amazonaws.com/avatar_image/1V4XB5PzwqAqJV2aoKw3QnVyM/download.png"
-
-        val list: ArrayList<User> = ArrayList()
-        list.add(User(0, "SHubh", imageUrl))
-        list.add(User(0, "SHubh", imageUrl))
-        list.add(User(0, "SHubh", imageUrl))
-        list.add(User(0, "SHubh", imageUrl))
-        //userImages.setUserImage(list)
+        val spm = SharedPreferenceManager
+        if (spm.getHouseId()!! == -1) {
+            replaceFragment(FindOrRegisterFragment.newInstance(), FindOrRegisterFragment.TAG)
+        } else if (spm.isUserRegistrationRequired()!!){
+            replaceFragment(AddBhaiyaFragment.newInstance(), AddBhaiyaFragment.TAG)
+        } else if (spm.getUserType() == null){
+            replaceFragment(SelectRoleFragment.newInstance(), SelectRoleFragment.TAG)
+        }
     }
 
     fun addFragment(fragment: Fragment, tag: String) {

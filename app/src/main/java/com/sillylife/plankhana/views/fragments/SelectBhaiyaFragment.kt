@@ -71,6 +71,7 @@ class SelectBhaiyaFragment : BaseFragment() {
 
         nextBtn.text = getString(R.string.string_continue)
         nextBtn.setOnClickListener {
+            SharedPreferenceManager.setUserType(UserType.RESIDENT)
             val intent = Intent(activity, BhaiyaActivity::class.java)
             startActivity(intent)
             activity?.finish()

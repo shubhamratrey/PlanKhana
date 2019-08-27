@@ -3,8 +3,8 @@ package com.sillylife.plankhana.views.activities
 import android.content.Intent
 import android.os.Bundle
 import com.sillylife.plankhana.R
+import com.sillylife.plankhana.enums.UserType
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
-
 
 class SplashActivity : BaseActivity() {
 
@@ -15,18 +15,23 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun redirect() {
-        startActivity(getRedirectIntent())
-        finish()
+        val intent = getRedirectIntent()
+        if (intent != null) {
+            startActivity(intent)
+            finish()
+        }
     }
 
-    private fun getRedirectIntent(): Intent {
+    private fun getRedirectIntent(): Intent? {
         val spm = SharedPreferenceManager
-        if (spm.getHouseId()!! == -1) {
-            return Intent(this, RegistrationActivity::class.java)
-        } else if (spm.getUser() != null) {
-            return Intent(this, BhaiyaActivity::class.java)
+        return if (spm.getHouseId()!! == -1 || spm.isUserRegistrationRequired()!! || spm.getUserType() == null) {
+            Intent(this, RegistrationActivity::class.java)
+        } else if (spm.getUserType() == UserType.RESIDENT) {
+            Intent(this, BhaiyaActivity::class.java)
+        } else if (spm.getUserType() == UserType.COOK) {
+            Intent(this, AuntyActivity::class.java)
         } else {
-            return Intent(this, AuntyActivity::class.java)
+            null
         }
     }
 }

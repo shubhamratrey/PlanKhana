@@ -63,6 +63,7 @@ class AddBhaiyaFragment : BaseFragment() {
                     addUsers(adapter?.getUserList()!!)
                     nextBtnProgress?.visibility = View.VISIBLE
                     nextBtn?.text = ""
+                    SharedPreferenceManager.setUserRegistrationRequired(false)
                 } else {
                     showToast("Please add user.", Toast.LENGTH_SHORT)
                 }
