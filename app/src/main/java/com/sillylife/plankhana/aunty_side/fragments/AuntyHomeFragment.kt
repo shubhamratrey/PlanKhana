@@ -129,7 +129,6 @@ class AuntyHomeFragment : BaseFragment() {
                         if (!isAdded) {
                             return
                         }
-                        response.data()?.plankhana_houses_houseuser()?.toMutableList()
                         for (user in response.data()?.plankhana_houses_houseuser()?.toMutableList()!!) {
                             userList.add(User(user.users_userprofile().id(), user.users_userprofile().username(), user.users_userprofile().display_picture(), user.users_userprofile().phone()))
                         }
