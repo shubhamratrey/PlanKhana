@@ -2,7 +2,7 @@ package com.sillylife.plankhana.views.viewmodelfactory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.sillylife.plankhana.views.BaseFragment
+import com.sillylife.plankhana.views.fragments.BaseFragment
 import com.sillylife.plankhana.views.viewmodel.FindOrRegisterViewModel
 
 class FragmentViewModelFactory(private val fragment: BaseFragment) : ViewModelProvider.Factory {

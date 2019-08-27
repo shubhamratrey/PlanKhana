@@ -1,4 +1,4 @@
-package com.sillylife.plankhana.views
+package com.sillylife.plankhana.views.fragments
 
 import android.content.Context
 import android.content.Intent
@@ -8,9 +8,9 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.sillylife.plankhana.R
-import com.sillylife.plankhana.aunty_side.activities.AuntyActivity
-import com.sillylife.plankhana.bhaiya_side.activities.BhaiyaActivity
-import com.sillylife.plankhana.registration.activities.RegistrationActivity
+import com.sillylife.plankhana.views.activities.AuntyActivity
+import com.sillylife.plankhana.views.activities.BhaiyaActivity
+import com.sillylife.plankhana.views.activities.RegistrationActivity
 import com.sillylife.plankhana.widgets.CustomBottomSheetDialog
 
 open class BaseFragment : Fragment() {

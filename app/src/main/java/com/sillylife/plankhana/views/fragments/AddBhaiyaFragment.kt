@@ -1,4 +1,4 @@
-package com.sillylife.plankhana.registration.fragments
+package com.sillylife.plankhana.views.fragments
 
 import android.Manifest
 import android.app.Activity
@@ -23,12 +23,11 @@ import com.sillylife.plankhana.constants.Constants
 import com.sillylife.plankhana.managers.UploadUsersTask
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.User
-import com.sillylife.plankhana.registration.activities.RegistrationActivity
+import com.sillylife.plankhana.views.activities.RegistrationActivity
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.utils.CommonUtil
 import com.sillylife.plankhana.utils.DexterUtil
-import com.sillylife.plankhana.views.BaseFragment
 import com.sillylife.plankhana.views.adapter.AddUsersAdapter
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView

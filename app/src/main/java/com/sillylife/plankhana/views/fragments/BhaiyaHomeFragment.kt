@@ -1,4 +1,4 @@
-package com.sillylife.plankhana.bhaiya_side.fragments
+package com.sillylife.plankhana.views.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -9,18 +9,14 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
-import com.sillylife.plankhana.GetHouseDishesListQuery
 import com.sillylife.plankhana.GetHouseUserDishesListQuery
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.enums.UserType
-import com.sillylife.plankhana.enums.WeekType
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.Dish
 import com.sillylife.plankhana.models.User
-import com.sillylife.plankhana.registration.fragments.SelectBhaiyaFragment
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
-import com.sillylife.plankhana.views.BaseFragment
 import com.sillylife.plankhana.views.adapter.HouseDishesAdapter
 import com.sillylife.plankhana.views.adapter.item_decorator.GridItemDecoration
 import com.sillylife.plankhana.views.adapter.item_decorator.WrapContentGridLayoutManager

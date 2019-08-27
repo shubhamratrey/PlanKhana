@@ -1,7 +1,7 @@
 package com.sillylife.plankhana.views.viewmodel
 
 import com.sillylife.plankhana.models.responses.FindOrRegisterResponse
-import com.sillylife.plankhana.views.BaseFragment
+import com.sillylife.plankhana.views.fragments.BaseFragment
 import com.sillylife.plankhana.views.module.BaseModule
 import com.sillylife.plankhana.views.module.FindOrRegisterModule
 

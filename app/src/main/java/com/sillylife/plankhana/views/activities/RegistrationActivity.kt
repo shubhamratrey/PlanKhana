@@ -1,14 +1,13 @@
-package com.sillylife.plankhana.registration.activities
+package com.sillylife.plankhana.views.activities
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.models.User
-import com.sillylife.plankhana.views.BaseActivity
-import com.sillylife.plankhana.registration.fragments.AddBhaiyaFragment
-import com.sillylife.plankhana.registration.fragments.FindOrRegisterFragment
-import com.sillylife.plankhana.registration.fragments.SelectBhaiyaFragment
+import com.sillylife.plankhana.views.fragments.AddBhaiyaFragment
+import com.sillylife.plankhana.views.fragments.FindOrRegisterFragment
+import com.sillylife.plankhana.views.fragments.SelectBhaiyaFragment
 import com.sillylife.plankhana.utils.FragmentHelper
 
 

@@ -1,4 +1,4 @@
-package com.sillylife.plankhana.views
+package com.sillylife.plankhana.views.activities
 
 import android.app.PendingIntent
 import android.app.SearchableInfo
@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.text.TextUtils
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.sillylife.plankhana.R

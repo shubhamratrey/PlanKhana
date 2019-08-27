@@ -1,4 +1,4 @@
-package com.sillylife.plankhana.aunty_side.fragments
+package com.sillylife.plankhana.views.fragments
 
 import android.Manifest
 import android.content.ActivityNotFoundException
@@ -29,10 +29,8 @@ import com.sillylife.plankhana.enums.UserType
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.Dish
 import com.sillylife.plankhana.models.User
-import com.sillylife.plankhana.registration.fragments.SelectBhaiyaFragment
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
-import com.sillylife.plankhana.views.BaseFragment
 import com.sillylife.plankhana.views.adapter.HouseDishesAdapter
 import com.sillylife.plankhana.views.adapter.UserListAdapter
 import com.sillylife.plankhana.views.adapter.item_decorator.GridItemDecoration

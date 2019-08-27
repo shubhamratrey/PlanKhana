@@ -1,4 +1,4 @@
-package com.sillylife.plankhana.registration.fragments
+package com.sillylife.plankhana.views.fragments
 
 import android.Manifest
 import android.app.Activity
@@ -20,21 +20,20 @@ import com.sillylife.plankhana.AddResidentListMutation
 import com.sillylife.plankhana.AddResidentMutation
 import com.sillylife.plankhana.GetHouseResidentListQuery
 import com.sillylife.plankhana.R
-import com.sillylife.plankhana.bhaiya_side.activities.BhaiyaActivity
+import com.sillylife.plankhana.views.activities.BhaiyaActivity
 import com.sillylife.plankhana.constants.Constants
 import com.sillylife.plankhana.enums.ImageType
 import com.sillylife.plankhana.enums.UserType
 import com.sillylife.plankhana.managers.ImageUploadTask
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.User
-import com.sillylife.plankhana.registration.activities.RegistrationActivity
+import com.sillylife.plankhana.views.activities.RegistrationActivity
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.type.Plankhana_houses_houseuser_insert_input
 import com.sillylife.plankhana.utils.CommonUtil
 import com.sillylife.plankhana.utils.DexterUtil
 import com.sillylife.plankhana.utils.MapObjects
-import com.sillylife.plankhana.views.BaseFragment
 import com.sillylife.plankhana.views.adapter.SelectBhaiyaAdapter
 import com.sillylife.plankhana.views.adapter.item_decorator.GridItemDecoration
 import com.sillylife.plankhana.views.adapter.item_decorator.WrapContentGridLayoutManager

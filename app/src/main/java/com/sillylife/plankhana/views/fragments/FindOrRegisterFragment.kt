@@ -1,4 +1,4 @@
-package com.sillylife.plankhana.registration.fragments
+package com.sillylife.plankhana.views.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -15,7 +15,6 @@ import com.sillylife.plankhana.R
 import com.sillylife.plankhana.SearchHouseKeyQuery
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.services.ApolloService
-import com.sillylife.plankhana.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_find_or_register.*
 import org.jetbrains.annotations.NotNull
 

@@ -1,4 +1,4 @@
-package com.sillylife.plankhana.registration.fragments
+package com.sillylife.plankhana.views.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,9 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.sillylife.plankhana.R
-import com.sillylife.plankhana.aunty_side.activities.AuntyActivity
+import com.sillylife.plankhana.views.activities.AuntyActivity
 import com.sillylife.plankhana.services.AppDisposable
-import com.sillylife.plankhana.views.BaseFragment
 import kotlinx.android.synthetic.main.fragment_select_role.*
 import kotlinx.android.synthetic.main.layout_bottom_button.*
 
