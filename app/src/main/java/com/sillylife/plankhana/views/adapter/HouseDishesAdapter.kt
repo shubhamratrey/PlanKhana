@@ -32,7 +32,7 @@ class HouseDishesAdapter(val context: Context,
         ImageManager.loadImage(holder.dishImageIv, dish.dishImage)
         holder.dishNameTv.text = dish.dishName
         if (dish.userList!= null && dish.userList?.size!!> 0 ){
-            holder.bhaiyaPhotoIv.setUserImage(dish.userList)
+            holder.bhaiyaPhotoIv.setUsers(dish.userList)
             holder.bhaiyaPhotoIv.visibility = View.VISIBLE
         } else {
             holder.bhaiyaPhotoIv.visibility = View.GONE

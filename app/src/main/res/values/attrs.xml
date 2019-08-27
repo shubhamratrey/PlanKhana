@@ -17,6 +17,8 @@
 
     <declare-styleable name="UIComponentUsers" />
 
+    <declare-styleable name="UIComponentFans" />
+
     <declare-styleable name="UIComponentAddPhoto" />
 
     <declare-styleable name="CardView">

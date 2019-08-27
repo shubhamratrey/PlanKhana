@@ -16,14 +16,13 @@ import com.sillylife.plankhana.GetHouseDishesListQuery
 import com.sillylife.plankhana.GetHouseResidentListQuery
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.enums.UserType
-import com.sillylife.plankhana.enums.WeekDay
+import com.sillylife.plankhana.enums.WeekType
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.Dish
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.registration.fragments.SelectBhaiyaFragment
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
-import com.sillylife.plankhana.utils.DateUtil
 import com.sillylife.plankhana.views.BaseFragment
 import com.sillylife.plankhana.views.adapter.HouseDishesAdapter
 import com.sillylife.plankhana.views.adapter.UserListAdapter
@@ -51,15 +50,13 @@ class AuntyHomeFragment : BaseFragment() {
         houseId = SharedPreferenceManager.getHouseId()!!
 
         setHouseResidents()
-        getHouseDishes(WeekDay.MONDAY)
+        getHouseDishes(WeekType.YESTERDAY)
         nextBtn.setOnClickListener {
             showUserList(userList)
         }
-
-        DateUtil.today()
     }
 
-    private fun getHouseDishes(weekDay: WeekDay) {
+    private fun getHouseDishes(weekDay: WeekType) {
         progress?.visibility = View.VISIBLE
         val list: ArrayList<Dish> = ArrayList()
         val query = GetHouseDishesListQuery.builder().houseId(houseId).dayOfWeek(weekDay.day).build()

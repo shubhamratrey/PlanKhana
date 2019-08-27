@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lrLyt"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/container"
+        android:layout_marginRight="7dp"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/fanOneFl"
+            android:layout_width="wrap_content"
+            android:background="@drawable/d_circle_white"
+            android:padding="1.5dp"
+            android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/fanOneImageIv"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:srcCompat="@drawable/ic_user_placeholder" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fanTwoFl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-5dp"
+            android:background="@drawable/d_circle_white"
+            android:padding="1.5dp"
+            android:layout_marginLeft="-5dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/fanTwoImageIv"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:srcCompat="@drawable/ic_user_placeholder" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fanThirdFl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="-5dp"
+            android:background="@drawable/d_circle_white"
+            android:padding="1.5dp"
+            android:layout_marginLeft="-5dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/fanThridImageIv"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:srcCompat="@drawable/ic_user_placeholder" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/fansCountTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:fontFamily="@font/roboto_regular"
+        android:text="+1"
+        android:textColor="@color/textSubHeading"
+        android:textSize="12sp" />
+
+</LinearLayout>

@@ -38,7 +38,7 @@
         android:textColor="@color/textHeading"
         tools:text="@string/add_new" />
 
-    <com.sillylife.plankhana.widgets.UIComponentUsers
+    <com.sillylife.plankhana.widgets.UIComponentFans
         android:id="@+id/bhaiyaPhotoIv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
