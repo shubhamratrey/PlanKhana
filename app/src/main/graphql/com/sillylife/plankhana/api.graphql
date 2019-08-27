@@ -63,6 +63,7 @@ query getHouseUserDishesList ($houseId:Int!, $userId:Int!, ,$dayOfWeek:String!){
         dishes_dish {
             dish_image
             dish_name
+            id
         }
     }
 }

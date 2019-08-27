@@ -52,16 +52,20 @@ class AuntyHomeFragment : BaseFragment() {
         houseId = SharedPreferenceManager.getHouseId()!!
 
         setHouseResidents()
-        getHouseDishes(WeekType.YESTERDAY)
+        getHouseDishes()
         nextBtn.setOnClickListener {
             showUserList(userList)
         }
     }
 
-    private fun getHouseDishes(weekDay: WeekType) {
+    private fun getHouseDishes() {
         progress?.visibility = View.VISIBLE
         val list: ArrayList<Dish> = ArrayList()
-        val query = GetHouseDishesListQuery.builder().houseId(houseId).dayOfWeek(weekDay.day).build()
+        val query = GetHouseDishesListQuery.builder()
+//                .dayOfWeek(WeekType.TODAY.day)
+                .dayOfWeek("monday")
+                .houseId(houseId)
+                .build()
         ApolloService.buildApollo().query(query)
                 .responseFetcher(ApolloResponseFetchers.NETWORK_ONLY)
                 .enqueue(object : ApolloCall.Callback<GetHouseDishesListQuery.Data>() {
@@ -101,7 +105,10 @@ class AuntyHomeFragment : BaseFragment() {
     }
 
     private fun setHouseResidents() {
-        val query = GetHouseResidentListQuery.builder().houseId(houseId).userType(UserType.RESIDENT.type).build()
+        val query = GetHouseResidentListQuery.builder()
+                .houseId(houseId)
+                .userType(UserType.RESIDENT.type)
+                .build()
         ApolloService.buildApollo().query(query)
                 .responseFetcher(ApolloResponseFetchers.NETWORK_ONLY)
                 .enqueue(object : ApolloCall.Callback<GetHouseResidentListQuery.Data>() {

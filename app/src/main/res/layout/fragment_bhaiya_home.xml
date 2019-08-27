@@ -72,19 +72,33 @@
         android:text="@string/you_ll_get_to_eat_these_dishes_tonight"
         android:textColor="@color/textSubHeading" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcv"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:overScrollMode="never"
-        android:paddingStart="24dp"
-        android:paddingLeft="24dp"
-        android:paddingEnd="@dimen/dp_20"
-        android:paddingRight="@dimen/dp_20"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="3"
-        tools:listitem="@layout/item_home_dish" />
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:paddingStart="24dp"
+            android:paddingLeft="24dp"
+            android:paddingEnd="@dimen/dp_20"
+            android:paddingRight="@dimen/dp_20"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="3"
+            tools:listitem="@layout/item_home_dish" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:theme="@style/ProgressTheme"
+            android:visibility="gone" />
+
+    </FrameLayout>
 
     <include layout="@layout/layout_bottom_button" />
 

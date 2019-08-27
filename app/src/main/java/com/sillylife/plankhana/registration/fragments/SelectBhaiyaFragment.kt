@@ -20,6 +20,7 @@ import com.sillylife.plankhana.AddResidentListMutation
 import com.sillylife.plankhana.AddResidentMutation
 import com.sillylife.plankhana.GetHouseResidentListQuery
 import com.sillylife.plankhana.R
+import com.sillylife.plankhana.bhaiya_side.activities.BhaiyaActivity
 import com.sillylife.plankhana.constants.Constants
 import com.sillylife.plankhana.enums.ImageType
 import com.sillylife.plankhana.enums.UserType
@@ -71,9 +72,9 @@ class SelectBhaiyaFragment : BaseFragment() {
 
         nextBtn.text = getString(R.string.string_continue)
         nextBtn.setOnClickListener {
-            //            val intent = Intent(activity, BhaiyaActivity::class.java)
-//            startActivity(intent)
-//            activity?.finish()
+            val intent = Intent(activity, BhaiyaActivity::class.java)
+            startActivity(intent)
+            activity?.finish()
         }
     }
 
@@ -107,6 +108,7 @@ class SelectBhaiyaFragment : BaseFragment() {
         if (rcv.adapter == null) {
             adapter = SelectBhaiyaAdapter(activity!!, list) { any, i ->
                 if (any is User) {
+                    SharedPreferenceManager.setUser(any)
                     adapter?.setId(any.id!!)
                 } else if (any is Int && any == SelectBhaiyaAdapter.ADD_BHAIYA_BTN) {
                     showAddBhaiyaPopup()
