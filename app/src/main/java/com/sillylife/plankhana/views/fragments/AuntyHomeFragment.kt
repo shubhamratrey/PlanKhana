@@ -105,7 +105,7 @@ class AuntyHomeFragment : BaseFragment() {
 
             }
             rcv?.layoutManager = WrapContentGridLayoutManager(context!!, 3)
-            rcv?.addItemDecoration(GridItemDecoration(context?.resources?.getDimensionPixelSize(R.dimen.dp_15)!!, 3))
+            rcv?.addItemDecoration(GridItemDecoration(context?.resources?.getDimensionPixelSize(R.dimen.dp_8)!!, 3))
             progress?.visibility = View.GONE
             rcv?.adapter = adapter
         }
