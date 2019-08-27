@@ -1,0 +1,40 @@
+mutation AddDeleteHouseUserDishes($insertDishes: [plankhana_users_userdishweekplan_insert_input!]!) {
+    insert_plankhana_users_userdishweekplan(objects: $insertDishes) {
+        returning {
+            dishes_dish {
+                dish_image
+                dish_name
+                id
+            }
+        }
+    }
+    delete_plankhana_users_userdishweekplan(where: {user_id: {_eq: 9}, dish_id: {_in: [2,1]}, house_id: {_eq: 3}, weekday_id: {_eq: 1}}) {
+        affected_rows
+    }
+}
+
+
+mutation addResident($houseId:Int!, $residentPicture:String!, $residentName:String!, $residentPhoneNumber:String!, $userType:String!){
+    insert_plankhana_houses_houseuser(objects: {users_userprofile: {data: {display_picture: $residentPicture, username: $residentName, user_type: $userType, phone: $residentPhoneNumber}}, house_id: $houseId}) {
+        returning {
+            id
+        }
+    }
+}
+
+mutation addResidentList($houseUser: [plankhana_houses_houseuser_insert_input!]!) {
+    insert_plankhana_houses_houseuser(objects: $houseUser) {
+        returning {
+            id
+        }
+    }
+}
+
+
+mutation addHouseKey($key:String!) {
+    insert_plankhana_houses_house(objects: {house_key: $key}) {
+        returning {
+            id
+        }
+    }
+}

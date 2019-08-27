@@ -4,14 +4,6 @@ query searchHouseKey($key:String!){
     }
 }
 
-mutation addHouseKey($key:String!) {
-    insert_plankhana_houses_house(objects: {house_key: $key}) {
-        returning {
-            id
-        }
-    }
-}
-
 query getHouseResidentList($houseId:Int!, $userType:String!) {
     plankhana_houses_houseuser(where: {house_id: {_eq: $houseId}, users_userprofile: {user_type: {_eq: $userType}}}) {
         users_userprofile {
@@ -33,21 +25,6 @@ query getUserList($houseId:Int!, $userType:String!) {
     }
 }
 
-mutation addResident($houseId:Int!, $residentPicture:String!, $residentName:String!, $residentPhoneNumber:String!, $userType:String!){
-    insert_plankhana_houses_houseuser(objects: {users_userprofile: {data: {display_picture: $residentPicture, username: $residentName, user_type: $userType, phone: $residentPhoneNumber}}, house_id: $houseId}) {
-        returning {
-            id
-        }
-    }
-}
-
-mutation addResidentList($houseUser: [plankhana_houses_houseuser_insert_input!]!) {
-    insert_plankhana_houses_houseuser(objects: $houseUser) {
-        returning {
-            id
-        }
-    }
-}
 
 query getHouseDishesList ($houseId:Int!, $dayOfWeek:String!){
     plankhana_users_userdishweekplan_aggregate(distinct_on: dish_id, where: {house_id: {_eq: $houseId}, users_planweekday: {day_of_week: {_eq: $dayOfWeek}}}) {
@@ -97,21 +74,5 @@ query GetDishes($categoryId:Int!) {
 query GetDayOfWeek($dayOfWeek:String!) {
     plankhana_users_planweekday(where: {day_of_week: {_eq: $dayOfWeek}}) {
         id
-    }
-}
-
-
-mutation AddDeleteHouseUserDishes($insertDishes: [plankhana_users_userdishweekplan_insert_input!]!) {
-    insert_plankhana_users_userdishweekplan(objects: $insertDishes) {
-        returning {
-            dishes_dish {
-                dish_image
-                dish_name
-                id
-            }
-        }
-    }
-    delete_plankhana_users_userdishweekplan(where: {user_id: {_eq: 9}, dish_id: {_in: [2,1]}, house_id: {_eq: 3}, weekday_id: {_eq: 1}}) {
-        affected_rows
     }
 }

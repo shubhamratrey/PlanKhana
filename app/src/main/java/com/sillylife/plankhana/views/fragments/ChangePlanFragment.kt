@@ -5,40 +5,37 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.sillylife.plankhana.GetHouseUserDishesListQuery
 import com.sillylife.plankhana.R
-import com.sillylife.plankhana.enums.UserType
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.Dish
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
-import com.sillylife.plankhana.views.adapter.HouseDishesAdapter
-import com.sillylife.plankhana.views.adapter.item_decorator.GridItemDecoration
-import com.sillylife.plankhana.views.adapter.item_decorator.WrapContentGridLayoutManager
-import kotlinx.android.synthetic.main.fragment_select_bhaiya.*
-
+import com.sillylife.plankhana.views.adapter.DishesAdapter
+import kotlinx.android.synthetic.main.fragment_change_plan.*
 import kotlinx.android.synthetic.main.layout_bottom_button.*
 import org.jetbrains.annotations.NotNull
 
 
-class BhaiyaHomeFragment : BaseFragment() {
+class ChangePlanFragment : BaseFragment() {
 
     companion object {
-        fun newInstance() = BhaiyaHomeFragment()
-        var TAG = BhaiyaHomeFragment::class.java.simpleName
+        fun newInstance() = ChangePlanFragment()
+        var TAG = ChangePlanFragment::class.java.simpleName
     }
 
     var appDisposable: AppDisposable = AppDisposable()
     private var houseId = -1
-    private var user:User? = null
+    private var user: User? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return LayoutInflater.from(context).inflate(R.layout.fragment_bhaiya_home, null, false)
+        return LayoutInflater.from(context).inflate(R.layout.fragment_change_plan, null, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,16 +44,19 @@ class BhaiyaHomeFragment : BaseFragment() {
         houseId = SharedPreferenceManager.getHouseId()!!
         user = SharedPreferenceManager.getUser()
         getDishes(user?.id!!)
-        nextBtn.text = getString(R.string.change_plan)
+        nextBtn.text = getString(R.string.string_continue)
 
         nextBtn.setOnClickListener {
-            addFragment(ChangePlanFragment.newInstance(), ChangePlanFragment.TAG)
+
         }
 
+        closeBtn.setOnClickListener {
+            fragmentManager?.popBackStack()
+        }
     }
 
-    private fun getDishes(userId:Int) {
-        progress?.visibility = View.VISIBLE
+    private fun getDishes(userId: Int) {
+//        progress?.visibility = View.VISIBLE
         val list: ArrayList<Dish> = ArrayList()
         val query = GetHouseUserDishesListQuery.builder()
 //                .dayOfWeek(WeekType.TODAY.day)
@@ -88,12 +88,11 @@ class BhaiyaHomeFragment : BaseFragment() {
 
     fun setAdapter(list: ArrayList<Dish>?) {
         if (list != null) {
-            val adapter = HouseDishesAdapter(context!!, UserType.RESIDENT, list) { any, pos ->
+            val adapter = DishesAdapter(context!!, list) { any, pos ->
 
             }
-            rcv?.layoutManager = WrapContentGridLayoutManager(context!!, 3)
-            rcv?.addItemDecoration(GridItemDecoration(context?.resources?.getDimensionPixelSize(R.dimen.dp_8)!!, 3))
-            progress?.visibility = View.GONE
+            rcv?.layoutManager = LinearLayoutManager(context!!)
+//            progress?.visibility = View.GONE
             rcv?.adapter = adapter
         }
     }
