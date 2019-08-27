@@ -4,6 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.sillylife.plankhana">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <dist:module dist:instant="true" />
+
     <application
         android:name=".PlanKhana"
         android:allowBackup="true"
@@ -13,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".bhaiya_side.activities.BhaiyaActivity"/>
+        <activity android:name=".bhaiya_side.activities.BhaiyaActivity" />
         <activity android:name=".aunty_side.activities.AuntyActivity" />
         <activity android:name=".registration.activities.RegistrationActivity">
             <intent-filter>
@@ -26,11 +33,5 @@
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <dist:module dist:instant="true" />
 
 </manifest>

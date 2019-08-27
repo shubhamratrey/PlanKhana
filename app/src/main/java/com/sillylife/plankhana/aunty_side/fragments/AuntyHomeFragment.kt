@@ -1,5 +1,9 @@
 package com.sillylife.plankhana.aunty_side.fragments
 
+import android.Manifest
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,11 +16,16 @@ import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.single.PermissionListener
 import com.sillylife.plankhana.GetHouseDishesListQuery
-import com.sillylife.plankhana.GetHouseResidentListQuery
+import com.sillylife.plankhana.GetUserListQuery
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.enums.UserType
-import com.sillylife.plankhana.enums.WeekType
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.Dish
 import com.sillylife.plankhana.models.User
@@ -105,24 +114,24 @@ class AuntyHomeFragment : BaseFragment() {
     }
 
     private fun setHouseResidents() {
-        val query = GetHouseResidentListQuery.builder()
+        val query = GetUserListQuery.builder()
                 .houseId(houseId)
                 .userType(UserType.RESIDENT.type)
                 .build()
         ApolloService.buildApollo().query(query)
                 .responseFetcher(ApolloResponseFetchers.NETWORK_ONLY)
-                .enqueue(object : ApolloCall.Callback<GetHouseResidentListQuery.Data>() {
+                .enqueue(object : ApolloCall.Callback<GetUserListQuery.Data>() {
                     override fun onFailure(error: ApolloException) {
                         Log.d(TAG, error.toString())
                     }
 
-                    override fun onResponse(@NotNull response: Response<GetHouseResidentListQuery.Data>) {
+                    override fun onResponse(@NotNull response: Response<GetUserListQuery.Data>) {
                         if (!isAdded) {
                             return
                         }
                         response.data()?.plankhana_houses_houseuser()?.toMutableList()
                         for (user in response.data()?.plankhana_houses_houseuser()?.toMutableList()!!) {
-                            userList.add(User(user.users_userprofile().id(), user.users_userprofile().username(), user.users_userprofile().display_picture()))
+                            userList.add(User(user.users_userprofile().id(), user.users_userprofile().username(), user.users_userprofile().display_picture(), user.users_userprofile().phone()))
                         }
                     }
                 })
@@ -133,6 +142,9 @@ class AuntyHomeFragment : BaseFragment() {
         val sheetView = layoutInflater.inflate(R.layout.bs_user_list, null)
 
         val adapter = UserListAdapter(context!!, users) {
+            if (it is User) {
+                callUs(it.phone!!)
+            }
             bottomSheet.dismiss()
         }
 
@@ -150,6 +162,32 @@ class AuntyHomeFragment : BaseFragment() {
             bottomSheet.dismiss()
         }
     }
+
+    private fun callUs(phoneNumber: String) {
+        Dexter.withActivity(activity).withPermission(Manifest.permission.CALL_PHONE)
+                .withListener(object : PermissionListener {
+                    override fun onPermissionGranted(response: PermissionGrantedResponse) {
+                        try {
+                            val callIntent = Intent(Intent.ACTION_CALL)
+                            callIntent.data = Uri.parse("tel:+$phoneNumber")
+                            startActivity(callIntent)
+                        } catch (activityException: ActivityNotFoundException) {
+                            activityException.printStackTrace()
+                        }
+
+                    }
+
+                    override fun onPermissionDenied(response: PermissionDeniedResponse) {
+                        showPermissionRequiredDialog(getString(R.string.call_permission_message))
+                    }
+
+                    override fun onPermissionRationaleShouldBeShown(
+                            permission: PermissionRequest, token: PermissionToken) {
+                        token.continuePermissionRequest()
+                    }
+                }).check()
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()

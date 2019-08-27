@@ -37,4 +37,5 @@
     <string name="login_now">Login Now</string>
     <string name="generate_now">Generate Now</string>
     <string name="please_enter_more_then">Please enter more then 3 letters</string>
+    <string name="call_permission_message">Please provide permission to call</string>
 </resources>
