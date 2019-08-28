@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.models.Dish
+import com.sillylife.plankhana.models.DishStatus
 import com.sillylife.plankhana.utils.ImageManager
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_add_bhaiya.*
@@ -65,6 +66,26 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
         val item = commonItemLists[holder.adapterPosition] as Dish
         ImageManager.loadImage(holder.dishPhotoIv, item.dishImage)
         holder.dishNameTv.text = item.dishName
+        setDishStatus(holder, item.dishStatus)
+    }
+
+    private fun setDishStatus(holder: ViewHolder, dishStatus: DishStatus?) {
+        holder.removeIv.visibility = View.GONE
+        holder.addIv.visibility = View.GONE
+        holder.addedIv.visibility = View.GONE
+        if (dishStatus != null) {
+            when {
+                dishStatus.isAdded -> {
+                    holder.removeIv.visibility = View.VISIBLE
+                }
+                dishStatus.toAdd -> {
+                    holder.addIv.visibility = View.VISIBLE
+                }
+                dishStatus.remove -> {
+                    holder.addedIv.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     fun setId(id: Int) {

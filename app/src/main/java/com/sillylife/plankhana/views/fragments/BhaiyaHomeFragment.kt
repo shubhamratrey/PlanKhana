@@ -14,6 +14,7 @@ import com.sillylife.plankhana.R
 import com.sillylife.plankhana.enums.UserType
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.Dish
+import com.sillylife.plankhana.models.DishStatus
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
@@ -77,7 +78,7 @@ class BhaiyaHomeFragment : BaseFragment() {
                             return
                         }
                         for (dishes in response.data()?.plankhana_users_userdishweekplan()?.toMutableList()!!) {
-                            list.add(Dish(dishes.dishes_dish().id(), dishes.dishes_dish().dish_name(), dishes.dishes_dish().dish_image()))
+                            list.add(Dish(dishes.dishes_dish().id(), dishes.dishes_dish().dish_name(), dishes.dishes_dish().dish_image(), DishStatus(isAdded = true)))
                         }
                         activity?.runOnUiThread {
                             setAdapter(list)

@@ -15,8 +15,8 @@
         <androidx.cardview.widget.CardView
             android:layout_width="@dimen/dp_50"
             android:layout_height="@dimen/dp_50"
-            app:cardElevation="0dp"
-            app:cardCornerRadius="@dimen/dp_2">
+            app:cardCornerRadius="@dimen/dp_2"
+            app:cardElevation="0dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/dishPhotoIv"
@@ -46,6 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:background="?selectableItemBackground"
             android:padding="@dimen/dp_10">
 
             <androidx.appcompat.widget.AppCompatImageView
