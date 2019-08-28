@@ -23,6 +23,7 @@ import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.utils.CommonUtil
 import com.sillylife.plankhana.views.adapter.DishesAdapter
 import com.sillylife.plankhana.views.adapter.item_decorator.DividerItemDecorator
+import com.sillylife.plankhana.views.adapter.item_decorator.ItemDecorator
 import kotlinx.android.synthetic.main.fragment_change_plan.*
 import kotlinx.android.synthetic.main.layout_bottom_button.*
 import org.jetbrains.annotations.NotNull
@@ -86,7 +87,7 @@ class ChangePlanFragment : BaseFragment() {
                             return
                         }
                         for (dishes in response.data()?.plankhana_users_userdishweekplan()?.toMutableList()!!) {
-                            list.add(Dish(dishes.dishes_dish().id(), dishes.dishes_dish().dish_name(), dishes.dishes_dish().dish_image(), DishStatus(isAdded = true)))
+                            list.add(Dish(dishes.dishes_dish().id(), dishes.dishes_dish().dish_name(), dishes.dishes_dish().dish_image(), DishStatus(added = true)))
                         }
                         activity?.runOnUiThread {
                             setAdapter(list)
@@ -102,12 +103,7 @@ class ChangePlanFragment : BaseFragment() {
             }
             rcv?.layoutManager = LinearLayoutManager(context!!)
             if (rcv?.itemDecorationCount == 0) {
-                rcv?.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context!!, R.drawable.d_line_separator),
-                        CommonUtil.dpToPx(40),
-                        CommonUtil.dpToPx(20),
-                        CommonUtil.dpToPx(20),
-                        CommonUtil.dpToPx(20),
-                        CommonUtil.dpToPx(20)))
+                rcv?.addItemDecoration(ItemDecorator(0, CommonUtil.dpToPx(20), 0, 0, 0))
             }
             progress?.visibility = View.GONE
             rcv?.adapter = adapter

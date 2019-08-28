@@ -10,7 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/dp_20"
+        android:paddingEnd="@dimen/dp_20"
+        android:paddingBottom="@dimen/dp_20">
 
         <androidx.cardview.widget.CardView
             android:layout_width="@dimen/dp_50"
@@ -43,6 +46,7 @@
             tools:text="Channel Name" />
 
         <FrameLayout
+            android:id="@+id/dishStatusFl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -76,5 +80,13 @@
         </FrameLayout>
 
     </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:layout_marginBottom="@dimen/dp_20"
+        app:srcCompat="@drawable/d_line_separator" />
 
 </LinearLayout>

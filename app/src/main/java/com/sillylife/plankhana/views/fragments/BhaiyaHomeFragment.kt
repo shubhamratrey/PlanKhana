@@ -78,7 +78,7 @@ class BhaiyaHomeFragment : BaseFragment() {
                             return
                         }
                         for (dishes in response.data()?.plankhana_users_userdishweekplan()?.toMutableList()!!) {
-                            list.add(Dish(dishes.dishes_dish().id(), dishes.dishes_dish().dish_name(), dishes.dishes_dish().dish_image(), DishStatus(isAdded = true)))
+                            list.add(Dish(dishes.dishes_dish().id(), dishes.dishes_dish().dish_name(), dishes.dishes_dish().dish_image(), DishStatus(added =  true)))
                         }
                         activity?.runOnUiThread {
                             setAdapter(list)

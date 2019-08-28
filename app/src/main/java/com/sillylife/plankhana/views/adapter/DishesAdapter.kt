@@ -19,6 +19,7 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
     private val commonItemLists = ArrayList<Any>()
     private var selectedId: Int = -1
     private val TAG = DishesAdapter::class.java.simpleName
+    private var type = "change-plan"
 
     companion object {
         const val DISH_VIEW = 0
@@ -66,25 +67,50 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
         val item = commonItemLists[holder.adapterPosition] as Dish
         ImageManager.loadImage(holder.dishPhotoIv, item.dishImage)
         holder.dishNameTv.text = item.dishName
-        setDishStatus(holder, item.dishStatus)
+        setDishStatus(holder, item)
     }
 
-    private fun setDishStatus(holder: ViewHolder, dishStatus: DishStatus?) {
+    private fun setDishStatus(holder: ViewHolder, dish: Dish) {
         holder.removeIv.visibility = View.GONE
         holder.addIv.visibility = View.GONE
         holder.addedIv.visibility = View.GONE
-        if (dishStatus != null) {
-            when {
-                dishStatus.isAdded -> {
-                    holder.removeIv.visibility = View.VISIBLE
-                }
-                dishStatus.toAdd -> {
-                    holder.addIv.visibility = View.VISIBLE
-                }
-                dishStatus.remove -> {
-                    holder.addedIv.visibility = View.VISIBLE
+        holder.dishStatusFl.setOnClickListener {
+            if (type.equals("change-plan")) {
+                removeItem(dish)
+            } else {
+                changeDishStatus(holder.adapterPosition, dish)
+            }
+
+        }
+
+        if (type.equals("change-plan")) {
+            holder.removeIv.visibility = View.VISIBLE
+        } else {
+            val dishStatus: DishStatus? = dish.dishStatus!!
+            if (dishStatus != null) {
+                when {
+                    dishStatus.added -> {
+                        holder.addedIv.visibility = View.VISIBLE
+                    }
+                    dishStatus.add -> {
+                        holder.addIv.visibility = View.VISIBLE
+                    }
                 }
             }
+        }
+    }
+
+    fun changeDishStatus(position: Int, dish: Dish) {
+        if (dish.dishStatus != null && commonItemLists[position] is Dish) {
+            when {
+                dish.dishStatus!!.added -> {
+                    (commonItemLists[position] as Dish).dishStatus = DishStatus(add = true, added = false)
+                }
+                dish.dishStatus!!.add -> {
+                    (commonItemLists[position] as Dish).dishStatus = DishStatus(add = false, added = true)
+                }
+            }
+            notifyItemChanged(position)
         }
     }
 
@@ -102,6 +128,20 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
             notifyItemRangeRemoved(itemCount, oldSize)
         } else {
             notifyItemRangeInserted(oldSize, itemCount)
+        }
+    }
+
+    fun removeItem(dish: Dish) {
+        if (commonItemLists.size > 0) {
+            for (i in commonItemLists.indices){
+                if(commonItemLists[i] is Dish && (commonItemLists[i] as Dish).id == dish.id){
+                    commonItemLists.removeAt(i)
+                    notifyItemRemoved(i)
+                    notifyItemRangeChanged(i, commonItemLists.size)
+                    break
+                }
+            }
+
         }
     }
 
