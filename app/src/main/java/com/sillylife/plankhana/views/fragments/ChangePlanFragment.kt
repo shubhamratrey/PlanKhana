@@ -13,7 +13,7 @@ import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.sillylife.plankhana.GetHouseUserDishesListQuery
 import com.sillylife.plankhana.R
-import com.sillylife.plankhana.managers.FoodManager
+import com.sillylife.plankhana.managers.LocalDishManager
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.Dish
 import com.sillylife.plankhana.models.User
@@ -60,7 +60,7 @@ class ChangePlanFragment : BaseFragment() {
             fragmentManager?.popBackStack()
         }
 
-        setAdapter(FoodManager.getMyFood())
+        setAdapter(LocalDishManager.getResidentDishes())
     }
 
     private fun getDishes(userId: Int) {

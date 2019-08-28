@@ -3,15 +3,15 @@ package com.sillylife.plankhana.managers
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.Dish
 
-object FoodManager {
+object LocalDishManager {
 
-    fun getMyFood(): ArrayList<Dish> {
+    fun getResidentDishes(): ArrayList<Dish> {
         return SharedPreferenceManager.getMyFoods()
     }
 
-    fun addFood(dish: Dish){
+    fun addDish(dish: Dish){
         var toAdd = true
-        getMyFood().forEach {
+        getResidentDishes().forEach {
             if (it.id == dish.id){
                 toAdd = false
             }
@@ -19,14 +19,14 @@ object FoodManager {
 
         if (toAdd){
             val dishes: ArrayList<Dish> = ArrayList()
-            dishes.addAll(getMyFood())
+            dishes.addAll(getResidentDishes())
             dishes.add(dish)
             SharedPreferenceManager.setMyFoods(dishes)
         }
     }
 
-    fun removeFood(dish: Dish){
-        val dishes: ArrayList<Dish> = getMyFood()
+    fun removeDish(dish: Dish){
+        val dishes: ArrayList<Dish> = getResidentDishes()
         dishes.forEach {
             if (it.id == dish.id){
                 dishes.remove(it)

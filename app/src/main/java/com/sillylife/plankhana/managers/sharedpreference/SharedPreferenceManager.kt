@@ -16,7 +16,7 @@ object SharedPreferenceManager {
     private const val USER = "user"
     private const val USER_REGISTRATION_REQUIRED = "user_registration_required"
     private const val IS_ROLE_SELECT = "is_role_select"
-    private const val MY_FOODS = "my_foods"
+    private const val RESIDENT_FOOD_LIST = "resident_food_list"
 
 
     fun getAppLanguage(): String? {
@@ -80,12 +80,12 @@ object SharedPreferenceManager {
     }
 
     fun setMyFoods(dishes: ArrayList<Dish>) {
-        mSharedPreferences.setString(MY_FOODS, if (dishes.size == 0) "" else Gson().toJson(dishes))
+        mSharedPreferences.setString(RESIDENT_FOOD_LIST, if (dishes.size == 0) "" else Gson().toJson(dishes))
     }
 
     fun getMyFoods(): ArrayList<Dish> {
         var dishes: ArrayList<Dish> = ArrayList()
-        val raw: String? = mSharedPreferences.getString(MY_FOODS, "")
+        val raw: String? = mSharedPreferences.getString(RESIDENT_FOOD_LIST, "")
         if (!CommonUtil.textIsEmpty(raw)) {
             dishes = Gson().fromJson(raw, object : TypeToken<ArrayList<Dish>>() {
             }.type)
