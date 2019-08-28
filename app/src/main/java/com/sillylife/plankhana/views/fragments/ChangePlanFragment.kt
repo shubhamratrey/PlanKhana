@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
@@ -12,12 +13,15 @@ import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.sillylife.plankhana.GetHouseUserDishesListQuery
 import com.sillylife.plankhana.R
+import com.sillylife.plankhana.managers.FoodManager
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.Dish
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
+import com.sillylife.plankhana.utils.CommonUtil
 import com.sillylife.plankhana.views.adapter.DishesAdapter
+import com.sillylife.plankhana.views.adapter.item_decorator.DividerItemDecorator
 import kotlinx.android.synthetic.main.fragment_change_plan.*
 import kotlinx.android.synthetic.main.layout_bottom_button.*
 import org.jetbrains.annotations.NotNull
@@ -41,9 +45,11 @@ class ChangePlanFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        progress?.visibility = View.VISIBLE
+
         houseId = SharedPreferenceManager.getHouseId()!!
         user = SharedPreferenceManager.getUser()
-        getDishes(user?.id!!)
+//        getDishes(user?.id!!)
         nextBtn.text = getString(R.string.string_continue)
 
         nextBtn.setOnClickListener {
@@ -53,10 +59,12 @@ class ChangePlanFragment : BaseFragment() {
         closeBtn.setOnClickListener {
             fragmentManager?.popBackStack()
         }
+
+        setAdapter(FoodManager.getMyFood())
     }
 
     private fun getDishes(userId: Int) {
-//        progress?.visibility = View.VISIBLE
+        progress?.visibility = View.VISIBLE
         val list: ArrayList<Dish> = ArrayList()
         val query = GetHouseUserDishesListQuery.builder()
 //                .dayOfWeek(WeekType.TODAY.day)
@@ -92,7 +100,15 @@ class ChangePlanFragment : BaseFragment() {
 
             }
             rcv?.layoutManager = LinearLayoutManager(context!!)
-//            progress?.visibility = View.GONE
+            if (rcv?.itemDecorationCount == 0){
+                rcv?.addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context!!, R.drawable.d_line_separator),
+                        CommonUtil.dpToPx(40),
+                        CommonUtil.dpToPx(20),
+                        CommonUtil.dpToPx(20),
+                        CommonUtil.dpToPx(20),
+                        CommonUtil.dpToPx(20)))
+            }
+            progress?.visibility = View.GONE
             rcv?.adapter = adapter
         }
     }

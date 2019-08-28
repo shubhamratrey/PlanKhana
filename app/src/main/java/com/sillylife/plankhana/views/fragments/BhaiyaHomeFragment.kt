@@ -88,6 +88,7 @@ class BhaiyaHomeFragment : BaseFragment() {
 
     fun setAdapter(list: ArrayList<Dish>?) {
         if (list != null) {
+            SharedPreferenceManager.setMyFoods(list)
             val adapter = HouseDishesAdapter(context!!, UserType.RESIDENT, list) { any, pos ->
 
             }
