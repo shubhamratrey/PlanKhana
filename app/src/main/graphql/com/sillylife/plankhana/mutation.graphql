@@ -1,4 +1,4 @@
-mutation AddDeleteHouseUserDishes($insertDishes: [plankhana_users_userdishweekplan_insert_input!]!) {
+mutation AddDeleteHouseUserDishes($insertDishes: [plankhana_users_userdishweekplan_insert_input!]!, $dishIds: [Int!]!, $userId:Int, $houseId: Int, $weekdayId:Int) {
     insert_plankhana_users_userdishweekplan(objects: $insertDishes) {
         returning {
             dishes_dish {
@@ -8,7 +8,7 @@ mutation AddDeleteHouseUserDishes($insertDishes: [plankhana_users_userdishweekpl
             }
         }
     }
-    delete_plankhana_users_userdishweekplan(where: {user_id: {_eq: 9}, dish_id: {_in: [2,1]}, house_id: {_eq: 3}, weekday_id: {_eq: 1}}) {
+    delete_plankhana_users_userdishweekplan(where:{user_id:{_eq: $userId},dish_id: {_in: $dishIds},house_id: {_eq: $houseId},weekday_id: {_eq: $weekdayId}}) {
         affected_rows
     }
 }

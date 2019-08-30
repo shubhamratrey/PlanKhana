@@ -10,6 +10,8 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
+import com.sillylife.plankhana.AddDeleteHouseUserDishesMutation
+import com.sillylife.plankhana.GetDayOfWeekQuery
 import com.sillylife.plankhana.GetHouseUserDishesListQuery
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.managers.LocalDishManager
@@ -19,6 +21,7 @@ import com.sillylife.plankhana.models.DishStatus
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
+import com.sillylife.plankhana.type.Plankhana_users_userdishweekplan_insert_input
 import com.sillylife.plankhana.utils.CommonUtil
 import com.sillylife.plankhana.views.adapter.DishesAdapter
 import com.sillylife.plankhana.views.adapter.item_decorator.ItemDecorator
@@ -93,6 +96,52 @@ class ChangePlanFragment : BaseFragment() {
                         }
                     }
                 })
+    }
+
+    fun getDayOfWeekQuery(dishes: List<Plankhana_users_userdishweekplan_insert_input>, dishIds: ArrayList<Int>) {
+        val query = GetDayOfWeekQuery.builder()
+//                .dayOfWeek(WeekType.TODAY.day)
+                .dayOfWeek("monday")
+                .build()
+        ApolloService.buildApollo().query(query)
+                .responseFetcher(ApolloResponseFetchers.NETWORK_ONLY)
+                .enqueue(object : ApolloCall.Callback<GetDayOfWeekQuery.Data>() {
+                    override fun onFailure(error: ApolloException) {
+                        Log.d(SelectBhaiyaFragment.TAG, error.toString())
+                    }
+
+                    override fun onResponse(@NotNull response: Response<GetDayOfWeekQuery.Data>) {
+                        if (!isAdded) {
+                            return
+                        }
+                        if (mutableListOf(response.data())[0]?.plankhana_users_planweekday()?.size!! >= 1) {
+                            addOrDelete(dishes, dishIds, response.data()?.plankhana_users_planweekday()!![0]?.id()!!)
+                        }
+                    }
+                })
+    }
+
+    fun addOrDelete(dishes: List<Plankhana_users_userdishweekplan_insert_input>, dishIds: ArrayList<Int>, weekDayId: Int) {
+        val keyMutation = AddDeleteHouseUserDishesMutation.builder()
+                .insertDishes(dishes)
+                .dishIds(dishIds)
+                .userId(user?.id)
+                .houseId(houseId)
+                .weekdayId(weekDayId)
+                .build()
+
+        ApolloService.buildApollo().mutate(keyMutation)?.enqueue(object :
+                ApolloCall.Callback<AddDeleteHouseUserDishesMutation.Data>() {
+            override fun onFailure(error: ApolloException) {
+
+            }
+
+            override fun onResponse(@NotNull response: Response<AddDeleteHouseUserDishesMutation.Data>) {
+                if (isAdded) {
+
+                }
+            }
+        })
     }
 
     fun setAdapter(list: ArrayList<Dish>?) {
