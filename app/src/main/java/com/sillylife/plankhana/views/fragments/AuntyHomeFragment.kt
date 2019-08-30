@@ -169,7 +169,7 @@ class AuntyHomeFragment : BaseFragment() {
                     override fun onPermissionGranted(response: PermissionGrantedResponse) {
                         try {
                             val callIntent = Intent(Intent.ACTION_CALL)
-                            callIntent.data = Uri.parse("tel:+$phoneNumber")
+                            callIntent.data = Uri.parse("tel:$phoneNumber")
                             startActivity(callIntent)
                         } catch (activityException: ActivityNotFoundException) {
                             activityException.printStackTrace()

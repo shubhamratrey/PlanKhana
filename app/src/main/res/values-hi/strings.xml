@@ -24,11 +24,11 @@
     <string name="add_new">+ Add New</string>
     <string name="add_bhaiya">Add Bhaiya</string>
     <string name="add">Add</string>
-    <string name="yesterday">Yesterday</string>
-    <string name="tomorrow">Tomorrow</string>
-    <string name="today">Today</string>
-    <string name="please_cook_these_dishes_for_dinner_tonight">Please cook these dishes for dinner tonight</string>
-    <string name="who_do_you_want_to_call">Who do you want to call?</string>
+    <string name="yesterday">बिता कल</string>
+    <string name="tomorrow">कल</string>
+    <string name="today">आज</string>
+    <string name="please_cook_these_dishes_for_dinner_tonight">कृपया आज रात के खाने के लिए इन व्यंजनों को पकाएं</string>
+    <string name="who_do_you_want_to_call">आप किसे कॉल करना चाहते हैं?</string>
     <string name="you_ll_get_to_eat_these_dishes_tonight">You’ll get to eat these dishes tonight</string>
     <string name="change_plan">Change plan</string>
     <string name="files_permission_message">Please provide permission to access files</string>
@@ -41,5 +41,5 @@
     <string name="add_a_dish">Add a dish</string>
     <string name="add_dish">Add Dish</string>
     <string name="request_a_new_dish">Request a new dish</string>
-    <string name="call_bhaiya_log">Call bhaiya log</string>
+    <string name="call_bhaiya_log">भैया लॉग को कॉल करें</string>
 </resources>

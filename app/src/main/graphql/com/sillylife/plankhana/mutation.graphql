@@ -2,6 +2,10 @@ mutation addResidentList($houseUser: [plankhana_houses_houseuser_insert_input!]!
     insert_plankhana_houses_houseuser(objects: $houseUser) {
         returning {
             id
+            users_userprofile {
+                language_id
+                id
+            }
         }
     }
 }

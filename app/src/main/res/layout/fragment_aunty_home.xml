@@ -136,7 +136,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_medium"
-                    android:text="Call bhaiya log"
+                    android:text="@string/call_bhaiya_log"
                     android:textColor="@color/white" />
             </LinearLayout>
 

@@ -37,9 +37,7 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     private fun getDefaultAppLanguage(): String {
-//        val remoteLang = FirebaseRemoteConfigManager.getString(RemoteConfigKeys.APP_LANGUAGE)
-        val localLang = SharedPreferenceManager.getAppLanguage()
-        return localLang!!
+        return if (SharedPreferenceManager.getUser()?.languageId == 2) "hi" else "en"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

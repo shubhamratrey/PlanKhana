@@ -12,10 +12,6 @@ data class User(@SerializedName("id") var id: Int? = null,
                 @SerializedName("language_id") var languageId: Int? = null
 ) : Parcelable {
 
-    fun hasName(): Boolean {
-        return name != null && !name.isNullOrBlank()
-    }
-
     constructor(id: Int?) : this(null, null, null) {
         this.id = id
     }
