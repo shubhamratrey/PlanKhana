@@ -45,7 +45,7 @@ query getHouseDishesList ($houseId:Int!, $dayOfWeek:String!){
     }
 }
 
-query getHouseUserDishesList ($houseId:Int!, $userId:Int!, ,$dayOfWeek:String!){
+query getHouseUserDishesList ($houseId:Int!, $userId:Int!, $dayOfWeek:String!){
     plankhana_users_userdishweekplan(where: {house_id: {_eq: $houseId}, user_id: {_eq: $userId}, users_planweekday: {day_of_week: {_eq: $dayOfWeek}}}) {
         dish_id
         dishes_dish {
@@ -63,8 +63,16 @@ query getDishCategories {
     }
 }
 
-query GetDishes($categoryId:Int!) {
-    plankhana_dishes_dish(where: {category_id: {_eq: $categoryId}}) {
+query GetDishes($categoryId:Int!, $offset:Int!, $limit:Int!) {
+    plankhana_dishes_dish(where: {category_id: {_eq: $categoryId}}, limit: $limit, offset: $offset) {
+        id
+        dish_name
+        dish_image
+    }
+}
+
+query GetAllDishes($offset:Int!, $limit:Int!) {
+    plankhana_dishes_dish(offset: $offset, limit: $limit) {
         id
         dish_name
         dish_image

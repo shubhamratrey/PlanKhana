@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
@@ -22,7 +21,6 @@ import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.utils.CommonUtil
 import com.sillylife.plankhana.views.adapter.DishesAdapter
-import com.sillylife.plankhana.views.adapter.item_decorator.DividerItemDecorator
 import com.sillylife.plankhana.views.adapter.item_decorator.ItemDecorator
 import kotlinx.android.synthetic.main.fragment_change_plan.*
 import kotlinx.android.synthetic.main.layout_bottom_button.*
@@ -99,8 +97,11 @@ class ChangePlanFragment : BaseFragment() {
     fun setAdapter(list: ArrayList<Dish>?) {
         if (list != null) {
             val adapter = DishesAdapter(context!!, list) { any, pos ->
-
+                if (any is Int && any == DishesAdapter.ADD_DISH_BTN) {
+                    addFragment(AddDishFragment.newInstance(), AddDishFragment.TAG)
+                }
             }
+            adapter.setType(DishesAdapter.CHANGE_PLAN)
             rcv?.layoutManager = LinearLayoutManager(context!!)
             if (rcv?.itemDecorationCount == 0) {
                 rcv?.addItemDecoration(ItemDecorator(0, CommonUtil.dpToPx(20), 0, 0, 0))

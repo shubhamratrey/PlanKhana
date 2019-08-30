@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sillylife.plankhana.R
+import com.sillylife.plankhana.managers.LocalDishManager
 import com.sillylife.plankhana.models.Dish
 import com.sillylife.plankhana.models.DishStatus
 import com.sillylife.plankhana.utils.ImageManager
@@ -19,9 +20,10 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
     private val commonItemLists = ArrayList<Any>()
     private var selectedId: Int = -1
     private val TAG = DishesAdapter::class.java.simpleName
-    private var type = "change-plan"
+    private var type = ""
 
     companion object {
+        const val CHANGE_PLAN:String = "change-plan"
         const val DISH_VIEW = 0
         const val ADD_DISH_BTN = 1
     }
@@ -67,26 +69,14 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
         val item = commonItemLists[holder.adapterPosition] as Dish
         ImageManager.loadImage(holder.dishPhotoIv, item.dishImage)
         holder.dishNameTv.text = item.dishName
-        setDishStatus(holder, item)
-    }
-
-    private fun setDishStatus(holder: ViewHolder, dish: Dish) {
         holder.removeIv.visibility = View.GONE
         holder.addIv.visibility = View.GONE
         holder.addedIv.visibility = View.GONE
-        holder.dishStatusFl.setOnClickListener {
-            if (type.equals("change-plan")) {
-                removeItem(dish)
-            } else {
-                changeDishStatus(holder.adapterPosition, dish)
-            }
 
-        }
-
-        if (type.equals("change-plan")) {
+        if (type.equals(CHANGE_PLAN,true)) {
             holder.removeIv.visibility = View.VISIBLE
         } else {
-            val dishStatus: DishStatus? = dish.dishStatus!!
+            val dishStatus: DishStatus? = item.dishStatus!!
             if (dishStatus != null) {
                 when {
                     dishStatus.added -> {
@@ -98,6 +88,18 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
                 }
             }
         }
+
+        holder.dishStatusFl.setOnClickListener {
+            if (type.equals(CHANGE_PLAN,true)) {
+                removeItem(item)
+            } else {
+                changeDishStatus(holder.adapterPosition, item)
+            }
+        }
+    }
+
+    fun setType(type:String){
+        this.type = type
     }
 
     fun changeDishStatus(position: Int, dish: Dish) {
@@ -132,6 +134,7 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
     }
 
     fun removeItem(dish: Dish) {
+        LocalDishManager.removeDish(dish)
         if (commonItemLists.size > 0) {
             for (i in commonItemLists.indices){
                 if(commonItemLists[i] is Dish && (commonItemLists[i] as Dish).id == dish.id){
@@ -141,7 +144,6 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
                     break
                 }
             }
-
         }
     }
 
