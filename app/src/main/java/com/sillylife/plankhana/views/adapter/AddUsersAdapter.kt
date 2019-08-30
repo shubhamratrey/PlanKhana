@@ -86,40 +86,15 @@ class AddUsersAdapter(val context: Context, val listener: (Any, Int) -> Unit) :
             holder.bgImageIv.setImageBitmap(null)
         }
 
-        holder.input.setTitleHint(context.getString(R.string.bhaiya_number, (holder.adapterPosition + 1).toString()))
-        holder.input.mInputEt?.imeOptions = EditorInfo.IME_ACTION_DONE
         if (!CommonUtil.textIsEmpty(item.name)) {
-            holder.input.setTitle(item.name!!)
+            holder.usernameTv.text = item.name!!
         } else {
-            holder.input.setTitle("")
+            holder.usernameTv.text= ""
         }
 
-        holder.changeImage.setOnClickListener {
+        holder.bgImageIv.setOnClickListener {
             listener(item, holder.adapterPosition)
         }
-
-        holder.input.mInputEt?.setOnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                CommonUtil.hideKeyboard(context)
-            }
-            false
-        }
-
-        holder.input.mInputEt?.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-
-            }
-
-            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-
-            }
-
-            override fun afterTextChanged(editable: Editable) {
-                (commonItemLists[holder.adapterPosition] as User).name = editable.toString()
-                tempName = editable.toString()
-            }
-        })
-
     }
 
     fun addBhaiyaData(user: User) {

@@ -47,7 +47,7 @@ class BhaiyaHomeFragment : BaseFragment() {
 
         houseId = SharedPreferenceManager.getHouseId()!!
         user = SharedPreferenceManager.getUser()
-        getDishes(user?.id!!)
+        getDishes()
         nextBtn.text = getString(R.string.change_plan)
 
         nextBtn.setOnClickListener {
@@ -56,14 +56,15 @@ class BhaiyaHomeFragment : BaseFragment() {
 
     }
 
-    private fun getDishes(userId: Int) {
+    private fun getDishes() {
         progress?.visibility = View.VISIBLE
         val list: ArrayList<Dish> = ArrayList()
         val query = GetHouseUserDishesListQuery.builder()
 //                .dayOfWeek(WeekType.TODAY.day)
                 .dayOfWeek("monday")
                 .houseId(houseId)
-                .userId(userId)
+                .languageId(user?.languageId!!)
+                .userId(user?.id!!)
                 .build()
 
         ApolloService.buildApollo().query(query)

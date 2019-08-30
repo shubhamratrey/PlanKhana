@@ -66,11 +66,13 @@ class AuntyHomeFragment : BaseFragment() {
     }
 
     private fun getHouseDishes() {
+        val user = SharedPreferenceManager.getUser()
         progress?.visibility = View.VISIBLE
         val list: ArrayList<Dish> = ArrayList()
         val query = GetHouseDishesListQuery.builder()
 //                .dayOfWeek(WeekType.TODAY.day)
                 .dayOfWeek("monday")
+                .languageId(user?.languageId!!)
                 .houseId(houseId)
                 .build()
         ApolloService.buildApollo().query(query)

@@ -51,7 +51,7 @@ class ChangePlanFragment : BaseFragment() {
 
         houseId = SharedPreferenceManager.getHouseId()!!
         user = SharedPreferenceManager.getUser()
-//        getDishes(user?.id!!)
+//        getDishes()
         nextBtn.text = getString(R.string.string_continue)
 
         nextBtn.setOnClickListener {
@@ -66,14 +66,15 @@ class ChangePlanFragment : BaseFragment() {
         LocalDishManager.setTempDishList(LocalDishManager.getResidentDishes())
     }
 
-    private fun getDishes(userId: Int) {
+    private fun getDishes() {
         progress?.visibility = View.VISIBLE
         val list: ArrayList<Dish> = ArrayList()
         val query = GetHouseUserDishesListQuery.builder()
 //                .dayOfWeek(WeekType.TODAY.day)
                 .dayOfWeek("monday")
                 .houseId(houseId)
-                .userId(userId)
+                .userId(user?.id!!)
+                .languageId(user?.languageId!!)
                 .build()
 
         ApolloService.buildApollo().query(query)

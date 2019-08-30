@@ -8,7 +8,8 @@ import kotlinx.android.parcel.Parcelize
 data class User(@SerializedName("id") var id: Int? = null,
                 @SerializedName("username") var name: String? = null,
                 @SerializedName("display_picture") var imageUrl: String? = null,
-                @SerializedName("phone") var phone: String? = null
+                @SerializedName("phone") var phone: String? = null,
+                @SerializedName("language_id") var languageId: Int? = null
 ) : Parcelable {
 
     fun hasName(): Boolean {

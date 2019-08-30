@@ -94,7 +94,11 @@ class SelectBhaiyaFragment : BaseFragment() {
                         }
                         response.data()?.plankhana_houses_houseuser()?.toMutableList()
                         for (user in response.data()?.plankhana_houses_houseuser()?.toMutableList()!!) {
-                            list.add(User(user.users_userprofile().id(), user.users_userprofile().username(), user.users_userprofile().display_picture()))
+                            list.add(User(user.users_userprofile().id(),
+                                    user.users_userprofile().username(),
+                                    user.users_userprofile().display_picture(),
+                                    user.users_userprofile().phone(),
+                                    user.users_userprofile().language_id()))
                         }
                         activity?.runOnUiThread {
                             setAdapter(list)

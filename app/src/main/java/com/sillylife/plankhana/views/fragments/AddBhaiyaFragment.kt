@@ -59,14 +59,14 @@ class AddBhaiyaFragment : BaseFragment() {
         nextBtn?.text = getString(R.string.register)
         nextBtn?.setOnClickListener {
             if (adapter != null) {
-                if (adapter?.getUserList()?.size!! > 0 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    addUsers(adapter?.getUserList()!!)
-                    nextBtnProgress?.visibility = View.VISIBLE
-                    nextBtn?.text = ""
-                    SharedPreferenceManager.setUserRegistrationRequired(false)
-                } else {
-                    showToast("Please add user.", Toast.LENGTH_SHORT)
-                }
+//                if (adapter?.getUserList()?.size!! > 0 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//                    addUsers(adapter?.getUserList()!!)
+//                    nextBtnProgress?.visibility = View.VISIBLE
+//                    nextBtn?.text = ""
+//                    SharedPreferenceManager.setUserRegistrationRequired(false)
+//                } else {
+//                    showToast("Please add user.", Toast.LENGTH_SHORT)
+//                }
             }
         }
     }
@@ -124,6 +124,42 @@ class AddBhaiyaFragment : BaseFragment() {
                 })
             })
         }
+    }
+
+    fun DCd(){
+        /*holder.input.setTitleHint(context.getString(R.string.bhaiya_number, (holder.adapterPosition + 1).toString()))
+        holder.input.mInputEt?.imeOptions = EditorInfo.IME_ACTION_DONE
+        if (!CommonUtil.textIsEmpty(item.name)) {
+            holder.usernameTv.text = item.name!!
+        } else {
+            holder.usernameTv.setTitle("")
+        }
+
+        holder.changeImage.setOnClickListener {
+            listener(item, holder.adapterPosition)
+        }
+
+        holder.input.mInputEt?.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                CommonUtil.hideKeyboard(context)
+            }
+            false
+        }
+
+        holder.input.mInputEt?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+            }
+
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+            }
+
+            override fun afterTextChanged(editable: Editable) {
+                (commonItemLists[holder.adapterPosition] as User).name = editable.toString()
+                tempName = editable.toString()
+            }
+        })*/
     }
 
     override fun onDestroy() {
