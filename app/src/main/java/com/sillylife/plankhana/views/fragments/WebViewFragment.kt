@@ -31,6 +31,9 @@ class WebViewFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        backArrowFl?.setOnClickListener {
+            activity?.finish()
+        }
         val url = arguments?.getString("url")
         loadWebUrl(url)
     }

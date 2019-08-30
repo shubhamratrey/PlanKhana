@@ -1,15 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/white"
+        app:contentInsetStart="0dp"
+        app:contentInsetStartWithNavigation="0dp"
+        app:elevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/backArrowFl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_16"
+                app:srcCompat="@drawable/ic_back" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/toolbarTitleTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:text="Please fill the form"
+                android:textColor="@color/textHeading"
+                android:textSize="@dimen/sp_16"
+                android:visibility="visible" />
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/searchIconIv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_16"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/ic_search" />
+
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
 
     <WebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="25dp" />
-
+        android:layout_marginTop="?attr/actionBarSize"
+        android:overScrollMode="never" />
 
     <ProgressBar
         android:id="@+id/preLoader"
