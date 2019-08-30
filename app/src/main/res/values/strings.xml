@@ -40,4 +40,5 @@
     <string name="call_permission_message">Please provide permission to call</string>
     <string name="add_a_dish">Add a dish</string>
     <string name="add_dish">Add Dish</string>
+    <string name="request_a_new_dish">Request a new dish</string>
 </resources>

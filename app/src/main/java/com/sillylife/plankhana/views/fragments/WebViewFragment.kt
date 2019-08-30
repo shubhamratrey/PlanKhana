@@ -21,6 +21,7 @@ class WebViewFragment : BaseFragment() {
             fragment.arguments = bundle
             return fragment
         }
+        val TAG: String = WebViewFragment::class.java.simpleName
     }
 
 

@@ -9,15 +9,15 @@ object LocalDishManager {
         return SharedPreferenceManager.getMyFoods()
     }
 
-    fun addDish(dish: Dish){
+    fun addDish(dish: Dish) {
         var toAdd = true
         getResidentDishes().forEach {
-            if (it.id == dish.id){
+            if (it.id == dish.id) {
                 toAdd = false
             }
         }
 
-        if (toAdd){
+        if (toAdd) {
             val dishes: ArrayList<Dish> = ArrayList()
             dishes.addAll(getResidentDishes())
             dishes.add(dish)
@@ -25,13 +25,21 @@ object LocalDishManager {
         }
     }
 
-    fun removeDish(dish: Dish){
+    fun removeDish(dish: Dish) {
         val dishes: ArrayList<Dish> = getResidentDishes()
         dishes.forEach {
-            if (it.id == dish.id){
+            if (it.id == dish.id) {
                 dishes.remove(it)
             }
         }
         SharedPreferenceManager.setMyFoods(dishes)
+    }
+
+    fun getSavedDishesIds(): ArrayList<Int> {
+        val list: ArrayList<Int> = ArrayList()
+        getResidentDishes().forEach {
+            list.add(it.id!!)
+        }
+        return list
     }
 }

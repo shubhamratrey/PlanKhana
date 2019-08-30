@@ -101,7 +101,7 @@ class ChangePlanFragment : BaseFragment() {
                     addFragment(AddDishFragment.newInstance(), AddDishFragment.TAG)
                 }
             }
-            adapter.setType(DishesAdapter.CHANGE_PLAN)
+            adapter.setType(DishesAdapter.Add_A_DISH)
             rcv?.layoutManager = LinearLayoutManager(context!!)
             if (rcv?.itemDecorationCount == 0) {
                 rcv?.addItemDecoration(ItemDecorator(0, CommonUtil.dpToPx(20), 0, 0, 0))

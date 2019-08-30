@@ -23,7 +23,7 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
     private var type = ""
 
     companion object {
-        const val CHANGE_PLAN:String = "change-plan"
+        const val Add_A_DISH:String = "add_a_dish"
         const val DISH_VIEW = 0
         const val ADD_DISH_BTN = 1
     }
@@ -58,9 +58,17 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
         if (holder.itemViewType == DISH_VIEW) {
             setDishView(holder)
         } else if (holder.itemViewType == ADD_DISH_BTN) {
-            holder.addBhaiyaBtn.text = context.getString(R.string.add_a_dish)
+            if (type.contentEquals(Add_A_DISH)){
+                holder.addBhaiyaBtn.text = context.getString(R.string.add_a_dish)
+            } else {
+                holder.addBhaiyaBtn.text = context.getString(R.string.request_a_new_dish)
+            }
             holder.addBhaiyaBtn.setOnClickListener {
-                listener(ADD_DISH_BTN, holder.adapterPosition)
+                if (type.contentEquals(Add_A_DISH)){
+                    listener(ADD_DISH_BTN, holder.adapterPosition)
+                } else {
+                    listener(Add_A_DISH, holder.adapterPosition)
+                }
             }
         }
     }
@@ -73,7 +81,7 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
         holder.addIv.visibility = View.GONE
         holder.addedIv.visibility = View.GONE
 
-        if (type.equals(CHANGE_PLAN,true)) {
+        if (type.equals(Add_A_DISH,true)) {
             holder.removeIv.visibility = View.VISIBLE
         } else {
             val dishStatus: DishStatus? = item.dishStatus!!
@@ -90,7 +98,7 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
         }
 
         holder.dishStatusFl.setOnClickListener {
-            if (type.equals(CHANGE_PLAN,true)) {
+            if (type.equals(Add_A_DISH,true)) {
                 removeItem(item)
             } else {
                 changeDishStatus(holder.adapterPosition, item)
