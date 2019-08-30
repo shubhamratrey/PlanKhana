@@ -84,13 +84,12 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
         if (type.equals(Add_A_DISH,true)) {
             holder.removeIv.visibility = View.VISIBLE
         } else {
-            val dishStatus: DishStatus? = item.dishStatus!!
-            if (dishStatus != null) {
+            if (item.dishStatus != null) {
                 when {
-                    dishStatus.added -> {
+                    item.dishStatus!!.added -> {
                         holder.addedIv.visibility = View.VISIBLE
                     }
-                    dishStatus.add -> {
+                    item.dishStatus!!.add -> {
                         holder.addIv.visibility = View.VISIBLE
                     }
                 }

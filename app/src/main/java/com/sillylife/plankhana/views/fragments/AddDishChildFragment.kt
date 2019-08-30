@@ -13,11 +13,15 @@ import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.sillylife.plankhana.GetAllDishesQuery
 import com.sillylife.plankhana.GetDishesQuery
 import com.sillylife.plankhana.R
+import com.sillylife.plankhana.managers.LocalDishManager
 import com.sillylife.plankhana.models.Dish
 import com.sillylife.plankhana.models.DishCategory
 import com.sillylife.plankhana.models.DishStatus
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.utils.CommonUtil
+import com.sillylife.plankhana.utils.rxevents.RxBus
+import com.sillylife.plankhana.utils.rxevents.RxEvent
+import com.sillylife.plankhana.utils.rxevents.RxEventType
 import com.sillylife.plankhana.views.adapter.DishesAdapter
 import com.sillylife.plankhana.views.adapter.item_decorator.ItemDecorator
 import kotlinx.android.synthetic.main.fragment_add_dish_child.*
@@ -65,7 +69,11 @@ class AddDishChildFragment : BaseFragment() {
         } else if (arguments != null && arguments!!.containsKey("type") && arguments?.getString("type")?.contains("all")!!) {
             getAllDishes()
         } else {
-
+            val temp: ArrayList<Dish> = ArrayList()
+            LocalDishManager.getFavouriteDishes().forEach {
+               temp.add(Dish(it.id, it.dishName, it.dishImage))
+            }
+            setAdapter(temp)
         }
     }
 

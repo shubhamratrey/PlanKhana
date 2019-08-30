@@ -61,6 +61,7 @@ class ChangePlanFragment : BaseFragment() {
         }
 
         setAdapter(LocalDishManager.getResidentDishes())
+        LocalDishManager.setTempDishList(LocalDishManager.getResidentDishes())
     }
 
     private fun getDishes(userId: Int) {

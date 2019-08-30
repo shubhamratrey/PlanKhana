@@ -42,4 +42,28 @@ object LocalDishManager {
         }
         return list
     }
+
+    fun getFavouriteDishes(): ArrayList<Dish> {
+        return SharedPreferenceManager.getMyFoods()
+    }
+
+    fun getTempDishList(): ArrayList<Dish> {
+        return SharedPreferenceManager.getTemporaryDishList()
+    }
+
+    fun setTempDishList(list: ArrayList<Dish>) {
+        SharedPreferenceManager.setTemporaryDishList(list)
+    }
+
+    fun saveTempDish(dish: Dish) {
+        getTempDishList().forEach {
+            if (it.id == dish.id) {
+                return
+            }
+        }
+        val dishes: ArrayList<Dish> = ArrayList()
+        dishes.addAll(getTempDishList())
+        dishes.add(dish)
+        SharedPreferenceManager.setTemporaryDishList(dishes)
+    }
 }
