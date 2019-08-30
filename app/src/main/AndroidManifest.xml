@@ -23,6 +23,7 @@
         <activity android:name="com.sillylife.plankhana.views.activities.BhaiyaActivity" />
         <activity android:name="com.sillylife.plankhana.views.activities.AuntyActivity" />
         <activity android:name="com.sillylife.plankhana.views.activities.RegistrationActivity"/>
+        <activity android:name="com.sillylife.plankhana.views.activities.WebActivity"/>
         <activity android:name="com.sillylife.plankhana.views.activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

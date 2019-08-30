@@ -85,7 +85,6 @@ class AddDishFragment : BaseFragment() {
 
         tabs.visibility = View.VISIBLE
         profileViewPager.visibility = View.VISIBLE
-        cardTopSeparator.visibility = View.VISIBLE
 
         viewPagerAdapter = CommonViewStatePagerAdapter(childFragmentManager)
 

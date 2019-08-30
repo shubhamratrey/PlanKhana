@@ -1,5 +1,6 @@
 package com.sillylife.plankhana.views.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,6 +23,7 @@ import com.sillylife.plankhana.utils.CommonUtil
 import com.sillylife.plankhana.utils.rxevents.RxBus
 import com.sillylife.plankhana.utils.rxevents.RxEvent
 import com.sillylife.plankhana.utils.rxevents.RxEventType
+import com.sillylife.plankhana.views.activities.WebActivity
 import com.sillylife.plankhana.views.adapter.DishesAdapter
 import com.sillylife.plankhana.views.adapter.item_decorator.ItemDecorator
 import kotlinx.android.synthetic.main.fragment_add_dish_child.*
@@ -55,7 +57,6 @@ class AddDishChildFragment : BaseFragment() {
     }
 
     private var mDishCategory: DishCategory? = null
-    private var FORM_LINK: String = "https://docs.google.com/forms/d/e/1FAIpQLSfbc_HduyBxmGnfpc4zrPGVMFRGIeAVHvZf8mPzuAtSc6KUOg/viewform?usp=sf_link"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_add_dish_child, container, false)
@@ -140,7 +141,8 @@ class AddDishChildFragment : BaseFragment() {
         if (list != null) {
             val adapter = DishesAdapter(context!!, list) { any, pos ->
                 if (any is String && any.contentEquals(DishesAdapter.Add_A_DISH)) {
-                    addFragment(WebViewFragment.newInstance(FORM_LINK), WebViewFragment.TAG)
+                    val intent = Intent(activity, WebActivity::class.java)
+                    startActivity(intent)
                 }
             }
             rcv?.layoutManager = LinearLayoutManager(context!!)
