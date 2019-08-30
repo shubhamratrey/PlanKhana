@@ -10,7 +10,6 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
-import com.sillylife.plankhana.AddDeleteHouseUserDishesMutation
 import com.sillylife.plankhana.GetDayOfWeekQuery
 import com.sillylife.plankhana.GetHouseUserDishesListQuery
 import com.sillylife.plankhana.R
@@ -89,7 +88,8 @@ class ChangePlanFragment : BaseFragment() {
                             return
                         }
                         for (dishes in response.data()?.plankhana_users_userdishweekplan()?.toMutableList()!!) {
-                            list.add(Dish(dishes.dishes_dish().id(), dishes.dishes_dish().dish_name(), dishes.dishes_dish().dish_image(), DishStatus(added = true)))
+                            val name = if (dishes.dishes_dish().dishes_dishlanguagenames().size > 0) dishes.dishes_dish().dishes_dishlanguagenames()[0].dish_name() else ""
+                            list.add(Dish(dishes.dishes_dish().id(), name, dishes.dishes_dish().dish_image(), DishStatus(added = true)))
                         }
                         activity?.runOnUiThread {
                             setAdapter(list)
@@ -122,26 +122,26 @@ class ChangePlanFragment : BaseFragment() {
     }
 
     fun addOrDelete(dishes: List<Plankhana_users_userdishweekplan_insert_input>, dishIds: ArrayList<Int>, weekDayId: Int) {
-        val keyMutation = AddDeleteHouseUserDishesMutation.builder()
-                .insertDishes(dishes)
-                .dishIds(dishIds)
-                .userId(user?.id)
-                .houseId(houseId)
-                .weekdayId(weekDayId)
-                .build()
-
-        ApolloService.buildApollo().mutate(keyMutation)?.enqueue(object :
-                ApolloCall.Callback<AddDeleteHouseUserDishesMutation.Data>() {
-            override fun onFailure(error: ApolloException) {
-
-            }
-
-            override fun onResponse(@NotNull response: Response<AddDeleteHouseUserDishesMutation.Data>) {
-                if (isAdded) {
-
-                }
-            }
-        })
+//        val keyMutation = AddDeleteHouseUserDishesMutation.builder()
+//                .insertDishes(dishes)
+//                .dishIds(dishIds)
+//                .userId(user?.id)
+//                .houseId(houseId)
+//                .weekdayId(weekDayId)
+//                .build()
+//
+//        ApolloService.buildApollo().mutate(keyMutation)?.enqueue(object :
+//                ApolloCall.Callback<AddDeleteHouseUserDishesMutation.Data>() {
+//            override fun onFailure(error: ApolloException) {
+//
+//            }
+//
+//            override fun onResponse(@NotNull response: Response<AddDeleteHouseUserDishesMutation.Data>) {
+//                if (isAdded) {
+//
+//                }
+//            }
+//        })
     }
 
     fun setAdapter(list: ArrayList<Dish>?) {

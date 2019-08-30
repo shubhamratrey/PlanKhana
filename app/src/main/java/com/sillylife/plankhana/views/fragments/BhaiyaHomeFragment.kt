@@ -36,7 +36,7 @@ class BhaiyaHomeFragment : BaseFragment() {
 
     var appDisposable: AppDisposable = AppDisposable()
     private var houseId = -1
-    private var user:User? = null
+    private var user: User? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return LayoutInflater.from(context).inflate(R.layout.fragment_bhaiya_home, null, false)
@@ -56,7 +56,7 @@ class BhaiyaHomeFragment : BaseFragment() {
 
     }
 
-    private fun getDishes(userId:Int) {
+    private fun getDishes(userId: Int) {
         progress?.visibility = View.VISIBLE
         val list: ArrayList<Dish> = ArrayList()
         val query = GetHouseUserDishesListQuery.builder()
@@ -78,7 +78,8 @@ class BhaiyaHomeFragment : BaseFragment() {
                             return
                         }
                         for (dishes in response.data()?.plankhana_users_userdishweekplan()?.toMutableList()!!) {
-                            list.add(Dish(dishes.dishes_dish().id(), dishes.dishes_dish().dish_name(), dishes.dishes_dish().dish_image(), DishStatus(added =  true)))
+                            val name = if (dishes.dishes_dish().dishes_dishlanguagenames().size > 0) dishes.dishes_dish().dishes_dishlanguagenames()[0].dish_name() else ""
+                            list.add(Dish(dishes.dishes_dish().id(), name, dishes.dishes_dish().dish_image(), DishStatus(added = true)))
                         }
                         activity?.runOnUiThread {
                             setAdapter(list)

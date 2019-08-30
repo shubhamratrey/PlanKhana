@@ -1,27 +1,3 @@
-mutation AddDeleteHouseUserDishes($insertDishes: [plankhana_users_userdishweekplan_insert_input!]!, $dishIds: [Int!]!, $userId:Int, $houseId: Int, $weekdayId:Int) {
-    insert_plankhana_users_userdishweekplan(objects: $insertDishes) {
-        returning {
-            dishes_dish {
-                dish_image
-                dish_name
-                id
-            }
-        }
-    }
-    delete_plankhana_users_userdishweekplan(where:{user_id:{_eq: $userId},dish_id: {_in: $dishIds},house_id: {_eq: $houseId},weekday_id: {_eq: $weekdayId}}) {
-        affected_rows
-    }
-}
-
-
-mutation addResident($houseId:Int!, $residentPicture:String!, $residentName:String!, $residentPhoneNumber:String!, $userType:String!){
-    insert_plankhana_houses_houseuser(objects: {users_userprofile: {data: {display_picture: $residentPicture, username: $residentName, user_type: $userType, phone: $residentPhoneNumber}}, house_id: $houseId}) {
-        returning {
-            id
-        }
-    }
-}
-
 mutation addResidentList($houseUser: [plankhana_houses_houseuser_insert_input!]!) {
     insert_plankhana_houses_houseuser(objects: $houseUser) {
         returning {
@@ -35,6 +11,18 @@ mutation addHouseKey($key:String!) {
     insert_plankhana_houses_house(objects: {house_key: $key}) {
         returning {
             id
+        }
+    }
+}
+
+mutation addWorker($houseId: Int, $userType:String!) {
+    insert_plankhana_houses_houseuser(objects: {users_userprofile: {data: {user_type: $userType}}, house_id: $houseId}) {
+        returning {
+            id
+            users_userprofile {
+                language_id
+            }
+            user_id
         }
     }
 }

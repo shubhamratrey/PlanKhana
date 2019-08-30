@@ -23,7 +23,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.single.PermissionListener
 import com.sillylife.plankhana.GetHouseDishesListQuery
-import com.sillylife.plankhana.GetUserListQuery
+import com.sillylife.plankhana.GetHouseResidentListQuery
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.enums.UserType
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
@@ -90,7 +90,8 @@ class AuntyHomeFragment : BaseFragment() {
                             for (users in dishes.dishes_dish().users_userdishweekplans().toMutableList()) {
                                 userList.add(User(users.users_userprofile().id(), users.users_userprofile().username(), users.users_userprofile().display_picture()))
                             }
-                            list.add(Dish(dishes.dishes_dish().id(), dishes.dishes_dish().dish_name(), dishes.dishes_dish().dish_image(), userList))
+                            val name = if (dishes.dishes_dish().dishes_dishlanguagenames().size > 0) dishes.dishes_dish().dishes_dishlanguagenames()[0].dish_name() else ""
+                            list.add(Dish(dishes.dishes_dish().id(), name, dishes.dishes_dish().dish_image(), userList))
                         }
                         activity?.runOnUiThread {
                             setAdapter(list)
@@ -112,18 +113,18 @@ class AuntyHomeFragment : BaseFragment() {
     }
 
     private fun setHouseResidents() {
-        val query = GetUserListQuery.builder()
+        val query = GetHouseResidentListQuery.builder()
                 .houseId(houseId)
                 .userType(UserType.RESIDENT.type)
                 .build()
         ApolloService.buildApollo().query(query)
                 .responseFetcher(ApolloResponseFetchers.NETWORK_ONLY)
-                .enqueue(object : ApolloCall.Callback<GetUserListQuery.Data>() {
+                .enqueue(object : ApolloCall.Callback<GetHouseResidentListQuery.Data>() {
                     override fun onFailure(error: ApolloException) {
                         Log.d(TAG, error.toString())
                     }
 
-                    override fun onResponse(@NotNull response: Response<GetUserListQuery.Data>) {
+                    override fun onResponse(@NotNull response: Response<GetHouseResidentListQuery.Data>) {
                         if (!isAdded) {
                             return
                         }

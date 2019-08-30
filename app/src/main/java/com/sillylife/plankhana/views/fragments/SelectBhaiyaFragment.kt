@@ -17,7 +17,6 @@ import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.karumi.dexter.PermissionToken
 import com.sillylife.plankhana.AddResidentListMutation
-import com.sillylife.plankhana.AddResidentMutation
 import com.sillylife.plankhana.GetHouseResidentListQuery
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.views.activities.BhaiyaActivity
@@ -225,28 +224,6 @@ class SelectBhaiyaFragment : BaseFragment() {
         }
     }
 
-    private fun addResident(residentName: String, residentPicture: String, residentNumber: String) {
-        val keyMutation = AddResidentMutation.builder()
-                .houseId(houseId)
-                .residentName(residentName)
-                .residentPhoneNumber(residentNumber)
-                .residentPicture(residentPicture)
-                .userType(UserType.RESIDENT.type)
-                .build()
-        ApolloService.buildApollo().mutate(keyMutation)?.enqueue(object :
-                ApolloCall.Callback<AddResidentMutation.Data>() {
-            override fun onFailure(error: ApolloException) {
-                Log.d(TAG, error.toString())
-            }
-
-            override fun onResponse(@NotNull response: Response<AddResidentMutation.Data>) {
-                addResidentBottomSheet?.dismiss()
-                sheetView?.nextBtn?.isEnabled = true
-                sheetView?.nextBtn?.text = getString(R.string.add)
-            }
-        })
-    }
-
     private fun addResidentList(residentName: String, residentPicture: String, residentNumber: String) {
         val list: ArrayList<Plankhana_houses_houseuser_insert_input> = ArrayList()
 
@@ -293,7 +270,7 @@ class SelectBhaiyaFragment : BaseFragment() {
                         imageUri = result.uri
                         try {
                             if (imageUri?.path != null) {
-                                sheetView?.bgImageIv?.setImageURI(imageUri)
+//                                sheetView?.bgImageIv?.setImageURI(imageUri)
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()

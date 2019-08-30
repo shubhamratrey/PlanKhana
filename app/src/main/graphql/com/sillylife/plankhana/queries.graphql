@@ -10,29 +10,21 @@ query getHouseResidentList($houseId:Int!, $userType:String!) {
             username
             id
             display_picture
-        }
-    }
-}
-
-query getUserList($houseId:Int!, $userType:String!) {
-    plankhana_houses_houseuser(where: {house_id: {_eq: $houseId}, users_userprofile: {user_type: {_eq: $userType}}}) {
-        users_userprofile {
-            username
-            id
-            display_picture
             phone
+            language_id
         }
     }
 }
 
-
-query getHouseDishesList ($houseId:Int!, $dayOfWeek:String!){
+query getHouseDishesList ($houseId:Int!, $dayOfWeek:String!,$languageId :Int!){
     plankhana_users_userdishweekplan_aggregate(distinct_on: dish_id, where: {house_id: {_eq: $houseId}, users_planweekday: {day_of_week: {_eq: $dayOfWeek}}}) {
         nodes {
             dishes_dish {
-                dish_name
                 dish_image
                 id
+                dishes_dishlanguagenames(where: {language_id: {_eq: $languageId}}) {
+                    dish_name
+                }
                 users_userdishweekplans(where: {house_id: {_eq: $houseId}, users_planweekday: {day_of_week: {_eq: $dayOfWeek}}}) {
                     users_userprofile {
                         username
@@ -45,12 +37,14 @@ query getHouseDishesList ($houseId:Int!, $dayOfWeek:String!){
     }
 }
 
-query getHouseUserDishesList ($houseId:Int!, $userId:Int!, $dayOfWeek:String!){
+query getHouseUserDishesList ($houseId:Int!, $userId:Int!, $dayOfWeek:String!, $languageId :Int!){
     plankhana_users_userdishweekplan(where: {house_id: {_eq: $houseId}, user_id: {_eq: $userId}, users_planweekday: {day_of_week: {_eq: $dayOfWeek}}}) {
         dish_id
         dishes_dish {
             dish_image
-            dish_name
+            dishes_dishlanguagenames(where: {language_id: {_eq: $languageId}}) {
+                dish_name
+            }
             id
         }
     }
@@ -63,18 +57,22 @@ query getDishCategories {
     }
 }
 
-query GetDishes($categoryId:Int!, $offset:Int!, $limit:Int!) {
+query GetDishes($categoryId:Int!, $offset:Int!, $limit:Int!, $languageId :Int!) {
     plankhana_dishes_dish(where: {category_id: {_eq: $categoryId}}, limit: $limit, offset: $offset) {
         id
-        dish_name
+        dishes_dishlanguagenames(where: {language_id: {_eq: $languageId}}) {
+            dish_name
+        }
         dish_image
     }
 }
 
-query GetAllDishes($offset:Int!, $limit:Int!) {
+query GetAllDishes($offset:Int!, $limit:Int!, $languageId :Int!) {
     plankhana_dishes_dish(offset: $offset, limit: $limit) {
         id
-        dish_name
+        dishes_dishlanguagenames(where: {language_id: {_eq: $languageId}}) {
+            dish_name
+        }
         dish_image
     }
 }

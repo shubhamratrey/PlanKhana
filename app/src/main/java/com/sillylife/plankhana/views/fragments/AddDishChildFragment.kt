@@ -98,7 +98,8 @@ class AddDishChildFragment : BaseFragment() {
                             return
                         }
                         for (dishes in response.data()?.plankhana_dishes_dish()?.toMutableList()!!) {
-                            list.add(Dish(dishes.id(), dishes.dish_name(), dishes.dish_image(), DishStatus(add = true)))
+                            val name = if (dishes.dishes_dishlanguagenames().size > 0) dishes.dishes_dishlanguagenames()[0].dish_name() else ""
+                            list.add(Dish(dishes.id(), name, dishes.dish_image(), DishStatus(add = true)))
                         }
                         activity?.runOnUiThread {
                             setAdapter(list)
@@ -128,7 +129,8 @@ class AddDishChildFragment : BaseFragment() {
                             return
                         }
                         for (dishes in response.data()?.plankhana_dishes_dish()?.toMutableList()!!) {
-                            list.add(Dish(dishes.id(), dishes.dish_name(), dishes.dish_image(), DishStatus(add = true)))
+                            val name = if (dishes.dishes_dishlanguagenames().size > 0) dishes.dishes_dishlanguagenames()[0].dish_name() else ""
+                            list.add(Dish(dishes.id(), name, dishes.dish_image(), DishStatus(add = true)))
                         }
                         activity?.runOnUiThread {
                             setAdapter(list)
