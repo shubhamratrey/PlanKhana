@@ -51,7 +51,7 @@ class AddDishChildFragment : BaseFragment() {
     }
 
     private var mDishCategory: DishCategory? = null
-    private var FORM_LINK: String = "https://forms.gle/E7YtRtwVAp4Y2HrZ9"
+    private var FORM_LINK: String = "https://docs.google.com/forms/d/e/1FAIpQLSfbc_HduyBxmGnfpc4zrPGVMFRGIeAVHvZf8mPzuAtSc6KUOg/viewform?usp=sf_link"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_add_dish_child, container, false)
