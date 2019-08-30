@@ -31,4 +31,8 @@ data class User(@SerializedName("id") var id: Int? = null,
         this.imageUrl = imageUrl
     }
 
+    constructor(id: Int?, languageId: Int?) : this() {
+        this.id = id
+        this.languageId = languageId
+    }
 }

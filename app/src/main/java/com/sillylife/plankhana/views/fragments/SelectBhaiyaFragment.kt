@@ -92,7 +92,6 @@ class SelectBhaiyaFragment : BaseFragment() {
                         if (!isAdded) {
                             return
                         }
-                        response.data()?.plankhana_houses_houseuser()?.toMutableList()
                         for (user in response.data()?.plankhana_houses_houseuser()?.toMutableList()!!) {
                             list.add(User(user.users_userprofile().id(),
                                     user.users_userprofile().username(),
