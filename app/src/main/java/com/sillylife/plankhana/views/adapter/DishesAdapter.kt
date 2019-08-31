@@ -19,7 +19,6 @@ import kotlinx.android.synthetic.main.item_dish_horizontal.*
 class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (Any, String, Int) -> Unit) : RecyclerView.Adapter<DishesAdapter.ViewHolder>() {
 
     private val commonItemLists = ArrayList<Any>()
-    private var selectedId: Int = -1
     private val TAG = DishesAdapter::class.java.simpleName
     private var type = ""
 
