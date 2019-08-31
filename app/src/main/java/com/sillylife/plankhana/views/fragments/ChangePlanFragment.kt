@@ -1,6 +1,7 @@
 package com.sillylife.plankhana.views.fragments
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -43,6 +44,8 @@ class ChangePlanFragment : BaseFragment() {
     var appDisposable: AppDisposable = AppDisposable()
     private var houseId = -1
     private var user: User? = null
+    private var deleteResponse = false
+    private var addResponse = false
     val toBeDeletingDishesIds: ArrayList<Int> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -51,7 +54,7 @@ class ChangePlanFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        nextBtn?.alpha = 0.7f
         appDisposable.add(RxBus.listen(RxEvent.Action::class.java).subscribe { action ->
             if (isAdded) {
                 when (action.eventType) {
@@ -61,6 +64,7 @@ class ChangePlanFragment : BaseFragment() {
                             val adapter = rcv.adapter as DishesAdapter
                             adapter.addDishData(dish)
                         }
+                        toggleBtn()
                     }
                     RxEventType.CHANGE_PLAN_LIST_DISH_REMOVE -> {
                         val dish = action.items[0] as Dish?
@@ -68,6 +72,7 @@ class ChangePlanFragment : BaseFragment() {
                             val adapter = rcv.adapter as DishesAdapter
                             adapter.removeItem(dish)
                         }
+                        toggleBtn()
                     }
                 }
             }
@@ -88,6 +93,7 @@ class ChangePlanFragment : BaseFragment() {
         }
 
         setAdapter(LocalDishManager.getResidentDishes())
+        toggleBtn()
     }
 
     fun getDayOfWeekQuery() {
@@ -137,7 +143,9 @@ class ChangePlanFragment : BaseFragment() {
 
             override fun onResponse(@NotNull response: Response<InsertUserDishWeekPlanMutation.Data>) {
                 if (isAdded) {
-                    response.data()
+                    Log.d(TAG, response.data().toString())
+                    addResponse = true
+                    finishFragment()
                 }
             }
         })
@@ -160,9 +168,50 @@ class ChangePlanFragment : BaseFragment() {
             override fun onResponse(@NotNull response: Response<DeleteUserDishWeekPlanMutation.Data>) {
                 if (isAdded) {
                     response.data()
+                    deleteResponse = true
+                    finishFragment()
                 }
             }
         })
+    }
+
+    private fun validateList(): Boolean {
+        var d = false
+        if (toBeDeletingDishesIds.size > 0 && LocalDishManager.getTempSavedDishesIds().size > 0) {
+            d = true
+        } else if (toBeDeletingDishesIds.size > 0) {
+            d = true
+        } else if (LocalDishManager.getTempDishList().size > 0) {
+            d = true
+        }
+        return d
+    }
+
+    fun finishFragment() {
+        if (toBeDeletingDishesIds.size > 0 && LocalDishManager.getTempSavedDishesIds().size > 0 && addResponse && deleteResponse) {
+            RxBus.publish(RxEvent.Action(RxEventType.REFRESH_DISH_LIST))
+            fragmentManager?.popBackStack()
+        } else if (toBeDeletingDishesIds.size > 0 && deleteResponse) {
+            RxBus.publish(RxEvent.Action(RxEventType.REFRESH_DISH_LIST))
+            fragmentManager?.popBackStack()
+        } else if (LocalDishManager.getTempSavedDishesIds().size > 0 && addResponse) {
+            RxBus.publish(RxEvent.Action(RxEventType.REFRESH_DISH_LIST))
+            fragmentManager?.popBackStack()
+        }
+    }
+
+    fun toggleBtn() {
+        activity?.runOnUiThread {
+            Handler().postDelayed({
+                if (validateList()) {
+                    nextBtn.alpha = 1f
+                    nextBtn.isEnabled = true
+                } else {
+                    nextBtn.alpha = 0.7f
+                    nextBtn.isEnabled = false
+                }
+            }, 200)
+        }
     }
 
     private fun setAdapter(list: ArrayList<Dish>?) {
@@ -180,6 +229,7 @@ class ChangePlanFragment : BaseFragment() {
                     } else if (LocalDishManager.getTempDishList().size > 0) {
                         LocalDishManager.removeTempDish(any)
                     }
+                    toggleBtn()
                 }
             }
             adapter.setType(DishesAdapter.Add_A_DISH)

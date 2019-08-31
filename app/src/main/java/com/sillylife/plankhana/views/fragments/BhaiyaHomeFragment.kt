@@ -1,6 +1,7 @@
 package com.sillylife.plankhana.views.fragments
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,10 +20,17 @@ import com.sillylife.plankhana.models.DishStatus
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
+import com.sillylife.plankhana.utils.rxevents.RxBus
+import com.sillylife.plankhana.utils.rxevents.RxEvent
+import com.sillylife.plankhana.utils.rxevents.RxEventType
+import com.sillylife.plankhana.views.adapter.DishesAdapter
 import com.sillylife.plankhana.views.adapter.HouseDishesAdapter
 import com.sillylife.plankhana.views.adapter.item_decorator.GridItemDecoration
 import com.sillylife.plankhana.views.adapter.item_decorator.WrapContentGridLayoutManager
+import kotlinx.android.synthetic.main.fragment_change_plan.*
 import kotlinx.android.synthetic.main.fragment_select_bhaiya.*
+import kotlinx.android.synthetic.main.fragment_select_bhaiya.progress
+import kotlinx.android.synthetic.main.fragment_select_bhaiya.rcv
 
 import kotlinx.android.synthetic.main.layout_bottom_button.*
 import org.jetbrains.annotations.NotNull
@@ -60,6 +68,20 @@ class BhaiyaHomeFragment : BaseFragment() {
             addFragment(ChangePlanFragment.newInstance(), ChangePlanFragment.TAG)
         }
 
+        appDisposable.add(RxBus.listen(RxEvent.Action::class.java).subscribe { action ->
+            if (isAdded) {
+                when (action.eventType) {
+                    RxEventType.REFRESH_DISH_LIST -> {
+                        activity?.runOnUiThread {
+                            Handler().postDelayed({
+                                getDishes()
+                            },200)
+                        }
+                    }
+                }
+            }
+        })
+
     }
 
     private fun getDishes() {
@@ -83,6 +105,7 @@ class BhaiyaHomeFragment : BaseFragment() {
                         if (!isAdded) {
                             return
                         }
+                        list.clear()
                         for (dishes in response.data()?.plankhana_users_userdishweekplan()?.toMutableList()!!) {
                             val name = if (dishes.dishes_dish().dishes_dishlanguagenames().size > 0) dishes.dishes_dish().dishes_dishlanguagenames()[0].dish_name() else ""
                             list.add(Dish(dishes.dishes_dish().id(), name, dishes.dishes_dish().dish_image(), DishStatus(added = true)))
@@ -101,7 +124,9 @@ class BhaiyaHomeFragment : BaseFragment() {
 
             }
             rcv?.layoutManager = WrapContentGridLayoutManager(context!!, 3)
-            rcv?.addItemDecoration(GridItemDecoration(context?.resources?.getDimensionPixelSize(R.dimen.dp_8)!!, 3))
+            if (rcv?.itemDecorationCount == 0){
+                rcv?.addItemDecoration(GridItemDecoration(context?.resources?.getDimensionPixelSize(R.dimen.dp_8)!!, 3))
+            }
             progress?.visibility = View.GONE
             rcv?.adapter = adapter
         }
