@@ -33,15 +33,21 @@ import com.sillylife.plankhana.views.adapter.item_decorator.ItemDecorator
 import kotlinx.android.synthetic.main.fragment_change_plan.*
 import kotlinx.android.synthetic.main.layout_bottom_button.*
 import org.jetbrains.annotations.NotNull
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class ChangePlanFragment : BaseFragment() {
 
     companion object {
         fun newInstance() = ChangePlanFragment()
+
+        fun newInstance(day: String): ChangePlanFragment {
+            val fragment = ChangePlanFragment()
+            val args = Bundle()
+            args.putString("day", day)
+            fragment.arguments = args
+            return fragment
+        }
+
         var TAG = ChangePlanFragment::class.java.simpleName
     }
 
@@ -50,6 +56,7 @@ class ChangePlanFragment : BaseFragment() {
     private var user: User? = null
     private var deleteResponse = false
     private var addResponse = false
+    private var day: String = ""
     val toBeDeletingDishesIds: ArrayList<Int> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -58,6 +65,9 @@ class ChangePlanFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (arguments != null && arguments!!.containsKey("day")) {
+            day = arguments?.getString("day")!!
+        }
         nextBtn?.alpha = 0.7f
         appDisposable.add(RxBus.listen(RxEvent.Action::class.java).subscribe { action ->
             if (isAdded) {
@@ -89,7 +99,7 @@ class ChangePlanFragment : BaseFragment() {
         nextBtn.text = getString(R.string.string_continue)
 
         nextBtn.setOnClickListener {
-            getDayOfWeekQuery()
+            getDayOfWeekQuery(if (CommonUtil.textIsEmpty(day)) WeekType.TODAY.day else day)
         }
 
         closeBtn.setOnClickListener {
@@ -100,9 +110,9 @@ class ChangePlanFragment : BaseFragment() {
         toggleBtn()
     }
 
-    private fun getDayOfWeekQuery() {
+    private fun getDayOfWeekQuery(day: String) {
         val query = GetDayOfWeekQuery.builder()
-                .dayOfWeek(WeekType.TODAY.day)
+                .dayOfWeek(day)
                 .build()
         ApolloService.buildApollo().query(query)
                 .responseFetcher(ApolloResponseFetchers.NETWORK_ONLY)

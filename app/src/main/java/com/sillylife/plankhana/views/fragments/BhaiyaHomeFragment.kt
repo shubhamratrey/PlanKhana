@@ -25,21 +25,14 @@ import com.sillylife.plankhana.utils.CommonUtil
 import com.sillylife.plankhana.utils.rxevents.RxBus
 import com.sillylife.plankhana.utils.rxevents.RxEvent
 import com.sillylife.plankhana.utils.rxevents.RxEventType
-import com.sillylife.plankhana.views.adapter.DishesAdapter
 import com.sillylife.plankhana.views.adapter.HouseDishesAdapter
 import com.sillylife.plankhana.views.adapter.item_decorator.GridItemDecoration
 import com.sillylife.plankhana.views.adapter.item_decorator.WrapContentGridLayoutManager
 import kotlinx.android.synthetic.main.fragment_bhaiya_home.*
-import kotlinx.android.synthetic.main.fragment_change_plan.*
-import kotlinx.android.synthetic.main.fragment_select_bhaiya.*
 import kotlinx.android.synthetic.main.fragment_select_bhaiya.progress
 import kotlinx.android.synthetic.main.fragment_select_bhaiya.rcv
-
 import kotlinx.android.synthetic.main.layout_bottom_button.*
 import org.jetbrains.annotations.NotNull
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class BhaiyaHomeFragment : BaseFragment() {
@@ -72,10 +65,8 @@ class BhaiyaHomeFragment : BaseFragment() {
             if (LocalDishManager.getTempDishList().size > 0) {
                 LocalDishManager.clearTempDishList()
             }
-            if (CommonUtil.getDay(count).toLowerCase() == WeekType.TODAY.day) {
-                SharedPreferenceManager.setMyFoods(list)
-            }
-            addFragment(ChangePlanFragment.newInstance(), ChangePlanFragment.TAG)
+            SharedPreferenceManager.setMyFoods(list)
+            addFragment(ChangePlanFragment.newInstance(CommonUtil.getDay(count).toLowerCase()), ChangePlanFragment.TAG)
         }
 
         appDisposable.add(RxBus.listen(RxEvent.Action::class.java).subscribe { action ->
@@ -84,10 +75,9 @@ class BhaiyaHomeFragment : BaseFragment() {
                     RxEventType.REFRESH_DISH_LIST -> {
                         activity?.runOnUiThread {
                             Handler().postDelayed({
-                                count = 0
-                                getDishes(WeekType.TODAY.day)
+                                getDishes(CommonUtil.getDay(count).toLowerCase())
                                 toggleYesterdayBtn()
-                            },200)
+                            }, 200)
                         }
                     }
                 }
@@ -121,8 +111,8 @@ class BhaiyaHomeFragment : BaseFragment() {
         toggleYesterdayBtn()
     }
 
-    private fun toggleYesterdayBtn(){
-        if (CommonUtil.getDay(count).toLowerCase() == WeekType.TODAY.day){
+    private fun toggleYesterdayBtn() {
+        if (CommonUtil.getDay(count).toLowerCase() == WeekType.TODAY.day) {
             leftArrowsIv?.alpha = 0.3f
             yesterdayTv?.alpha = 0.4f
 
@@ -145,7 +135,7 @@ class BhaiyaHomeFragment : BaseFragment() {
         tomorrowTv?.text = CommonUtil.getShortDay(tempTommrowDay)
     }
 
-    private fun getDishes(dayOfWeek:String) {
+    private fun getDishes(dayOfWeek: String) {
         progress?.visibility = View.VISIBLE
         val query = GetHouseUserDishesListQuery.builder()
                 .dayOfWeek(dayOfWeek)
@@ -179,14 +169,12 @@ class BhaiyaHomeFragment : BaseFragment() {
 
     fun setAdapter(list: ArrayList<Dish>?) {
         if (list != null) {
-            if (CommonUtil.getDay(count).toLowerCase() == WeekType.TODAY.day) {
-                SharedPreferenceManager.setMyFoods(list)
-            }
+            SharedPreferenceManager.setMyFoods(list)
             val adapter = HouseDishesAdapter(context!!, UserType.RESIDENT, list) { any, pos ->
 
             }
             rcv?.layoutManager = WrapContentGridLayoutManager(context!!, 3)
-            if (rcv?.itemDecorationCount == 0){
+            if (rcv?.itemDecorationCount == 0) {
                 rcv?.addItemDecoration(GridItemDecoration(context?.resources?.getDimensionPixelSize(R.dimen.dp_8)!!, 3))
             }
             progress?.visibility = View.GONE
