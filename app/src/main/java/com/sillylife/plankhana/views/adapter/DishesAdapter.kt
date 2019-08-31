@@ -152,11 +152,6 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
         }
     }
 
-    fun setId(id: Int) {
-        selectedId = id
-        notifyDataSetChanged()
-    }
-
     fun addDishData(dish: Dish) {
         val oldSize = itemCount
         commonItemLists.remove(ADD_DISH_BTN)
