@@ -1,9 +1,7 @@
 package com.sillylife.plankhana.utils.rxevents
 
 enum class RxEventType {
-    SUBSCRIBE,
-    EPISODE_DOWNLOAD,
-    ACCOUNT_PROFILE_CLICKED;
+    DISH_ADDED_REMOVED;
 
     companion object {
 

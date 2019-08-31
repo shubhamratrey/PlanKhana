@@ -21,7 +21,11 @@ import com.sillylife.plankhana.models.DishCategory
 import com.sillylife.plankhana.models.DishStatus
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.services.ApolloService
+import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.utils.CommonUtil
+import com.sillylife.plankhana.utils.rxevents.RxBus
+import com.sillylife.plankhana.utils.rxevents.RxEvent
+import com.sillylife.plankhana.utils.rxevents.RxEventType
 import com.sillylife.plankhana.views.activities.WebActivity
 import com.sillylife.plankhana.views.adapter.DishesAdapter
 import com.sillylife.plankhana.views.adapter.item_decorator.ItemDecorator
@@ -57,6 +61,7 @@ class AddDishChildFragment : BaseFragment() {
 
     private var mDishCategory: DishCategory? = null
     private var user: User? = null
+    var appDisposable: AppDisposable = AppDisposable()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_add_dish_child, container, false)
@@ -78,6 +83,20 @@ class AddDishChildFragment : BaseFragment() {
             }
             setAdapter(temp)
         }
+
+        appDisposable.add(RxBus.listen(RxEvent.Action::class.java).subscribe { action ->
+            if (isAdded) {
+                when (action.eventType) {
+                    RxEventType.DISH_ADDED_REMOVED -> {
+                        val dish = action.items[0] as Dish?
+                        if (rcv.adapter != null && dish != null) {
+                            val adapter = rcv.adapter as DishesAdapter
+                            adapter.changeDishStatus(dish)
+                        }
+                    }
+                }
+            }
+        })
     }
 
     private fun getAllDishes() {
@@ -90,6 +109,7 @@ class AddDishChildFragment : BaseFragment() {
                 .build()
 
         val dishIds = LocalDishManager.getSavedDishesIds()
+        val tempDishIds = LocalDishManager.getTempSavedDishesIds()
         ApolloService.buildApollo().query(query)
                 .responseFetcher(ApolloResponseFetchers.NETWORK_ONLY)
                 .enqueue(object : ApolloCall.Callback<GetAllDishesQuery.Data>() {
@@ -104,8 +124,10 @@ class AddDishChildFragment : BaseFragment() {
                         Log.d(TAG, "STARTED")
                         for (dishes in response.data()?.plankhana_dishes_dish()?.toMutableList()!!) {
                             val name = if (dishes.dishes_dishlanguagenames().size > 0) dishes.dishes_dishlanguagenames()[0].dish_name() else ""
-                            if (dishIds.contains(dishes.id())){
+                            if (tempDishIds.contains(dishes.id())) {
                                 list.add(Dish(dishes.id(), name, dishes.dish_image(), DishStatus(added = true)))
+                            } else if (dishIds.contains(dishes.id())) {
+                                list.add(Dish(dishes.id(), name, dishes.dish_image(), DishStatus(alreadyAdded = true)))
                             } else {
                                 list.add(Dish(dishes.id(), name, dishes.dish_image(), DishStatus(add = true)))
                             }
@@ -129,6 +151,7 @@ class AddDishChildFragment : BaseFragment() {
                 .build()
 
         val dishIds = LocalDishManager.getSavedDishesIds()
+        val tempDishIds = LocalDishManager.getTempSavedDishesIds()
         ApolloService.buildApollo().query(query)
                 .responseFetcher(ApolloResponseFetchers.NETWORK_ONLY)
                 .enqueue(object : ApolloCall.Callback<GetDishesQuery.Data>() {
@@ -142,8 +165,10 @@ class AddDishChildFragment : BaseFragment() {
                         }
                         for (dishes in response.data()?.plankhana_dishes_dish()?.toMutableList()!!) {
                             val name = if (dishes.dishes_dishlanguagenames().size > 0) dishes.dishes_dishlanguagenames()[0].dish_name() else ""
-                            if (dishIds.contains(dishes.id())){
+                            if (tempDishIds.contains(dishes.id())) {
                                 list.add(Dish(dishes.id(), name, dishes.dish_image(), DishStatus(added = true)))
+                            } else if (dishIds.contains(dishes.id())) {
+                                list.add(Dish(dishes.id(), name, dishes.dish_image(), DishStatus(alreadyAdded = true)))
                             } else {
                                 list.add(Dish(dishes.id(), name, dishes.dish_image(), DishStatus(add = true)))
                             }
@@ -157,15 +182,22 @@ class AddDishChildFragment : BaseFragment() {
 
     fun setAdapter(list: ArrayList<Dish>?) {
         if (list != null) {
-            val adapter = DishesAdapter(context!!, list) { any, pos ->
+            val adapter = DishesAdapter(context!!, list) { any, type, pos ->
                 if (any is String && any.contentEquals(DishesAdapter.Add_A_DISH)) {
                     val intent = Intent(activity, WebActivity::class.java)
                     startActivity(intent)
+                } else if (any is Dish) {
+                    RxBus.publish(RxEvent.Action(RxEventType.DISH_ADDED_REMOVED, any as Dish))
+                    if (type.contains("add")) {
+                        LocalDishManager.addTempDish(any)
+                    } else if (type.contains("remove")) {
+                        LocalDishManager.removeTempDish(any)
+                    }
                 }
             }
             rcv?.layoutManager = LinearLayoutManager(context!!)
             if (rcv?.itemDecorationCount == 0) {
-                rcv?.addItemDecoration(ItemDecorator(0, CommonUtil.dpToPx(20), 0, 0, 0))
+                rcv?.addItemDecoration(ItemDecorator(0, CommonUtil.dpToPx(20), CommonUtil.dpToPx(20), 0, 0))
             }
             progress?.visibility = View.GONE
             rcv?.adapter = adapter
@@ -174,5 +206,6 @@ class AddDishChildFragment : BaseFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        appDisposable.dispose()
     }
 }

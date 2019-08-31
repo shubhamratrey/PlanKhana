@@ -42,6 +42,13 @@ object LocalDishManager {
         }
         return list
     }
+    fun getTempSavedDishesIds(): ArrayList<Int> {
+        val list: ArrayList<Int> = ArrayList()
+        getTempDishList().forEach {
+            list.add(it.id!!)
+        }
+        return list
+    }
 
     fun getFavouriteDishes(): ArrayList<Dish> {
         return SharedPreferenceManager.getFavouriteDishList()
@@ -55,15 +62,25 @@ object LocalDishManager {
         SharedPreferenceManager.setTemporaryDishList(list)
     }
 
-    fun saveTempDish(dish: Dish) {
+    fun addTempDish(dish: Dish) {
         getTempDishList().forEach {
             if (it.id == dish.id) {
                 return
             }
         }
         val dishes: ArrayList<Dish> = ArrayList()
-        dishes.addAll(getTempDishList())
         dishes.add(dish)
+        dishes.addAll(getTempDishList())
+        SharedPreferenceManager.setTemporaryDishList(dishes)
+    }
+
+    fun removeTempDish(dish: Dish) {
+        val dishes: ArrayList<Dish> = ArrayList()
+        getTempDishList().forEach {
+            if (it.id != dish.id) {
+                dishes.add(it)
+            }
+        }
         SharedPreferenceManager.setTemporaryDishList(dishes)
     }
 

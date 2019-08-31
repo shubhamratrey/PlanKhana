@@ -63,7 +63,7 @@ class ChangePlanFragment : BaseFragment() {
         }
 
         setAdapter(LocalDishManager.getResidentDishes())
-        LocalDishManager.setTempDishList(LocalDishManager.getResidentDishes())
+//        LocalDishManager.setTempDishList(LocalDishManager.getResidentDishes())
     }
 
     private fun getDishes() {
@@ -147,7 +147,7 @@ class ChangePlanFragment : BaseFragment() {
 
     fun setAdapter(list: ArrayList<Dish>?) {
         if (list != null) {
-            val adapter = DishesAdapter(context!!, list) { any, pos ->
+            val adapter = DishesAdapter(context!!, list) { any, type, pos ->
                 if (any is Int && any == DishesAdapter.ADD_DISH_BTN) {
                     addFragment(AddDishFragment.newInstance(), AddDishFragment.TAG)
                 }

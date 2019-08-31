@@ -52,4 +52,5 @@
     <color name="grid_line">#66ffffff</color>
     <color name="timecode">#aa000000</color>
     <color name="timecode_shadow">#ddffffdd</color>
+    <color name="tick_green">#00C781</color>
 </resources>
