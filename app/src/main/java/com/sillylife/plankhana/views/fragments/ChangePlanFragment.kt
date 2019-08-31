@@ -15,6 +15,7 @@ import com.sillylife.plankhana.DeleteUserDishWeekPlanMutation
 import com.sillylife.plankhana.GetDayOfWeekQuery
 import com.sillylife.plankhana.InsertUserDishWeekPlanMutation
 import com.sillylife.plankhana.R
+import com.sillylife.plankhana.enums.WeekType
 import com.sillylife.plankhana.managers.LocalDishManager
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.Dish
@@ -32,6 +33,9 @@ import com.sillylife.plankhana.views.adapter.item_decorator.ItemDecorator
 import kotlinx.android.synthetic.main.fragment_change_plan.*
 import kotlinx.android.synthetic.main.layout_bottom_button.*
 import org.jetbrains.annotations.NotNull
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ChangePlanFragment : BaseFragment() {
@@ -96,10 +100,9 @@ class ChangePlanFragment : BaseFragment() {
         toggleBtn()
     }
 
-    fun getDayOfWeekQuery() {
+    private fun getDayOfWeekQuery() {
         val query = GetDayOfWeekQuery.builder()
-//                .dayOfWeek(WeekType.TODAY.day)
-                .dayOfWeek("monday")
+                .dayOfWeek(WeekType.TODAY.day)
                 .build()
         ApolloService.buildApollo().query(query)
                 .responseFetcher(ApolloResponseFetchers.NETWORK_ONLY)
