@@ -71,17 +71,26 @@ class AddDishChildFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         user = SharedPreferenceManager.getUser()
 
+        val dishIds = LocalDishManager.getSavedDishesIds()
+        val tempDishIds = LocalDishManager.getTempSavedDishesIds()
+
         if (arguments != null && arguments!!.containsKey("dishCategory")) {
             mDishCategory = arguments?.getParcelable("dishCategory")
             getDishes(mDishCategory?.id!!)
         } else if (arguments != null && arguments!!.containsKey("type") && arguments?.getString("type")?.contains("all")!!) {
             getAllDishes()
         } else {
-            val temp: ArrayList<Dish> = ArrayList()
-            LocalDishManager.getFavouriteDishes().forEach {
-                temp.add(Dish(it.id, it.dishName, it.dishImage))
+            val list: ArrayList<Dish> = ArrayList()
+            LocalDishManager.getFavouriteDishes().forEach {dishes ->
+                if (tempDishIds.contains(dishes.id)) {
+                    list.add(Dish(dishes.id, dishes.dishName, dishes.dishImage, DishStatus(added = true)))
+                } else if (dishIds.contains(dishes.id)) {
+                    list.add(Dish(dishes.id, dishes.dishName, dishes.dishImage, DishStatus(alreadyAdded = true)))
+                } else {
+                    list.add(Dish(dishes.id, dishes.dishName, dishes.dishImage, DishStatus(add = true)))
+                }
             }
-            setAdapter(temp)
+            setAdapter(list)
         }
 
         appDisposable.add(RxBus.listen(RxEvent.Action::class.java).subscribe { action ->
