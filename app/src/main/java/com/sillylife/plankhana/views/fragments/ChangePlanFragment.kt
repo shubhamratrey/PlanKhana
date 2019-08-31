@@ -96,9 +96,10 @@ class ChangePlanFragment : BaseFragment() {
         user = SharedPreferenceManager.getUser()
 
         progress?.visibility = View.VISIBLE
-        nextBtn.text = getString(R.string.string_save)
+        nextBtn?.text = getString(R.string.string_save)
 
-        nextBtn.setOnClickListener {
+        nextBtn?.setOnClickListener {
+            toggleButtonProgress(true)
             getDayOfWeekQuery(if (CommonUtil.textIsEmpty(day)) WeekType.TODAY.day else day)
         }
 
@@ -110,6 +111,18 @@ class ChangePlanFragment : BaseFragment() {
         toggleBtn()
     }
 
+    private fun toggleButtonProgress(show: Boolean) {
+        if (show) {
+            nextBtn?.text = ""
+            nextBtnProgress?.visibility = View.VISIBLE
+            nextBtn.isEnabled = false
+        } else {
+            nextBtn?.text = getString(R.string.string_save)
+            nextBtnProgress?.visibility = View.VISIBLE
+            nextBtn.isEnabled = true
+        }
+    }
+
     private fun getDayOfWeekQuery(day: String) {
         val query = GetDayOfWeekQuery.builder()
                 .dayOfWeek(day)
@@ -119,6 +132,7 @@ class ChangePlanFragment : BaseFragment() {
                 .enqueue(object : ApolloCall.Callback<GetDayOfWeekQuery.Data>() {
                     override fun onFailure(error: ApolloException) {
                         Log.d(SelectBhaiyaFragment.TAG, error.toString())
+                        toggleButtonProgress(false)
                     }
 
                     override fun onResponse(@NotNull response: Response<GetDayOfWeekQuery.Data>) {
@@ -152,6 +166,7 @@ class ChangePlanFragment : BaseFragment() {
                 ApolloCall.Callback<InsertUserDishWeekPlanMutation.Data>() {
             override fun onFailure(error: ApolloException) {
                 Log.d(TAG, error.toString())
+                toggleButtonProgress(false)
             }
 
             override fun onResponse(@NotNull response: Response<InsertUserDishWeekPlanMutation.Data>) {
@@ -159,6 +174,7 @@ class ChangePlanFragment : BaseFragment() {
                     Log.d(TAG, response.data().toString())
                     addResponse = true
                     finishFragment()
+                    LocalDishManager.saveFavouriteDishes(LocalDishManager.getTempDishList())
                 }
             }
         })
@@ -176,6 +192,7 @@ class ChangePlanFragment : BaseFragment() {
                 ApolloCall.Callback<DeleteUserDishWeekPlanMutation.Data>() {
             override fun onFailure(error: ApolloException) {
                 Log.d(TAG, error.toString())
+                toggleButtonProgress(false)
             }
 
             override fun onResponse(@NotNull response: Response<DeleteUserDishWeekPlanMutation.Data>) {
@@ -201,6 +218,7 @@ class ChangePlanFragment : BaseFragment() {
     }
 
     fun finishFragment() {
+        toggleButtonProgress(false)
         if (toBeDeletingDishesIds.size > 0 && LocalDishManager.getTempSavedDishesIds().size > 0 && addResponse && deleteResponse) {
             RxBus.publish(RxEvent.Action(RxEventType.REFRESH_DISH_LIST))
             fragmentManager?.popBackStack()
