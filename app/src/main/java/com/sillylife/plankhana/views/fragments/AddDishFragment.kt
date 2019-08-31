@@ -215,7 +215,6 @@ class AddDishFragment : BaseFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        LocalDishManager.clearTempDishList()
         appDisposable.dispose()
     }
 

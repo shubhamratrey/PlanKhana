@@ -26,10 +26,10 @@ object LocalDishManager {
     }
 
     fun removeDish(dish: Dish) {
-        val dishes: ArrayList<Dish> = getResidentDishes()
-        dishes.forEach {
-            if (it.id == dish.id) {
-                dishes.remove(it)
+        val dishes: ArrayList<Dish> = ArrayList()
+        getResidentDishes().forEach {
+            if (it.id != dish.id) {
+                dishes.add(it)
             }
         }
         SharedPreferenceManager.setMyFoods(dishes)

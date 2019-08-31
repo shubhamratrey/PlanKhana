@@ -187,10 +187,12 @@ class AddDishChildFragment : BaseFragment() {
                     val intent = Intent(activity, WebActivity::class.java)
                     startActivity(intent)
                 } else if (any is Dish) {
-                    RxBus.publish(RxEvent.Action(RxEventType.DISH_ADDED_REMOVED, any as Dish))
-                    if (type.contains("add")) {
+                    RxBus.publish(RxEvent.Action(RxEventType.DISH_ADDED_REMOVED, any))
+                    if (type.contains(DishesAdapter.ADD)) {
+                        RxBus.publish(RxEvent.Action(RxEventType.CHANGE_PLAN_LIST_DISH_ADD, any))
                         LocalDishManager.addTempDish(any)
-                    } else if (type.contains("remove")) {
+                    } else if (type.contains(DishesAdapter.REMOVE)) {
+                        RxBus.publish(RxEvent.Action(RxEventType.CHANGE_PLAN_LIST_DISH_REMOVE, any))
                         LocalDishManager.removeTempDish(any)
                     }
                 }

@@ -1,7 +1,9 @@
 package com.sillylife.plankhana.utils.rxevents
 
 enum class RxEventType {
-    DISH_ADDED_REMOVED;
+    DISH_ADDED_REMOVED,
+    CHANGE_PLAN_LIST_DISH_ADD,
+    CHANGE_PLAN_LIST_DISH_REMOVE;
 
     companion object {
 

@@ -12,6 +12,7 @@ import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.sillylife.plankhana.GetHouseUserDishesListQuery
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.enums.UserType
+import com.sillylife.plankhana.managers.LocalDishManager
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.Dish
 import com.sillylife.plankhana.models.DishStatus
@@ -37,6 +38,7 @@ class BhaiyaHomeFragment : BaseFragment() {
     var appDisposable: AppDisposable = AppDisposable()
     private var houseId = -1
     private var user: User? = null
+    val list: ArrayList<Dish> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return LayoutInflater.from(context).inflate(R.layout.fragment_bhaiya_home, null, false)
@@ -51,6 +53,10 @@ class BhaiyaHomeFragment : BaseFragment() {
         nextBtn.text = getString(R.string.change_plan)
 
         nextBtn.setOnClickListener {
+            if (LocalDishManager.getTempDishList().size > 0) {
+                LocalDishManager.clearTempDishList()
+            }
+            SharedPreferenceManager.setMyFoods(list)
             addFragment(ChangePlanFragment.newInstance(), ChangePlanFragment.TAG)
         }
 
@@ -58,7 +64,6 @@ class BhaiyaHomeFragment : BaseFragment() {
 
     private fun getDishes() {
         progress?.visibility = View.VISIBLE
-        val list: ArrayList<Dish> = ArrayList()
         val query = GetHouseUserDishesListQuery.builder()
 //                .dayOfWeek(WeekType.TODAY.day)
                 .dayOfWeek("monday")

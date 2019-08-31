@@ -11,17 +11,18 @@ import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.sillylife.plankhana.GetDayOfWeekQuery
-import com.sillylife.plankhana.GetHouseUserDishesListQuery
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.managers.LocalDishManager
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.Dish
-import com.sillylife.plankhana.models.DishStatus
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.type.Plankhana_users_userdishweekplan_insert_input
 import com.sillylife.plankhana.utils.CommonUtil
+import com.sillylife.plankhana.utils.rxevents.RxBus
+import com.sillylife.plankhana.utils.rxevents.RxEvent
+import com.sillylife.plankhana.utils.rxevents.RxEventType
 import com.sillylife.plankhana.views.adapter.DishesAdapter
 import com.sillylife.plankhana.views.adapter.item_decorator.ItemDecorator
 import kotlinx.android.synthetic.main.fragment_change_plan.*
@@ -47,11 +48,31 @@ class ChangePlanFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        progress?.visibility = View.VISIBLE
+        appDisposable.add(RxBus.listen(RxEvent.Action::class.java).subscribe { action ->
+            if (isAdded) {
+                when (action.eventType) {
+                    RxEventType.CHANGE_PLAN_LIST_DISH_ADD -> {
+                        val dish = action.items[0] as Dish?
+                        if (rcv.adapter != null && dish != null) {
+                            val adapter = rcv.adapter as DishesAdapter
+                            adapter.addDishData(dish)
+                        }
+                    }
+                    RxEventType.CHANGE_PLAN_LIST_DISH_REMOVE -> {
+                        val dish = action.items[0] as Dish?
+                        if (rcv.adapter != null && dish != null) {
+                            val adapter = rcv.adapter as DishesAdapter
+                            adapter.removeItem(dish)
+                        }
+                    }
+                }
+            }
+        })
 
         houseId = SharedPreferenceManager.getHouseId()!!
         user = SharedPreferenceManager.getUser()
-//        getDishes()
+
+        progress?.visibility = View.VISIBLE
         nextBtn.text = getString(R.string.string_continue)
 
         nextBtn.setOnClickListener {
@@ -63,40 +84,6 @@ class ChangePlanFragment : BaseFragment() {
         }
 
         setAdapter(LocalDishManager.getResidentDishes())
-//        LocalDishManager.setTempDishList(LocalDishManager.getResidentDishes())
-    }
-
-    private fun getDishes() {
-        progress?.visibility = View.VISIBLE
-        val list: ArrayList<Dish> = ArrayList()
-        val query = GetHouseUserDishesListQuery.builder()
-//                .dayOfWeek(WeekType.TODAY.day)
-                .dayOfWeek("monday")
-                .houseId(houseId)
-                .userId(user?.id!!)
-                .languageId(user?.languageId!!)
-                .build()
-
-        ApolloService.buildApollo().query(query)
-                .responseFetcher(ApolloResponseFetchers.NETWORK_ONLY)
-                .enqueue(object : ApolloCall.Callback<GetHouseUserDishesListQuery.Data>() {
-                    override fun onFailure(error: ApolloException) {
-                        Log.d(SelectBhaiyaFragment.TAG, error.toString())
-                    }
-
-                    override fun onResponse(@NotNull response: Response<GetHouseUserDishesListQuery.Data>) {
-                        if (!isAdded) {
-                            return
-                        }
-                        for (dishes in response.data()?.plankhana_users_userdishweekplan()?.toMutableList()!!) {
-                            val name = if (dishes.dishes_dish().dishes_dishlanguagenames().size > 0) dishes.dishes_dish().dishes_dishlanguagenames()[0].dish_name() else ""
-                            list.add(Dish(dishes.dishes_dish().id(), name, dishes.dishes_dish().dish_image(), DishStatus(added = true)))
-                        }
-                        activity?.runOnUiThread {
-                            setAdapter(list)
-                        }
-                    }
-                })
     }
 
     fun getDayOfWeekQuery(dishes: List<Plankhana_users_userdishweekplan_insert_input>, dishIds: ArrayList<Int>) {
@@ -145,17 +132,26 @@ class ChangePlanFragment : BaseFragment() {
 //        })
     }
 
-    fun setAdapter(list: ArrayList<Dish>?) {
+    private fun setAdapter(list: ArrayList<Dish>?) {
         if (list != null) {
             val adapter = DishesAdapter(context!!, list) { any, type, pos ->
                 if (any is Int && any == DishesAdapter.ADD_DISH_BTN) {
                     addFragment(AddDishFragment.newInstance(), AddDishFragment.TAG)
+                } else if (any is Dish && type.contains(DishesAdapter.REMOVE)) {
+                    val adapter = rcv.adapter as DishesAdapter
+                    adapter.removeItem(any)
+                    val dishIds = LocalDishManager.getSavedDishesIds()
+                    if (dishIds.contains(any.id!!)) {
+                        LocalDishManager.removeDish(any)
+                    } else if (LocalDishManager.getTempDishList().size > 0) {
+                        LocalDishManager.removeTempDish(any)
+                    }
                 }
             }
             adapter.setType(DishesAdapter.Add_A_DISH)
             rcv?.layoutManager = LinearLayoutManager(context!!)
             if (rcv?.itemDecorationCount == 0) {
-                rcv?.addItemDecoration(ItemDecorator(0, CommonUtil.dpToPx(20), 0, 0, 0))
+                rcv?.addItemDecoration(ItemDecorator(0, CommonUtil.dpToPx(20), CommonUtil.dpToPx(20), 0, 0))
             }
             progress?.visibility = View.GONE
             rcv?.adapter = adapter
@@ -164,6 +160,9 @@ class ChangePlanFragment : BaseFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        if (LocalDishManager.getTempDishList().size > 0) {
+            LocalDishManager.clearTempDishList()
+        }
         appDisposable.dispose()
     }
 }

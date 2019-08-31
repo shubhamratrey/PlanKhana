@@ -25,6 +25,8 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
 
     companion object {
         const val Add_A_DISH: String = "add_a_dish"
+        const val REMOVE: String = "remove"
+        const val ADD: String = "add_a_dish"
         const val DISH_VIEW = 0
         const val ADD_DISH_BTN = 1
     }
@@ -68,7 +70,7 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
                 if (type.contentEquals(Add_A_DISH)) {
                     listener(ADD_DISH_BTN, "", holder.adapterPosition)
                 } else {
-                    listener(Add_A_DISH, " ", holder.adapterPosition)
+                    listener(Add_A_DISH, "", holder.adapterPosition)
                 }
             }
         }
@@ -112,15 +114,14 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
 
         holder.dishStatusFl.setOnClickListener {
             if (type.equals(Add_A_DISH, true)) {
-                listener(item, "remove", holder.adapterPosition)
-                removeItem(item)
+                listener(item, REMOVE, holder.adapterPosition)
             } else {
                 when {
                     item.dishStatus!!.added -> {
-                        listener(item, "remove", holder.adapterPosition)
+                        listener(item, REMOVE, holder.adapterPosition)
                     }
                     item.dishStatus!!.add -> {
-                        listener(item, "add", holder.adapterPosition)
+                        listener(item, ADD, holder.adapterPosition)
                     }
                 }
             }
@@ -134,7 +135,7 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
     fun changeDishStatus(dish: Dish) {
         if (commonItemLists.size > 0) {
             for (position in commonItemLists.indices) {
-                if (commonItemLists[position] is Dish && (commonItemLists[position] as Dish).id == dish.id && dish.dishStatus!= null) {
+                if (commonItemLists[position] is Dish && (commonItemLists[position] as Dish).id == dish.id && dish.dishStatus != null) {
                     when {
                         dish.dishStatus!!.added -> {
                             (commonItemLists[position] as Dish).dishStatus = DishStatus(add = true, added = false)
@@ -169,7 +170,6 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
     }
 
     fun removeItem(dish: Dish) {
-        LocalDishManager.removeDish(dish)
         if (commonItemLists.size > 0) {
             for (i in commonItemLists.indices) {
                 if (commonItemLists[i] is Dish && (commonItemLists[i] as Dish).id == dish.id) {
