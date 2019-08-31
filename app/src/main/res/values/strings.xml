@@ -42,4 +42,5 @@
     <string name="add_dish">Add Dish</string>
     <string name="request_a_new_dish">Request a new dish</string>
     <string name="call_bhaiya_log">Call bhaiya log</string>
+    <string name="string_save">Save</string>
 </resources>

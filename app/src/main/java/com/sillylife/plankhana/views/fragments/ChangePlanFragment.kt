@@ -96,7 +96,7 @@ class ChangePlanFragment : BaseFragment() {
         user = SharedPreferenceManager.getUser()
 
         progress?.visibility = View.VISIBLE
-        nextBtn.text = getString(R.string.string_continue)
+        nextBtn.text = getString(R.string.string_save)
 
         nextBtn.setOnClickListener {
             getDayOfWeekQuery(if (CommonUtil.textIsEmpty(day)) WeekType.TODAY.day else day)
