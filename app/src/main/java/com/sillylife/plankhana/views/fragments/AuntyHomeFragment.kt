@@ -69,25 +69,25 @@ class AuntyHomeFragment : BaseFragment() {
 
         yesterdayTv?.setOnClickListener {
             count -= 1
-            getHouseDishes(CommonUtil.getDay(count))
+            getHouseDishes(CommonUtil.getDay(count).toLowerCase())
             toggleYesterdayBtn()
         }
 
         tomorrowTv?.setOnClickListener {
             count += 1
-            getHouseDishes(CommonUtil.getDay(count))
+            getHouseDishes(CommonUtil.getDay(count).toLowerCase())
             toggleYesterdayBtn()
         }
 
         leftArrowsIv?.setOnClickListener {
             count -= 1
-            getHouseDishes(CommonUtil.getDay(count))
+            getHouseDishes(CommonUtil.getDay(count).toLowerCase())
             toggleYesterdayBtn()
         }
 
         rightArrowsIv?.setOnClickListener {
             count += 1
-            getHouseDishes(CommonUtil.getDay(count))
+            getHouseDishes(CommonUtil.getDay(count).toLowerCase())
             toggleYesterdayBtn()
         }
 
@@ -95,7 +95,7 @@ class AuntyHomeFragment : BaseFragment() {
     }
 
     private fun toggleYesterdayBtn(){
-        if (CommonUtil.getDay(count) == WeekType.TODAY.day){
+        if (CommonUtil.getDay(count).toLowerCase() == WeekType.TODAY.day){
             leftArrowsIv?.alpha = 0.3f
             yesterdayTv?.alpha = 0.4f
 

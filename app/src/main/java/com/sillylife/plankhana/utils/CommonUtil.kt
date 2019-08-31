@@ -119,7 +119,17 @@ object CommonUtil {
         calendar.add(Calendar.DATE, count)
         val day = sdf.format(calendar.time)
         Log.d(BhaiyaHomeFragment.TAG, day.toString())
-        return day.toLowerCase()
+        return day
+    }
+
+    fun getShortDay(count:Int): String {
+        val sdf = SimpleDateFormat("EEE", Locale.US)
+        val calendar = Calendar.getInstance()
+        calendar.time = Date()
+        calendar.add(Calendar.DATE, count)
+        val day = sdf.format(calendar.time)
+        Log.d(BhaiyaHomeFragment.TAG, day.toString())
+        return day
     }
 
     fun userDummyData(): ArrayList<User> {

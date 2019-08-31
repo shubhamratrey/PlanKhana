@@ -1,6 +1,7 @@
 package com.sillylife.plankhana.views.fragments
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -49,15 +50,30 @@ class AddDishFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeSearch()
-
-        backArrowFl.setOnClickListener {
+        nextBtn?.alpha = 0.7f
+        backArrowFl?.setOnClickListener {
             fragmentManager?.popBackStack()
         }
 
-        nextBtn.setOnClickListener {
+        nextBtn?.setOnClickListener {
             fragmentManager?.popBackStack()
         }
         setTabs()
+        toggleBtn()
+    }
+
+    fun toggleBtn() {
+        activity?.runOnUiThread {
+            Handler().postDelayed({
+                if (LocalDishManager.getTempDishList().size > 0) {
+                    nextBtn?.alpha = 1f
+                    nextBtn?.isEnabled = true
+                } else {
+                    nextBtn?.alpha = 0.7f
+                    nextBtn?.isEnabled = false
+                }
+            }, 200)
+        }
     }
 
     private fun setTabs() {
@@ -217,11 +233,9 @@ class AddDishFragment : BaseFragment() {
         appDisposable.dispose()
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
         appDisposable.dispose()
     }
-
 
 }

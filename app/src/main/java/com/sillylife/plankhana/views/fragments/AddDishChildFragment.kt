@@ -195,6 +195,11 @@ class AddDishChildFragment : BaseFragment() {
                         RxBus.publish(RxEvent.Action(RxEventType.CHANGE_PLAN_LIST_DISH_REMOVE, any))
                         LocalDishManager.removeTempDish(any)
                     }
+
+                    //toggleBtn
+                    if (parentFragment != null && parentFragment is AddDishFragment) {
+                        (parentFragment as AddDishFragment).toggleBtn()
+                    }
                 }
             }
             rcv?.layoutManager = LinearLayoutManager(context!!)

@@ -72,7 +72,7 @@ class BhaiyaHomeFragment : BaseFragment() {
             if (LocalDishManager.getTempDishList().size > 0) {
                 LocalDishManager.clearTempDishList()
             }
-            if (CommonUtil.getDay(count) == WeekType.TODAY.day) {
+            if (CommonUtil.getDay(count).toLowerCase() == WeekType.TODAY.day) {
                 SharedPreferenceManager.setMyFoods(list)
             }
             addFragment(ChangePlanFragment.newInstance(), ChangePlanFragment.TAG)
@@ -84,7 +84,9 @@ class BhaiyaHomeFragment : BaseFragment() {
                     RxEventType.REFRESH_DISH_LIST -> {
                         activity?.runOnUiThread {
                             Handler().postDelayed({
+                                count = 0
                                 getDishes(WeekType.TODAY.day)
+                                toggleYesterdayBtn()
                             },200)
                         }
                     }
@@ -94,25 +96,25 @@ class BhaiyaHomeFragment : BaseFragment() {
 
         yesterdayTv?.setOnClickListener {
             count -= 1
-            getDishes(CommonUtil.getDay(count))
+            getDishes(CommonUtil.getDay(count).toLowerCase())
             toggleYesterdayBtn()
         }
 
         tomorrowTv?.setOnClickListener {
             count += 1
-            getDishes(CommonUtil.getDay(count))
+            getDishes(CommonUtil.getDay(count).toLowerCase())
             toggleYesterdayBtn()
         }
 
         leftArrowsIv?.setOnClickListener {
             count -= 1
-            getDishes(CommonUtil.getDay(count))
+            getDishes(CommonUtil.getDay(count).toLowerCase())
             toggleYesterdayBtn()
         }
 
         rightArrowsIv?.setOnClickListener {
             count += 1
-            getDishes(CommonUtil.getDay(count))
+            getDishes(CommonUtil.getDay(count).toLowerCase())
             toggleYesterdayBtn()
         }
 
@@ -120,19 +122,27 @@ class BhaiyaHomeFragment : BaseFragment() {
     }
 
     private fun toggleYesterdayBtn(){
-        if (CommonUtil.getDay(count) == WeekType.TODAY.day){
+        if (CommonUtil.getDay(count).toLowerCase() == WeekType.TODAY.day){
             leftArrowsIv?.alpha = 0.3f
             yesterdayTv?.alpha = 0.4f
 
             leftArrowsIv?.isEnabled = false
             yesterdayTv?.isEnabled = false
+
+            todayTv.text = getString(R.string.today)
         } else {
             leftArrowsIv?.alpha = 1f
             yesterdayTv?.alpha = 1f
 
             leftArrowsIv?.isEnabled = true
             yesterdayTv?.isEnabled = true
+
+            todayTv.text = CommonUtil.getDay(count)
         }
+        val tempYesterDay = count - 1
+        val tempTommrowDay = count + 1
+        yesterdayTv?.text = CommonUtil.getShortDay(tempYesterDay)
+        tomorrowTv?.text = CommonUtil.getShortDay(tempTommrowDay)
     }
 
     private fun getDishes(dayOfWeek:String) {
@@ -169,7 +179,7 @@ class BhaiyaHomeFragment : BaseFragment() {
 
     fun setAdapter(list: ArrayList<Dish>?) {
         if (list != null) {
-            if (CommonUtil.getDay(count) == WeekType.TODAY.day) {
+            if (CommonUtil.getDay(count).toLowerCase() == WeekType.TODAY.day) {
                 SharedPreferenceManager.setMyFoods(list)
             }
             val adapter = HouseDishesAdapter(context!!, UserType.RESIDENT, list) { any, pos ->

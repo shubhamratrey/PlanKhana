@@ -50,8 +50,7 @@ object ApolloService {
     private fun cacheKeyResolver(): CacheKeyResolver = object : CacheKeyResolver() {
         override fun fromFieldRecordSet(
             field: ResponseField,
-            recordSet: Map<String, Any>
-        ): CacheKey {
+            recordSet: Map<String, Any>): CacheKey {
             if (recordSet.containsKey("todos")) {
                 val id = recordSet["todos"] as String
                 return CacheKey.from(id)
@@ -61,8 +60,7 @@ object ApolloService {
 
         override fun fromFieldArguments(
             field: ResponseField,
-            variables: Operation.Variables
-        ): CacheKey {
+            variables: Operation.Variables): CacheKey {
             return CacheKey.NO_KEY
         }
     }
