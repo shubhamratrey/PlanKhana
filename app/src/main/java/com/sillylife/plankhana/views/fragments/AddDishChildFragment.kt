@@ -89,6 +89,7 @@ class AddDishChildFragment : BaseFragment() {
                 .languageId(user?.languageId!!)
                 .build()
 
+        val dishIds = LocalDishManager.getSavedDishesIds()
         ApolloService.buildApollo().query(query)
                 .responseFetcher(ApolloResponseFetchers.NETWORK_ONLY)
                 .enqueue(object : ApolloCall.Callback<GetAllDishesQuery.Data>() {
@@ -100,11 +101,17 @@ class AddDishChildFragment : BaseFragment() {
                         if (!isAdded) {
                             return
                         }
+                        Log.d(TAG, "STARTED")
                         for (dishes in response.data()?.plankhana_dishes_dish()?.toMutableList()!!) {
                             val name = if (dishes.dishes_dishlanguagenames().size > 0) dishes.dishes_dishlanguagenames()[0].dish_name() else ""
-                            list.add(Dish(dishes.id(), name, dishes.dish_image(), DishStatus(add = true)))
+                            if (dishIds.contains(dishes.id())){
+                                list.add(Dish(dishes.id(), name, dishes.dish_image(), DishStatus(added = true)))
+                            } else {
+                                list.add(Dish(dishes.id(), name, dishes.dish_image(), DishStatus(add = true)))
+                            }
                         }
                         activity?.runOnUiThread {
+                            Log.d(TAG, "ENDED")
                             setAdapter(list)
                         }
                     }
@@ -121,6 +128,7 @@ class AddDishChildFragment : BaseFragment() {
                 .languageId(user?.languageId!!)
                 .build()
 
+        val dishIds = LocalDishManager.getSavedDishesIds()
         ApolloService.buildApollo().query(query)
                 .responseFetcher(ApolloResponseFetchers.NETWORK_ONLY)
                 .enqueue(object : ApolloCall.Callback<GetDishesQuery.Data>() {
@@ -134,7 +142,11 @@ class AddDishChildFragment : BaseFragment() {
                         }
                         for (dishes in response.data()?.plankhana_dishes_dish()?.toMutableList()!!) {
                             val name = if (dishes.dishes_dishlanguagenames().size > 0) dishes.dishes_dishlanguagenames()[0].dish_name() else ""
-                            list.add(Dish(dishes.id(), name, dishes.dish_image(), DishStatus(add = true)))
+                            if (dishIds.contains(dishes.id())){
+                                list.add(Dish(dishes.id(), name, dishes.dish_image(), DishStatus(added = true)))
+                            } else {
+                                list.add(Dish(dishes.id(), name, dishes.dish_image(), DishStatus(add = true)))
+                            }
                         }
                         activity?.runOnUiThread {
                             setAdapter(list)

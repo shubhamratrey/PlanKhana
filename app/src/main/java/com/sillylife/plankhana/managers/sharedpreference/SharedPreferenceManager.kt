@@ -18,6 +18,7 @@ object SharedPreferenceManager {
     private const val IS_ROLE_SELECT = "is_role_select"
     private const val RESIDENT_FOOD_LIST = "resident_food_list"
     private const val TEMPORARY_DISH_LIST = "temporary_dish_list"
+    private const val FAVOURITE_DISH_LIST = "favourite_dish_list"
 
 
     fun getAppLanguage(): String? {
@@ -104,6 +105,19 @@ object SharedPreferenceManager {
         if (!CommonUtil.textIsEmpty(raw)) {
             dishes = Gson().fromJson(raw, object : TypeToken<ArrayList<Dish>>() {
             }.type)
+        }
+        return dishes
+    }
+
+    fun setFavouriteDishList(dishes: ArrayList<Dish>) {
+        mSharedPreferences.setString(FAVOURITE_DISH_LIST, if (dishes.size == 0) "" else Gson().toJson(dishes))
+    }
+
+    fun getFavouriteDishList(): ArrayList<Dish> {
+        var dishes: ArrayList<Dish> = ArrayList()
+        val raw: String? = mSharedPreferences.getString(FAVOURITE_DISH_LIST, "")
+        if (!CommonUtil.textIsEmpty(raw)) {
+            dishes = Gson().fromJson(raw, object : TypeToken<ArrayList<Dish>>() {}.type)
         }
         return dishes
     }

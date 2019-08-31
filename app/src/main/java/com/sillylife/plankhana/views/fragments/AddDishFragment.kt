@@ -16,6 +16,7 @@ import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.sillylife.plankhana.GetDishCategoriesQuery
 import com.sillylife.plankhana.R
+import com.sillylife.plankhana.managers.LocalDishManager
 import com.sillylife.plankhana.models.DishCategory
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
@@ -24,7 +25,6 @@ import com.sillylife.plankhana.views.adapter.CommonViewStatePagerAdapter
 import kotlinx.android.synthetic.main.fragment_add_dish.*
 import kotlinx.android.synthetic.main.fragment_change_plan.*
 import org.jetbrains.annotations.NotNull
-import java.io.File
 
 class AddDishFragment : BaseFragment() {
 
@@ -96,8 +96,10 @@ class AddDishFragment : BaseFragment() {
             allGenres.add(genreFragment)
         }
 
-        val favorite = AddDishChildFragment.newInstance()
-        viewPagerAdapter.addItem(favorite, "Favorites")
+        if (LocalDishManager.getFavouriteDishes().size > 0) {
+            val favorite = AddDishChildFragment.newInstance()
+            viewPagerAdapter.addItem(favorite, "Favorites")
+        }
 
         val all = AddDishChildFragment.newInstance("all")
         viewPagerAdapter.addItem(all, "All")

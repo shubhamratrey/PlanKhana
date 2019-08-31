@@ -44,7 +44,7 @@ object LocalDishManager {
     }
 
     fun getFavouriteDishes(): ArrayList<Dish> {
-        return SharedPreferenceManager.getMyFoods()
+        return SharedPreferenceManager.getFavouriteDishList()
     }
 
     fun getTempDishList(): ArrayList<Dish> {
@@ -65,5 +65,9 @@ object LocalDishManager {
         dishes.addAll(getTempDishList())
         dishes.add(dish)
         SharedPreferenceManager.setTemporaryDishList(dishes)
+    }
+
+    fun clearTempDishList(){
+        SharedPreferenceManager.setTemporaryDishList(ArrayList())
     }
 }
