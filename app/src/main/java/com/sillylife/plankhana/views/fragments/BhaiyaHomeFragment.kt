@@ -33,6 +33,8 @@ import kotlinx.android.synthetic.main.fragment_select_bhaiya.progress
 import kotlinx.android.synthetic.main.fragment_select_bhaiya.rcv
 import kotlinx.android.synthetic.main.layout_bottom_button.*
 import org.jetbrains.annotations.NotNull
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class BhaiyaHomeFragment : BaseFragment() {
@@ -131,8 +133,8 @@ class BhaiyaHomeFragment : BaseFragment() {
         }
         val tempYesterDay = count - 1
         val tempTommrowDay = count + 1
-        yesterdayTv?.text = CommonUtil.getShortDay(tempYesterDay)
-        tomorrowTv?.text = CommonUtil.getShortDay(tempTommrowDay)
+        yesterdayTv?.text = CommonUtil.getShortDay(tempYesterDay, Locale.US)
+        tomorrowTv?.text = CommonUtil.getShortDay(tempTommrowDay, Locale.US)
     }
 
     private fun getDishes(dayOfWeek: String) {

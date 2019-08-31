@@ -96,7 +96,7 @@ object CommonUtil {
         return app_installed
     }
 
-    fun openPhoneGallery(activity:Activity?){
+    fun openPhoneGallery(activity: Activity?) {
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         galleryIntent.type = "image/*"
 
@@ -112,7 +112,7 @@ object CommonUtil {
         }
     }
 
-    fun getDay(count:Int): String {
+    fun getDay(count: Int): String {
         val sdf = SimpleDateFormat("EEEE", Locale.US)
         val calendar = Calendar.getInstance()
         calendar.time = Date()
@@ -122,8 +122,18 @@ object CommonUtil {
         return day
     }
 
-    fun getShortDay(count:Int): String {
-        val sdf = SimpleDateFormat("EEE", Locale.US)
+    fun getDay(count: Int, locale: Locale): String {
+        val sdf = SimpleDateFormat("EEEE", locale)
+        val calendar = Calendar.getInstance()
+        calendar.time = Date()
+        calendar.add(Calendar.DATE, count)
+        val day = sdf.format(calendar.time)
+        Log.d(BhaiyaHomeFragment.TAG, day.toString())
+        return day
+    }
+
+    fun getShortDay(count: Int, locale: Locale): String {
+        val sdf = SimpleDateFormat("EEE", locale)
         val calendar = Calendar.getInstance()
         calendar.time = Date()
         calendar.add(Calendar.DATE, count)

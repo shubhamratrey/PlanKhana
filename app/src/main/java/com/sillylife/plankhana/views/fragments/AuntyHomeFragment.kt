@@ -40,6 +40,8 @@ import com.sillylife.plankhana.views.adapter.item_decorator.WrapContentGridLayou
 import kotlinx.android.synthetic.main.bs_user_list.view.*
 import kotlinx.android.synthetic.main.fragment_aunty_home.*
 import org.jetbrains.annotations.NotNull
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AuntyHomeFragment : BaseFragment() {
 
@@ -94,20 +96,29 @@ class AuntyHomeFragment : BaseFragment() {
         toggleYesterdayBtn()
     }
 
-    private fun toggleYesterdayBtn(){
-        if (CommonUtil.getDay(count).toLowerCase() == WeekType.TODAY.day){
+    private fun toggleYesterdayBtn() {
+        if (CommonUtil.getDay(count).toLowerCase() == WeekType.TODAY.day) {
             leftArrowsIv?.alpha = 0.3f
             yesterdayTv?.alpha = 0.4f
 
             leftArrowsIv?.isEnabled = false
             yesterdayTv?.isEnabled = false
+
+            todayTv.text = getString(R.string.today)
         } else {
             leftArrowsIv?.alpha = 1f
             yesterdayTv?.alpha = 1f
 
             leftArrowsIv?.isEnabled = true
             yesterdayTv?.isEnabled = true
+
+            todayTv.text = CommonUtil.getDay(count, Locale.getDefault())
         }
+
+        val tempYesterDay = count - 1
+        val tempTommrowDay = count + 1
+        yesterdayTv?.text = CommonUtil.getShortDay(tempYesterDay, Locale.getDefault())
+        tomorrowTv?.text = CommonUtil.getShortDay(tempTommrowDay, Locale.getDefault())
     }
 
     private fun getHouseDishes(dayOfWeek: String) {
@@ -152,7 +163,7 @@ class AuntyHomeFragment : BaseFragment() {
 
             }
             rcv?.layoutManager = WrapContentGridLayoutManager(context!!, 3)
-            if (rcv?.itemDecorationCount == 0){
+            if (rcv?.itemDecorationCount == 0) {
                 rcv?.addItemDecoration(GridItemDecoration(context?.resources?.getDimensionPixelSize(R.dimen.dp_8)!!, 3))
             }
             progress?.visibility = View.GONE
