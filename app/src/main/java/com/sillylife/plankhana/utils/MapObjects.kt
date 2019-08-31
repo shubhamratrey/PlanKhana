@@ -1,9 +1,7 @@
 package com.sillylife.plankhana.utils
 
 import com.sillylife.plankhana.enums.UserType
-import com.sillylife.plankhana.type.Plankhana_houses_houseuser_insert_input
-import com.sillylife.plankhana.type.Plankhana_users_userprofile_insert_input
-import com.sillylife.plankhana.type.Plankhana_users_userprofile_obj_rel_insert_input
+import com.sillylife.plankhana.type.*
 
 
 object MapObjects {
@@ -25,4 +23,14 @@ object MapObjects {
                 .house_id(houseId)
                 .build()
     }
+
+    fun addDishes(houseId: Int, dishId: Int, userId: Int, weekdayId: Int): Plankhana_users_userdishweekplan_insert_input {
+        return Plankhana_users_userdishweekplan_insert_input.builder()
+                .user_id(userId)
+                .house_id(houseId)
+                .dish_id(dishId)
+                .weekday_id(weekdayId)
+                .build()
+    }
+
 }

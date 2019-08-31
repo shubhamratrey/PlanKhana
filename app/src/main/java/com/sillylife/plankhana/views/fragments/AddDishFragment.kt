@@ -24,6 +24,7 @@ import com.sillylife.plankhana.utils.CommonUtil
 import com.sillylife.plankhana.views.adapter.CommonViewStatePagerAdapter
 import kotlinx.android.synthetic.main.fragment_add_dish.*
 import kotlinx.android.synthetic.main.fragment_change_plan.*
+import kotlinx.android.synthetic.main.layout_bottom_button.*
 import org.jetbrains.annotations.NotNull
 
 class AddDishFragment : BaseFragment() {
@@ -50,6 +51,10 @@ class AddDishFragment : BaseFragment() {
         initializeSearch()
 
         backArrowFl.setOnClickListener {
+            fragmentManager?.popBackStack()
+        }
+
+        nextBtn.setOnClickListener {
             fragmentManager?.popBackStack()
         }
         setTabs()

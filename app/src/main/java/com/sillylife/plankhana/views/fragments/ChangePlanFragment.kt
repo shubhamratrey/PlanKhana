@@ -10,7 +10,9 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
+import com.sillylife.plankhana.DeleteUserDishWeekPlanMutation
 import com.sillylife.plankhana.GetDayOfWeekQuery
+import com.sillylife.plankhana.InsertUserDishWeekPlanMutation
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.managers.LocalDishManager
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
@@ -20,6 +22,7 @@ import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.type.Plankhana_users_userdishweekplan_insert_input
 import com.sillylife.plankhana.utils.CommonUtil
+import com.sillylife.plankhana.utils.MapObjects
 import com.sillylife.plankhana.utils.rxevents.RxBus
 import com.sillylife.plankhana.utils.rxevents.RxEvent
 import com.sillylife.plankhana.utils.rxevents.RxEventType
@@ -40,6 +43,7 @@ class ChangePlanFragment : BaseFragment() {
     var appDisposable: AppDisposable = AppDisposable()
     private var houseId = -1
     private var user: User? = null
+    val toBeDeletingDishesIds: ArrayList<Int> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return LayoutInflater.from(context).inflate(R.layout.fragment_change_plan, null, false)
@@ -76,7 +80,7 @@ class ChangePlanFragment : BaseFragment() {
         nextBtn.text = getString(R.string.string_continue)
 
         nextBtn.setOnClickListener {
-
+            getDayOfWeekQuery()
         }
 
         closeBtn.setOnClickListener {
@@ -86,7 +90,7 @@ class ChangePlanFragment : BaseFragment() {
         setAdapter(LocalDishManager.getResidentDishes())
     }
 
-    fun getDayOfWeekQuery(dishes: List<Plankhana_users_userdishweekplan_insert_input>, dishIds: ArrayList<Int>) {
+    fun getDayOfWeekQuery() {
         val query = GetDayOfWeekQuery.builder()
 //                .dayOfWeek(WeekType.TODAY.day)
                 .dayOfWeek("monday")
@@ -103,33 +107,62 @@ class ChangePlanFragment : BaseFragment() {
                             return
                         }
                         if (mutableListOf(response.data())[0]?.plankhana_users_planweekday()?.size!! >= 1) {
-                            addOrDelete(dishes, dishIds, response.data()?.plankhana_users_planweekday()!![0]?.id()!!)
+                            if (toBeDeletingDishesIds.size > 0) {
+                                deleteDishes(response.data()?.plankhana_users_planweekday()!![0]?.id()!!)
+                            }
+                            if (LocalDishManager.getTempSavedDishesIds().size > 0) {
+                                addDishes(response.data()?.plankhana_users_planweekday()!![0]?.id()!!)
+                            }
                         }
                     }
                 })
     }
 
-    fun addOrDelete(dishes: List<Plankhana_users_userdishweekplan_insert_input>, dishIds: ArrayList<Int>, weekDayId: Int) {
-//        val keyMutation = AddDeleteHouseUserDishesMutation.builder()
-//                .insertDishes(dishes)
-//                .dishIds(dishIds)
-//                .userId(user?.id)
-//                .houseId(houseId)
-//                .weekdayId(weekDayId)
-//                .build()
-//
-//        ApolloService.buildApollo().mutate(keyMutation)?.enqueue(object :
-//                ApolloCall.Callback<AddDeleteHouseUserDishesMutation.Data>() {
-//            override fun onFailure(error: ApolloException) {
-//
-//            }
-//
-//            override fun onResponse(@NotNull response: Response<AddDeleteHouseUserDishesMutation.Data>) {
-//                if (isAdded) {
-//
-//                }
-//            }
-//        })
+    fun addDishes(weekDayId: Int) {
+        val dishes: ArrayList<Plankhana_users_userdishweekplan_insert_input> = ArrayList()
+        LocalDishManager.getTempSavedDishesIds().forEach {
+            dishes.add(MapObjects.addDishes(houseId, it, user?.id!!, weekDayId))
+        }
+
+        val keyMutation = InsertUserDishWeekPlanMutation.builder()
+                .insertDishes(dishes)
+                .languageId(user?.languageId!!)
+                .build()
+
+        ApolloService.buildApollo().mutate(keyMutation)?.enqueue(object :
+                ApolloCall.Callback<InsertUserDishWeekPlanMutation.Data>() {
+            override fun onFailure(error: ApolloException) {
+                Log.d(TAG, error.toString())
+            }
+
+            override fun onResponse(@NotNull response: Response<InsertUserDishWeekPlanMutation.Data>) {
+                if (isAdded) {
+                    response.data()
+                }
+            }
+        })
+    }
+
+    fun deleteDishes(weekDayId: Int) {
+        val keyMutation = DeleteUserDishWeekPlanMutation.builder()
+                .dishIds(toBeDeletingDishesIds)
+                .houseId(houseId)
+                .userId(user?.id!!)
+                .weekdayId(weekDayId)
+                .build()
+
+        ApolloService.buildApollo().mutate(keyMutation)?.enqueue(object :
+                ApolloCall.Callback<DeleteUserDishWeekPlanMutation.Data>() {
+            override fun onFailure(error: ApolloException) {
+                Log.d(TAG, error.toString())
+            }
+
+            override fun onResponse(@NotNull response: Response<DeleteUserDishWeekPlanMutation.Data>) {
+                if (isAdded) {
+                    response.data()
+                }
+            }
+        })
     }
 
     private fun setAdapter(list: ArrayList<Dish>?) {
@@ -142,6 +175,7 @@ class ChangePlanFragment : BaseFragment() {
                     adapter.removeItem(any)
                     val dishIds = LocalDishManager.getSavedDishesIds()
                     if (dishIds.contains(any.id!!)) {
+                        toBeDeletingDishesIds.add(any.id!!)
                         LocalDishManager.removeDish(any)
                     } else if (LocalDishManager.getTempDishList().size > 0) {
                         LocalDishManager.removeTempDish(any)

@@ -30,3 +30,23 @@ mutation addWorker($houseId: Int, $userType:String!) {
         }
     }
 }
+
+mutation insertUserDishWeekPlan($insertDishes: [plankhana_users_userdishweekplan_insert_input!]!, $languageId:Int!) {
+    insert_plankhana_users_userdishweekplan(objects: $insertDishes) {
+        returning {
+            dishes_dish {
+                dish_image
+                dishes_dishlanguagenames(where: {language_id: {_eq: $languageId}}) {
+                    dish_name
+                }
+                id
+            }
+        }
+    }
+}
+
+mutation deleteUserDishWeekPlan($dishIds: [Int!]!, $userId:Int, $houseId: Int, $weekdayId:Int) {
+    delete_plankhana_users_userdishweekplan(where:{user_id:{_eq: $userId},dish_id: {_in: $dishIds},house_id: {_eq: $houseId},weekday_id: {_eq: $weekdayId}}) {
+        affected_rows
+    }
+}
