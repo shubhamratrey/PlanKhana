@@ -13,6 +13,7 @@ import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.sillylife.plankhana.GetHouseUserDishesListQuery
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.enums.UserType
+import com.sillylife.plankhana.enums.WeekType
 import com.sillylife.plankhana.managers.LocalDishManager
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.Dish
@@ -20,6 +21,7 @@ import com.sillylife.plankhana.models.DishStatus
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
+import com.sillylife.plankhana.utils.CommonUtil
 import com.sillylife.plankhana.utils.rxevents.RxBus
 import com.sillylife.plankhana.utils.rxevents.RxEvent
 import com.sillylife.plankhana.utils.rxevents.RxEventType
@@ -27,6 +29,7 @@ import com.sillylife.plankhana.views.adapter.DishesAdapter
 import com.sillylife.plankhana.views.adapter.HouseDishesAdapter
 import com.sillylife.plankhana.views.adapter.item_decorator.GridItemDecoration
 import com.sillylife.plankhana.views.adapter.item_decorator.WrapContentGridLayoutManager
+import kotlinx.android.synthetic.main.fragment_bhaiya_home.*
 import kotlinx.android.synthetic.main.fragment_change_plan.*
 import kotlinx.android.synthetic.main.fragment_select_bhaiya.*
 import kotlinx.android.synthetic.main.fragment_select_bhaiya.progress
@@ -34,6 +37,9 @@ import kotlinx.android.synthetic.main.fragment_select_bhaiya.rcv
 
 import kotlinx.android.synthetic.main.layout_bottom_button.*
 import org.jetbrains.annotations.NotNull
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class BhaiyaHomeFragment : BaseFragment() {
@@ -47,6 +53,8 @@ class BhaiyaHomeFragment : BaseFragment() {
     private var houseId = -1
     private var user: User? = null
     val list: ArrayList<Dish> = ArrayList()
+    var today = false
+    var count = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return LayoutInflater.from(context).inflate(R.layout.fragment_bhaiya_home, null, false)
@@ -57,14 +65,16 @@ class BhaiyaHomeFragment : BaseFragment() {
 
         houseId = SharedPreferenceManager.getHouseId()!!
         user = SharedPreferenceManager.getUser()
-        getDishes()
+        getDishes(WeekType.TODAY.day)
         nextBtn.text = getString(R.string.change_plan)
 
         nextBtn.setOnClickListener {
             if (LocalDishManager.getTempDishList().size > 0) {
                 LocalDishManager.clearTempDishList()
             }
-            SharedPreferenceManager.setMyFoods(list)
+            if (CommonUtil.getDay(count) == WeekType.TODAY.day) {
+                SharedPreferenceManager.setMyFoods(list)
+            }
             addFragment(ChangePlanFragment.newInstance(), ChangePlanFragment.TAG)
         }
 
@@ -74,7 +84,7 @@ class BhaiyaHomeFragment : BaseFragment() {
                     RxEventType.REFRESH_DISH_LIST -> {
                         activity?.runOnUiThread {
                             Handler().postDelayed({
-                                getDishes()
+                                getDishes(WeekType.TODAY.day)
                             },200)
                         }
                     }
@@ -82,13 +92,53 @@ class BhaiyaHomeFragment : BaseFragment() {
             }
         })
 
+        yesterdayTv?.setOnClickListener {
+            count -= 1
+            getDishes(CommonUtil.getDay(count))
+            toggleYesterdayBtn()
+        }
+
+        tomorrowTv?.setOnClickListener {
+            count += 1
+            getDishes(CommonUtil.getDay(count))
+            toggleYesterdayBtn()
+        }
+
+        leftArrowsIv?.setOnClickListener {
+            count -= 1
+            getDishes(CommonUtil.getDay(count))
+            toggleYesterdayBtn()
+        }
+
+        rightArrowsIv?.setOnClickListener {
+            count += 1
+            getDishes(CommonUtil.getDay(count))
+            toggleYesterdayBtn()
+        }
+
+        toggleYesterdayBtn()
     }
 
-    private fun getDishes() {
+    private fun toggleYesterdayBtn(){
+        if (CommonUtil.getDay(count) == WeekType.TODAY.day){
+            leftArrowsIv?.alpha = 0.3f
+            yesterdayTv?.alpha = 0.4f
+
+            leftArrowsIv?.isEnabled = false
+            yesterdayTv?.isEnabled = false
+        } else {
+            leftArrowsIv?.alpha = 1f
+            yesterdayTv?.alpha = 1f
+
+            leftArrowsIv?.isEnabled = true
+            yesterdayTv?.isEnabled = true
+        }
+    }
+
+    private fun getDishes(dayOfWeek:String) {
         progress?.visibility = View.VISIBLE
         val query = GetHouseUserDishesListQuery.builder()
-//                .dayOfWeek(WeekType.TODAY.day)
-                .dayOfWeek("monday")
+                .dayOfWeek(dayOfWeek)
                 .houseId(houseId)
                 .languageId(user?.languageId!!)
                 .userId(user?.id!!)
@@ -119,7 +169,9 @@ class BhaiyaHomeFragment : BaseFragment() {
 
     fun setAdapter(list: ArrayList<Dish>?) {
         if (list != null) {
-            SharedPreferenceManager.setMyFoods(list)
+            if (CommonUtil.getDay(count) == WeekType.TODAY.day) {
+                SharedPreferenceManager.setMyFoods(list)
+            }
             val adapter = HouseDishesAdapter(context!!, UserType.RESIDENT, list) { any, pos ->
 
             }

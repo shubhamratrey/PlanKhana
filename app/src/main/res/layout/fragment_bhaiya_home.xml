@@ -19,22 +19,27 @@
         android:orientation="horizontal">
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/leftArrowsIv"
             android:layout_width="@dimen/dp_15"
             android:layout_height="@dimen/dp_15"
             app:srcCompat="@drawable/ic_left_arrows" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/yesterdayTv"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginStart="@dimen/dp_10"
             android:layout_marginLeft="@dimen/dp_10"
+            android:layout_weight="0.2"
             android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical"
             android:text="@string/yesterday"
             android:textColor="@color/textSubHeading"
             android:textSize="10sp"
             tools:ignore="SmallSp" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/todayTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dp_1"
@@ -46,17 +51,21 @@
             android:textSize="@dimen/sp_25" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tomorrowTv"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginEnd="@dimen/dp_10"
             android:layout_marginRight="@dimen/dp_10"
+            android:layout_weight="0.2"
             android:fontFamily="@font/roboto_regular"
+            android:gravity="center_vertical|end"
             android:text="@string/tomorrow"
             android:textColor="@color/textSubHeading"
             android:textSize="10sp"
             tools:ignore="SmallSp" />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/rightArrowsIv"
             android:layout_width="@dimen/dp_15"
             android:layout_height="@dimen/dp_15"
             app:srcCompat="@drawable/ic_right_arrows" />

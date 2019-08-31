@@ -7,11 +7,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.DimenRes
 import com.sillylife.plankhana.PlanKhana
 import com.sillylife.plankhana.constants.Constants
 import com.sillylife.plankhana.models.User
+import com.sillylife.plankhana.views.fragments.BhaiyaHomeFragment
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -108,6 +110,16 @@ object CommonUtil {
             chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(galleryIntent))
             activity?.startActivityForResult(chooserIntent, Constants.RC_EPISODE_GALLERY)
         }
+    }
+
+    fun getDay(count:Int): String {
+        val sdf = SimpleDateFormat("EEEE", Locale.US)
+        val calendar = Calendar.getInstance()
+        calendar.time = Date()
+        calendar.add(Calendar.DATE, count)
+        val day = sdf.format(calendar.time)
+        Log.d(BhaiyaHomeFragment.TAG, day.toString())
+        return day.toLowerCase()
     }
 
     fun userDummyData(): ArrayList<User> {
