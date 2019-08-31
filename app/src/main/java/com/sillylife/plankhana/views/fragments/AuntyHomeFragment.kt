@@ -26,11 +26,13 @@ import com.sillylife.plankhana.GetHouseDishesListQuery
 import com.sillylife.plankhana.GetHouseResidentListQuery
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.enums.UserType
+import com.sillylife.plankhana.enums.WeekType
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.Dish
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
+import com.sillylife.plankhana.utils.CommonUtil
 import com.sillylife.plankhana.views.adapter.HouseDishesAdapter
 import com.sillylife.plankhana.views.adapter.UserListAdapter
 import com.sillylife.plankhana.views.adapter.item_decorator.GridItemDecoration
@@ -49,6 +51,7 @@ class AuntyHomeFragment : BaseFragment() {
     var appDisposable: AppDisposable = AppDisposable()
     val userList: ArrayList<User> = ArrayList()
     var houseId = -1
+    var count = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return LayoutInflater.from(context).inflate(R.layout.fragment_aunty_home, null, false)
@@ -59,19 +62,60 @@ class AuntyHomeFragment : BaseFragment() {
         houseId = SharedPreferenceManager.getHouseId()!!
 
         setHouseResidents()
-        getHouseDishes()
-        nextBtn.setOnClickListener {
+        getHouseDishes(WeekType.TODAY.day)
+        nextBtn?.setOnClickListener {
             showUserList(userList)
+        }
+
+        yesterdayTv?.setOnClickListener {
+            count -= 1
+            getHouseDishes(CommonUtil.getDay(count))
+            toggleYesterdayBtn()
+        }
+
+        tomorrowTv?.setOnClickListener {
+            count += 1
+            getHouseDishes(CommonUtil.getDay(count))
+            toggleYesterdayBtn()
+        }
+
+        leftArrowsIv?.setOnClickListener {
+            count -= 1
+            getHouseDishes(CommonUtil.getDay(count))
+            toggleYesterdayBtn()
+        }
+
+        rightArrowsIv?.setOnClickListener {
+            count += 1
+            getHouseDishes(CommonUtil.getDay(count))
+            toggleYesterdayBtn()
+        }
+
+        toggleYesterdayBtn()
+    }
+
+    private fun toggleYesterdayBtn(){
+        if (CommonUtil.getDay(count) == WeekType.TODAY.day){
+            leftArrowsIv?.alpha = 0.3f
+            yesterdayTv?.alpha = 0.4f
+
+            leftArrowsIv?.isEnabled = false
+            yesterdayTv?.isEnabled = false
+        } else {
+            leftArrowsIv?.alpha = 1f
+            yesterdayTv?.alpha = 1f
+
+            leftArrowsIv?.isEnabled = true
+            yesterdayTv?.isEnabled = true
         }
     }
 
-    private fun getHouseDishes() {
+    private fun getHouseDishes(dayOfWeek: String) {
         val user = SharedPreferenceManager.getUser()
         progress?.visibility = View.VISIBLE
         val list: ArrayList<Dish> = ArrayList()
         val query = GetHouseDishesListQuery.builder()
-//                .dayOfWeek(WeekType.TODAY.day)
-                .dayOfWeek("monday")
+                .dayOfWeek(dayOfWeek)
                 .languageId(user?.languageId!!)
                 .houseId(houseId)
                 .build()
@@ -108,7 +152,9 @@ class AuntyHomeFragment : BaseFragment() {
 
             }
             rcv?.layoutManager = WrapContentGridLayoutManager(context!!, 3)
-            rcv?.addItemDecoration(GridItemDecoration(context?.resources?.getDimensionPixelSize(R.dimen.dp_8)!!, 3))
+            if (rcv?.itemDecorationCount == 0){
+                rcv?.addItemDecoration(GridItemDecoration(context?.resources?.getDimensionPixelSize(R.dimen.dp_8)!!, 3))
+            }
             progress?.visibility = View.GONE
             rcv?.adapter = adapter
         }
