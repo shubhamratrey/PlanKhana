@@ -43,4 +43,5 @@
     <string name="request_a_new_dish">Request a new dish</string>
     <string name="call_bhaiya_log">Call bhaiya log</string>
     <string name="string_save">Save</string>
+    <string name="you_ll_get_to_eat_these_dishes">You’ll get to eat these dishes on %s night</string>
 </resources>

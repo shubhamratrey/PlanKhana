@@ -150,6 +150,7 @@ class BhaiyaHomeFragment : BaseFragment() {
             yesterdayTv?.isEnabled = false
 
             todayTv.text = getString(R.string.today)
+            subtextTv.text = getString(R.string.you_ll_get_to_eat_these_dishes_tonight)
         } else {
             leftArrowsIv?.alpha = 1f
             yesterdayTv?.alpha = 1f
@@ -158,6 +159,8 @@ class BhaiyaHomeFragment : BaseFragment() {
             yesterdayTv?.isEnabled = true
 
             todayTv.text = CommonUtil.getDay(count)
+            val arg = CommonUtil.getDay(count, Locale.US).toLowerCase()
+            subtextTv.text = getString(R.string.you_ll_get_to_eat_these_dishes, arg)
         }
         val tempYesterDay = count - 1
         val tempTommrowDay = count + 1

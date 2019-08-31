@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.enums.UserType
@@ -19,7 +20,7 @@ class HouseDishesAdapter(val context: Context,
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_home_dish, parent, false)
-        return ViewHolder(view, viewType)
+        return ViewHolder(view)
     }
 
     override fun getItemCount(): Int {
@@ -36,8 +37,14 @@ class HouseDishesAdapter(val context: Context,
         } else {
             holder.bhaiyaPhotoIv.visibility = View.GONE
         }
+
+        holder.dishImageIv?.isLongClickable = true;
+        holder.dishImageIv?.setOnLongClickListener {
+            Toast.makeText(context, dish.dishName, Toast.LENGTH_SHORT).show()
+            return@setOnLongClickListener true
+        }
     }
 
-    class ViewHolder(override val containerView: View?, val viewType: Int) : RecyclerView.ViewHolder(containerView!!), LayoutContainer
+    class ViewHolder(override val containerView: View?) : RecyclerView.ViewHolder(containerView!!), LayoutContainer
 
 }
