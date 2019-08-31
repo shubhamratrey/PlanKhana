@@ -22,6 +22,7 @@ import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.utils.CommonUtil
+import com.sillylife.plankhana.utils.OnSwipeTouchListener
 import com.sillylife.plankhana.utils.rxevents.RxBus
 import com.sillylife.plankhana.utils.rxevents.RxEvent
 import com.sillylife.plankhana.utils.rxevents.RxEventType
@@ -111,6 +112,33 @@ class BhaiyaHomeFragment : BaseFragment() {
         }
 
         toggleYesterdayBtn()
+
+        rcv?.setOnTouchListener(object : OnSwipeTouchListener() {
+            override fun onSwipeTop(): Boolean {
+                return false
+            }
+
+            override fun onSwipeRight(): Boolean {
+                if (CommonUtil.getDay(count).toLowerCase() != WeekType.TODAY.day) {
+                    count -= 1
+                    getDishes(CommonUtil.getDay(count).toLowerCase())
+                    toggleYesterdayBtn()
+                    return true
+                }
+                return false
+            }
+
+            override fun onSwipeLeft(): Boolean {
+                count += 1
+                getDishes(CommonUtil.getDay(count).toLowerCase())
+                toggleYesterdayBtn()
+                return true
+            }
+
+            override fun onSwipeBottom(): Boolean {
+                return false
+            }
+        })
     }
 
     private fun toggleYesterdayBtn() {
