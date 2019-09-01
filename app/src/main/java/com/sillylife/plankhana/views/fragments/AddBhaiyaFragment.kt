@@ -31,6 +31,7 @@ import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.utils.CommonUtil
 import com.sillylife.plankhana.utils.DexterUtil
+import com.sillylife.plankhana.utils.ImageManager
 import com.sillylife.plankhana.views.activities.BhaiyaActivity
 import com.sillylife.plankhana.views.activities.RegistrationActivity
 import com.sillylife.plankhana.views.adapter.AddUsersAdapter
@@ -78,7 +79,7 @@ class AddBhaiyaFragment : BaseFragment() {
                     nextBtn?.text = ""
                     SharedPreferenceManager.setUserRegistrationRequired(false)
                 } else {
-                    showToast("Please add user.", Toast.LENGTH_SHORT)
+                    showToast("Please add flatmate", Toast.LENGTH_SHORT)
                 }
             }
         }
@@ -318,7 +319,7 @@ class AddBhaiyaFragment : BaseFragment() {
                     val result = CropImage.getActivityResult(data)
                     if (resultCode == Activity.RESULT_OK) {
                         imageUri = result.uri
-                        sheetView?.bgImageIv?.setImageURI(imageUri)
+                        ImageManager.loadImageCircular(sheetView?.bgImageIv!!, imageUri.toString())
                         isImagePicked = true
                     } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                         val error = result.error

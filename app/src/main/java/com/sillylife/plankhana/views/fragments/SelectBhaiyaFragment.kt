@@ -8,6 +8,9 @@ import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.text.Editable
+import android.text.InputType
+import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.widget.Toast
@@ -32,6 +35,7 @@ import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.type.Plankhana_houses_houseuser_insert_input
 import com.sillylife.plankhana.utils.CommonUtil
 import com.sillylife.plankhana.utils.DexterUtil
+import com.sillylife.plankhana.utils.ImageManager
 import com.sillylife.plankhana.utils.MapObjects
 import com.sillylife.plankhana.views.adapter.SelectBhaiyaAdapter
 import com.sillylife.plankhana.views.adapter.item_decorator.GridItemDecoration
@@ -40,7 +44,6 @@ import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.bs_dialog_add_user.view.*
 import kotlinx.android.synthetic.main.fragment_select_bhaiya.*
-import kotlinx.android.synthetic.main.item_bhaiya_layout.view.*
 import kotlinx.android.synthetic.main.layout_bottom_button.*
 import org.jetbrains.annotations.NotNull
 
@@ -59,6 +62,10 @@ class SelectBhaiyaFragment : BaseFragment() {
     private var imageUri: Uri? = null
     private var houseId: Int = -1
 
+    var isPhoneNumberEntered = false
+    var isImagePicked = false
+    var isNameEntered = false
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return LayoutInflater.from(context).inflate(R.layout.fragment_select_bhaiya, null, false)
     }
@@ -70,10 +77,14 @@ class SelectBhaiyaFragment : BaseFragment() {
 
         nextBtn.text = getString(R.string.string_continue)
         nextBtn.setOnClickListener {
-            SharedPreferenceManager.setUserType(UserType.RESIDENT)
-            val intent = Intent(activity, BhaiyaActivity::class.java)
-            startActivity(intent)
-            activity?.finish()
+            if (SharedPreferenceManager.getUser()!= null) {
+                SharedPreferenceManager.setUserType(UserType.RESIDENT)
+                val intent = Intent(activity, BhaiyaActivity::class.java)
+                startActivity(intent)
+                activity?.finish()
+            } else {
+                showToast("Please let aunty know who you are", Toast.LENGTH_SHORT)
+            }
         }
     }
 
@@ -136,8 +147,6 @@ class SelectBhaiyaFragment : BaseFragment() {
             addResidentBottomSheet?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             addResidentBottomSheet?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
 
-            sheetView?.input?.setTitleHint(context?.getString(R.string.bhaiya_number, (adapter?.itemCount!!).toString())!!)
-
             if (sheetView?.input?.mInputEt != null && sheetView?.input?.mInputEt?.hasFocus()!!) {
                 sheetView?.input?.mInputEt?.clearFocus()
             }
@@ -162,12 +171,54 @@ class SelectBhaiyaFragment : BaseFragment() {
                 isCommentDialogShown = true
             }, 250)
 
+            sheetView?.input?.setNormalStateAll()
+            sheetView?.inputPhone?.setNormalStateAll()
+            sheetView?.input?.mInputEt?.setText("")
+            sheetView?.inputPhone?.mInputEt?.setText("")
+            sheetView?.inputPhone?.setInputType(InputType.TYPE_CLASS_PHONE)
+            imageUri = null
+
+            isNameEntered = false
+            isImagePicked = false
+            isPhoneNumberEntered = false
 
             addResidentBottomSheet?.show()
 
             sheetView?.closeBtn?.setOnClickListener {
                 addResidentBottomSheet?.dismiss()
             }
+
+            sheetView?.input?.mInputEt?.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+                }
+
+                override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+                }
+
+                override fun afterTextChanged(editable: Editable) {
+                    if (editable.length > 3) {
+                        isNameEntered = true
+                    }
+                }
+            })
+
+            sheetView?.inputPhone?.mInputEt?.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+                }
+
+                override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+                }
+
+                override fun afterTextChanged(editable: Editable) {
+                    if (editable.length > 8) {
+                        isPhoneNumberEntered = true
+                    }
+                }
+            })
 
             sheetView?.changeImage?.setOnClickListener {
                 DexterUtil.with(activity!!, Manifest.permission.READ_EXTERNAL_STORAGE).setListener(object :
@@ -191,10 +242,12 @@ class SelectBhaiyaFragment : BaseFragment() {
                     sheetView?.nextBtn?.isEnabled = false
                     sheetView?.nextBtn?.text = ""
                     sheetView?.nextBtnProgress?.visibility = View.VISIBLE
+                    val name = sheetView?.input?.mInputEt?.text.toString()
+                    val phone = sheetView?.inputPhone?.mInputEt?.text.toString()
                     ImageUploadTask(imageUri?.path!!, ImageType.USER_IMAGE, object : ImageUploadTask.Callback {
                         override fun onUploadSuccess(imageUri: Uri) {
-                            adapter?.addBhaiyaData(User(adapter?.itemCount!!, sheetView?.input?.mInputEt?.text.toString(), imageUri.toString()))
-                            addResidentList(sheetView?.input?.mInputEt?.text.toString(), imageUri.toString(), Math.random().toString())
+                            adapter?.addBhaiyaData(User(name = name, imageUrl = imageUri.toString(), phone = phone))
+                            addResidentList(name, imageUri.toString(), phone)
                         }
 
                         override fun onUploadFailure(error: String) {
@@ -213,14 +266,31 @@ class SelectBhaiyaFragment : BaseFragment() {
     }
 
     fun validate(): Boolean {
-        return if (sheetView?.input?.mInputEt?.text?.length!! <= 3 && imageUri == null) {
-            showToast("Please enter correct name & upload photo", Toast.LENGTH_SHORT)
-            false
-        } else if (sheetView?.input?.mInputEt?.text?.length!! <= 3) {
-            showToast("Please enter correct name", Toast.LENGTH_SHORT)
-            false
-        } else if (imageUri == null) {
+        return if (!isImagePicked && !isNameEntered && !isPhoneNumberEntered) {
+            sheetView?.input?.setErrorState()
+            sheetView?.inputPhone?.setErrorState()
             showToast("Please upload Photo", Toast.LENGTH_SHORT)
+            false
+        } else if (!isImagePicked && !isNameEntered) {
+            sheetView?.input?.setErrorState()
+            showToast("Please upload Photo", Toast.LENGTH_SHORT)
+            false
+        } else if (!isPhoneNumberEntered && !isNameEntered) {
+            sheetView?.input?.setErrorState()
+            sheetView?.inputPhone?.setErrorState()
+            false
+        } else if (!isPhoneNumberEntered && !isImagePicked) {
+            sheetView?.inputPhone?.setErrorState()
+            showToast("Please upload Photo", Toast.LENGTH_SHORT)
+            false
+        } else if (!isImagePicked) {
+            showToast("Please upload Photo", Toast.LENGTH_SHORT)
+            false
+        } else if (!isPhoneNumberEntered) {
+            sheetView?.inputPhone?.setErrorState()
+            false
+        } else if (!isNameEntered) {
+            sheetView?.input?.setErrorState()
             false
         } else {
             true
@@ -273,7 +343,8 @@ class SelectBhaiyaFragment : BaseFragment() {
                         imageUri = result.uri
                         try {
                             if (imageUri?.path != null) {
-//                                sheetView?.bgImageIv?.setImageURI(imageUri)
+                                isImagePicked = true
+                                ImageManager.loadImageCircular(sheetView?.bgImageIv!!, imageUri.toString())
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()
