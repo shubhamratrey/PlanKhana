@@ -31,7 +31,7 @@
 
             <Space
                 android:layout_width="50dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/toolbarTitleTv"
@@ -66,8 +66,8 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp_12"
                 android:visibility="visible"
-                app:tint="#747474"
-                app:srcCompat="@drawable/ic_add_icon" />
+                app:srcCompat="@drawable/ic_add_icon"
+                app:tint="#747474" />
         </LinearLayout>
 
     </androidx.appcompat.widget.Toolbar>
@@ -76,9 +76,10 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
         app:elevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/common_bg"
         app:layout_constraintTop_toTopOf="parent">
 
         <View
@@ -95,6 +96,7 @@
             android:theme="@style/ProfileTabLayout"
             app:tabGravity="fill"
             app:tabIndicatorColor="@color/orange"
+            android:visibility="invisible"
             app:tabIndicatorFullWidth="false"
             app:tabMaxWidth="0dp"
             app:tabMode="scrollable"
@@ -103,28 +105,29 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/profileViewPager"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:overScrollMode="never"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:layout_weight="1">
 
-    <include layout="@layout/layout_bottom_button" />
-
-    <FrameLayout
-        android:id="@+id/preLoader"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/profileViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <ProgressBar
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:theme="@style/ProgressTheme" />
+            android:theme="@style/ProgressTheme"
+            android:visibility="gone" />
 
     </FrameLayout>
+
+
+    <include layout="@layout/layout_bottom_button" />
 
 </LinearLayout>

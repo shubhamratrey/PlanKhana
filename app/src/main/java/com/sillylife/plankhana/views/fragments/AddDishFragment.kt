@@ -26,7 +26,6 @@ import com.sillylife.plankhana.utils.CommonUtil
 import com.sillylife.plankhana.views.activities.WebActivity
 import com.sillylife.plankhana.views.adapter.CommonViewStatePagerAdapter
 import kotlinx.android.synthetic.main.fragment_add_dish.*
-import kotlinx.android.synthetic.main.fragment_change_plan.*
 import kotlinx.android.synthetic.main.layout_bottom_button.*
 import org.jetbrains.annotations.NotNull
 
@@ -112,6 +111,7 @@ class AddDishFragment : BaseFragment() {
     private fun updateTabs(category: ArrayList<DishCategory>) {
 
         tabs.visibility = View.VISIBLE
+        progress.visibility = View.GONE
         profileViewPager.visibility = View.VISIBLE
 
         viewPagerAdapter = CommonViewStatePagerAdapter(childFragmentManager)
@@ -141,8 +141,6 @@ class AddDishFragment : BaseFragment() {
         tabs.setupWithViewPager(profileViewPager)
         profileViewPager.offscreenPageLimit = 2
         setSwipeListenerOnViewPager()
-
-        preLoader.visibility = View.GONE
     }
 
     private fun setSwipeListenerOnViewPager() {
