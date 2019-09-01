@@ -30,8 +30,6 @@ import com.sillylife.plankhana.views.adapter.HouseDishesAdapter
 import com.sillylife.plankhana.views.adapter.item_decorator.GridItemDecoration
 import com.sillylife.plankhana.views.adapter.item_decorator.WrapContentGridLayoutManager
 import kotlinx.android.synthetic.main.fragment_bhaiya_home.*
-import kotlinx.android.synthetic.main.fragment_select_bhaiya.progress
-import kotlinx.android.synthetic.main.fragment_select_bhaiya.rcv
 import kotlinx.android.synthetic.main.layout_bottom_button.*
 import org.jetbrains.annotations.NotNull
 import java.util.*
@@ -142,6 +140,9 @@ class BhaiyaHomeFragment : BaseFragment() {
     }
 
     private fun toggleYesterdayBtn() {
+        subtextTv.visibility = View.GONE
+        rcv?.visibility = View.GONE
+        zeroCaseLl?.visibility = View.GONE
         if (CommonUtil.getDay(count).toLowerCase() == WeekType.TODAY.day) {
             leftArrowsIv?.alpha = 0.3f
             yesterdayTv?.alpha = 0.4f
@@ -151,6 +152,7 @@ class BhaiyaHomeFragment : BaseFragment() {
 
             todayTv.text = getString(R.string.today)
             subtextTv.text = getString(R.string.you_ll_get_to_eat_these_dishes_tonight)
+            zeroCaseTv.text = getString(R.string.empty_dish_list, getString(R.string.today))
         } else {
             leftArrowsIv?.alpha = 1f
             yesterdayTv?.alpha = 1f
@@ -159,8 +161,9 @@ class BhaiyaHomeFragment : BaseFragment() {
             yesterdayTv?.isEnabled = true
 
             todayTv.text = CommonUtil.getDay(count)
-            val arg = CommonUtil.getDay(count, Locale.US).toLowerCase()
-            subtextTv.text = getString(R.string.you_ll_get_to_eat_these_dishes, arg)
+            val arg = CommonUtil.getDay(count, Locale.US)
+            subtextTv.text = getString(R.string.you_ll_get_to_eat_these_dishes, arg.toLowerCase())
+            zeroCaseTv.text = getString(R.string.empty_dish_list, arg)
         }
         val tempYesterDay = count - 1
         val tempTommrowDay = count + 1
@@ -170,6 +173,7 @@ class BhaiyaHomeFragment : BaseFragment() {
 
     private fun getDishes(dayOfWeek: String) {
         progress?.visibility = View.VISIBLE
+        nextBtn?.isEnabled = false
         val query = GetHouseUserDishesListQuery.builder()
                 .dayOfWeek(dayOfWeek)
                 .houseId(houseId)
@@ -211,7 +215,16 @@ class BhaiyaHomeFragment : BaseFragment() {
                 rcv?.addItemDecoration(GridItemDecoration(context?.resources?.getDimensionPixelSize(R.dimen.dp_8)!!, 3))
             }
             progress?.visibility = View.GONE
+            rcv?.visibility = View.VISIBLE
+            if (list.size>0){
+                zeroCaseLl.visibility = View.GONE
+                subtextTv.visibility = View.VISIBLE
+            } else {
+                zeroCaseLl.visibility = View.VISIBLE
+                subtextTv.visibility = View.GONE
+            }
             rcv?.adapter = adapter
+            nextBtn?.isEnabled = true
         }
     }
 
