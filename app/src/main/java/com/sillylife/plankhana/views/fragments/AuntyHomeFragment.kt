@@ -140,6 +140,10 @@ class AuntyHomeFragment : BaseFragment() {
                 return false
             }
         })
+
+        expandedCloseBtn?.setOnClickListener {
+            closeExpandedImage(startBounds!!, startScale!!, thumbView!!)
+        }
     }
 
     private fun toggleYesterdayBtn() {
