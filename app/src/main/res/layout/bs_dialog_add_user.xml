@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/roboto_medium"
-                android:text="@string/add_bhaiya"
+                android:text="@string/add_flatmate"
                 android:textColor="@color/textHeading"
                 android:textSize="25sp" />
 
@@ -53,13 +53,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.sillylife.plankhana.widgets.UIComponentInputField
+                <com.sillylife.plankhana.widgets.UIComponentInputFieldV2
                     android:id="@+id/input"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    app:titleHint="@string/bhaiya_number" />
+                    app:titleHint="@string/name" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/changeImage"
@@ -100,13 +100,13 @@
 
             </LinearLayout>
 
-            <com.sillylife.plankhana.widgets.UIComponentInputField
+            <com.sillylife.plankhana.widgets.UIComponentInputFieldV2
                 android:id="@+id/inputPhone"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                app:titleHint="@string/bhaiya_number" />
+                app:titleHint="@string/phone_number" />
 
         </LinearLayout>
 

@@ -3,12 +3,9 @@ package com.sillylife.plankhana.views.adapter
 import android.content.Context
 import android.graphics.Rect
 import android.net.Uri
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import androidx.recyclerview.widget.RecyclerView
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.models.User
@@ -19,14 +16,11 @@ import kotlinx.android.synthetic.main.item_add_bhaiya.*
 import kotlinx.android.synthetic.main.item_bhaiya_layout.*
 
 
-class AddUsersAdapter(val context: Context, val listener: (Any, Int) -> Unit) :
-    RecyclerView.Adapter<AddUsersAdapter.ViewHolder>() {
+class AddUsersAdapter(val context: Context, user: User, val listener: (Any, Int) -> Unit) :
+        RecyclerView.Adapter<AddUsersAdapter.ViewHolder>() {
 
     val commonItemLists = ArrayList<Any>()
     private val TAG = AddUsersAdapter::class.java.simpleName
-    private var tempId = 0
-    private var tempName: String? = null
-    private var tempImageUrl: String? = null
 
     companion object {
         const val BHAIYA_VIEW = 0
@@ -34,7 +28,7 @@ class AddUsersAdapter(val context: Context, val listener: (Any, Int) -> Unit) :
     }
 
     init {
-        commonItemLists.add(User(tempId))
+        commonItemLists.add(user)
         commonItemLists.add(ADD_BHAIYA_BTN)
     }
 
@@ -64,14 +58,7 @@ class AddUsersAdapter(val context: Context, val listener: (Any, Int) -> Unit) :
             setBhaiyaView(holder)
         } else if (holder.itemViewType == ADD_BHAIYA_BTN) {
             holder.addBhaiyaBtn.setOnClickListener {
-                if (tempName != null && !CommonUtil.textIsEmpty(tempName) && tempImageUrl != null && !CommonUtil.textIsEmpty(tempImageUrl)) {
-//                    updateItem(User(tempId, tempName, tempImageUrl))
-                    tempName = null
-                    tempImageUrl = null
-
-                    tempId += 1
-                    addBhaiyaData(User(tempId))
-                }
+                listener(ADD_BHAIYA_BTN, holder.adapterPosition)
             }
         }
     }
@@ -80,8 +67,7 @@ class AddUsersAdapter(val context: Context, val listener: (Any, Int) -> Unit) :
         val item = commonItemLists[holder.adapterPosition] as User
 
         if (item.imageUrl != null && !CommonUtil.textIsEmpty(item.imageUrl)) {
-            holder.bgImageIv.setImageURI(Uri.parse(item.imageUrl))
-            ImageManager.loadImage(holder.bgImageIv, item.imageUrl)
+            ImageManager.loadImageCircular(holder.bgImageIv, item.imageUrl)
         } else {
             holder.bgImageIv.setImageBitmap(null)
         }
@@ -89,11 +75,13 @@ class AddUsersAdapter(val context: Context, val listener: (Any, Int) -> Unit) :
         if (!CommonUtil.textIsEmpty(item.name)) {
             holder.usernameTv.text = item.name!!
         } else {
-            holder.usernameTv.text= ""
+            holder.usernameTv.text = ""
         }
 
-        holder.bgImageIv.setOnClickListener {
-            listener(item, holder.adapterPosition)
+        if (!CommonUtil.textIsEmpty(item.phone)) {
+            holder.userPhoneNumberTv.text = item.phone!!
+        } else {
+            holder.userPhoneNumberTv.text = ""
         }
     }
 
@@ -123,21 +111,10 @@ class AddUsersAdapter(val context: Context, val listener: (Any, Int) -> Unit) :
         for (i in commonItemLists.indices) {
             if (commonItemLists[i] is User && items.id == (commonItemLists[i] as User).id) {
                 (commonItemLists[i] as User).imageUrl = items.imageUrl
-                tempImageUrl = items.imageUrl
                 notifyItemChanged(i)
                 break
             }
         }
-    }
-
-    fun getUserList():ArrayList<User>{
-        val tempUserList: ArrayList<User> = ArrayList()
-        for (user in commonItemLists!!) {
-            if (user is User) {
-                tempUserList.add(user)
-            }
-        }
-        return  tempUserList
     }
 
     class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer
@@ -147,11 +124,11 @@ class AddUsersAdapter(val context: Context, val listener: (Any, Int) -> Unit) :
         override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
             val viewType = parent.adapter!!.getItemViewType(parent.getChildAdapterPosition(view))
             if (viewType == BHAIYA_VIEW) {
-                outRect.left = CommonUtil.dpToPx(17)
-                outRect.right = CommonUtil.dpToPx(7)
+                outRect.left = CommonUtil.dpToPx(5)
+                outRect.right = CommonUtil.dpToPx(5)
 
                 if (parent.getChildAdapterPosition(view) == 0) {
-                    outRect.top = CommonUtil.dpToPx(17)
+                    outRect.top = CommonUtil.dpToPx(23)
                 }
             } else {
                 if (parent.getChildAdapterPosition(view) == parent.adapter!!.itemCount - 1) {
