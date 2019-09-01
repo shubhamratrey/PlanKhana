@@ -1,5 +1,6 @@
 package com.sillylife.plankhana.views.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -22,6 +23,7 @@ import com.sillylife.plankhana.models.DishCategory
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.utils.CommonUtil
+import com.sillylife.plankhana.views.activities.WebActivity
 import com.sillylife.plankhana.views.adapter.CommonViewStatePagerAdapter
 import kotlinx.android.synthetic.main.fragment_add_dish.*
 import kotlinx.android.synthetic.main.fragment_change_plan.*
@@ -57,6 +59,11 @@ class AddDishFragment : BaseFragment() {
 
         nextBtn?.setOnClickListener {
             fragmentManager?.popBackStack()
+        }
+
+        requestDishIV?.setOnClickListener {
+            val intent = Intent(activity, WebActivity::class.java)
+            startActivity(intent)
         }
         setTabs()
         toggleBtn()

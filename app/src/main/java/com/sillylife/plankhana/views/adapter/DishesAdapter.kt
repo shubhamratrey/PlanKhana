@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.sillylife.plankhana.R
-import com.sillylife.plankhana.managers.LocalDishManager
 import com.sillylife.plankhana.models.Dish
 import com.sillylife.plankhana.models.DishStatus
 import com.sillylife.plankhana.utils.ImageManager
@@ -16,14 +15,14 @@ import kotlinx.android.synthetic.main.item_add_bhaiya.*
 import kotlinx.android.synthetic.main.item_dish_horizontal.*
 
 
-class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (Any, String, Int) -> Unit) : RecyclerView.Adapter<DishesAdapter.ViewHolder>() {
+class DishesAdapter(val context: Context, val type: String, list: ArrayList<Dish>, val listener: (Any, String, Int) -> Unit) : RecyclerView.Adapter<DishesAdapter.ViewHolder>() {
 
     private val commonItemLists = ArrayList<Any>()
     private val TAG = DishesAdapter::class.java.simpleName
-    private var type = ""
 
     companion object {
         const val Add_A_DISH: String = "add_a_dish"
+        const val REQUEST_A_DISH: String = "request_a_dish"
         const val REMOVE: String = "remove"
         const val ADD: String = "add_a_dish"
         const val DISH_VIEW = 0
@@ -32,7 +31,9 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
 
     init {
         commonItemLists.addAll(list)
-        commonItemLists.add(ADD_DISH_BTN)
+        if (type.contentEquals(Add_A_DISH)) {
+            commonItemLists.add(ADD_DISH_BTN)
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -127,10 +128,6 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
         }
     }
 
-    fun setType(type: String) {
-        this.type = type
-    }
-
     fun changeDishStatus(dish: Dish) {
         if (commonItemLists.size > 0) {
             for (position in commonItemLists.indices) {
@@ -153,9 +150,13 @@ class DishesAdapter(val context: Context, list: ArrayList<Dish>, val listener: (
 
     fun addDishData(dish: Dish) {
         val oldSize = itemCount
-        commonItemLists.remove(ADD_DISH_BTN)
+        if (type.contentEquals(Add_A_DISH)) {
+            commonItemLists.remove(ADD_DISH_BTN)
+        }
         this.commonItemLists.add(dish)
-        this.commonItemLists.add(ADD_DISH_BTN)
+        if (type.contentEquals(Add_A_DISH)) {
+            this.commonItemLists.add(ADD_DISH_BTN)
+        }
         if (oldSize > itemCount) {
             notifyItemRangeRemoved(itemCount, oldSize)
         } else {

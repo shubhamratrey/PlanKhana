@@ -29,6 +29,10 @@
                 android:padding="@dimen/dp_16"
                 app:srcCompat="@drawable/ic_back" />
 
+            <Space
+                android:layout_width="50dp"
+                android:layout_height="match_parent"/>
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/toolbarTitleTv"
                 android:layout_width="0dp"
@@ -56,6 +60,14 @@
                 android:visibility="visible"
                 app:srcCompat="@drawable/ic_search" />
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/requestDishIV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_12"
+                android:visibility="visible"
+                app:tint="#747474"
+                app:srcCompat="@drawable/ic_add_icon" />
         </LinearLayout>
 
     </androidx.appcompat.widget.Toolbar>

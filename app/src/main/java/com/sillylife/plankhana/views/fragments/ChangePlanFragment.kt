@@ -247,7 +247,7 @@ class ChangePlanFragment : BaseFragment() {
 
     private fun setAdapter(list: ArrayList<Dish>?) {
         if (list != null) {
-            val adapter = DishesAdapter(context!!, list) { any, type, pos ->
+            val adapter = DishesAdapter(context!!,DishesAdapter.Add_A_DISH, list) { any, type, pos ->
                 if (any is Int && any == DishesAdapter.ADD_DISH_BTN) {
                     addFragment(AddDishFragment.newInstance(), AddDishFragment.TAG)
                 } else if (any is Dish && type.contains(DishesAdapter.REMOVE)) {
@@ -263,7 +263,6 @@ class ChangePlanFragment : BaseFragment() {
                     toggleBtn()
                 }
             }
-            adapter.setType(DishesAdapter.Add_A_DISH)
             rcv?.layoutManager = LinearLayoutManager(context!!)
             if (rcv?.itemDecorationCount == 0) {
                 rcv?.addItemDecoration(ItemDecorator(0, CommonUtil.dpToPx(20), CommonUtil.dpToPx(20), 0, 0))

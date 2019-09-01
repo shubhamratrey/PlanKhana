@@ -81,7 +81,7 @@ class AddDishChildFragment : BaseFragment() {
             getAllDishes()
         } else {
             val list: ArrayList<Dish> = ArrayList()
-            LocalDishManager.getFavouriteDishes().forEach {dishes ->
+            LocalDishManager.getFavouriteDishes().forEach { dishes ->
                 if (tempDishIds.contains(dishes.id)) {
                     list.add(Dish(dishes.id, dishes.dishName, dishes.dishImage, DishStatus(added = true)))
                 } else if (dishIds.contains(dishes.id)) {
@@ -191,7 +191,7 @@ class AddDishChildFragment : BaseFragment() {
 
     fun setAdapter(list: ArrayList<Dish>?) {
         if (list != null) {
-            val adapter = DishesAdapter(context!!, list) { any, type, pos ->
+            val adapter = DishesAdapter(context!!, DishesAdapter.REQUEST_A_DISH, list) { any, type, pos ->
                 if (any is String && any.contentEquals(DishesAdapter.Add_A_DISH)) {
                     val intent = Intent(activity, WebActivity::class.java)
                     startActivity(intent)
