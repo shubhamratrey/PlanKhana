@@ -28,4 +28,13 @@ class AuntyActivity : BaseActivity() {
         }
         FragmentHelper.replace(R.id.container, supportFragmentManager, fragment, tag)
     }
+
+    override fun onBackPressed() {
+        val fragment = supportFragmentManager.findFragmentByTag(AuntyHomeFragment.TAG) as AuntyHomeFragment
+        if (!fragment.closeExpandedImage()){
+
+        } else {
+            super.onBackPressed()
+        }
+    }
 }

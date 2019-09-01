@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.item_home_dish.*
 class HouseDishesAdapter(val context: Context,
                          private val userType: UserType,
                          val dishList: ArrayList<Dish>,
-                         val listener: (Any, Int) -> Unit) : RecyclerView.Adapter<HouseDishesAdapter.ViewHolder>() {
+                         val listener: (Any, View, Int) -> Unit) : RecyclerView.Adapter<HouseDishesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_home_dish, parent, false)
@@ -36,6 +36,10 @@ class HouseDishesAdapter(val context: Context,
             holder.bhaiyaPhotoIv.visibility = View.VISIBLE
         } else {
             holder.bhaiyaPhotoIv.visibility = View.GONE
+        }
+
+        holder.dishImageIv.setOnClickListener {
+            listener(dish, it, holder.adapterPosition)
         }
 
         holder.dishImageIv?.isLongClickable = true;
