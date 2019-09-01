@@ -125,6 +125,9 @@ class AuntyHomeFragment : BaseFragment() {
     }
 
     private fun toggleYesterdayBtn() {
+        subtextTv.visibility = View.GONE
+        rcv?.visibility = View.GONE
+        zeroCaseLl?.visibility = View.GONE
         if (CommonUtil.getDay(count).toLowerCase() == WeekType.TODAY.day) {
             leftArrowsIv?.alpha = 0.3f
             yesterdayTv?.alpha = 0.4f
@@ -133,6 +136,8 @@ class AuntyHomeFragment : BaseFragment() {
             yesterdayTv?.isEnabled = false
 
             todayTv.text = getString(R.string.today)
+            subtextTv.text = getString(R.string.please_cook_these_dishes_for_dinner_tonight)
+            zeroCaseTv.text = getString(R.string.aunty_empty_dish_list, getString(R.string.today))
         } else {
             leftArrowsIv?.alpha = 1f
             yesterdayTv?.alpha = 1f
@@ -141,6 +146,9 @@ class AuntyHomeFragment : BaseFragment() {
             yesterdayTv?.isEnabled = true
 
             todayTv.text = CommonUtil.getDay(count, Locale.getDefault())
+            val arg = CommonUtil.getDay(count, Locale.getDefault())
+            subtextTv.text = getString(R.string.please_cook_these_dishes_on, arg.toLowerCase())
+            zeroCaseTv.text = getString(R.string.aunty_empty_dish_list, arg)
         }
 
         val tempYesterDay = count - 1
@@ -195,6 +203,14 @@ class AuntyHomeFragment : BaseFragment() {
                 rcv?.addItemDecoration(GridItemDecoration(context?.resources?.getDimensionPixelSize(R.dimen.dp_8)!!, 3))
             }
             progress?.visibility = View.GONE
+            rcv?.visibility = View.VISIBLE
+            if (list.size>0){
+                zeroCaseLl.visibility = View.GONE
+                subtextTv.visibility = View.VISIBLE
+            } else {
+                zeroCaseLl.visibility = View.VISIBLE
+                subtextTv.visibility = View.GONE
+            }
             rcv?.adapter = adapter
         }
     }

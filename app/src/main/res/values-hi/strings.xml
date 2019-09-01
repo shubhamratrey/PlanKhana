@@ -50,4 +50,6 @@
     <string name="add_flatmate">Add Flatmate</string>
     <string name="name">Name</string>
     <string name="empty_dish_list">No dishes for %s\nAdd dishes to the plan</string>
+    <string name="aunty_empty_dish_list">%s को पकाने के लिए कोई व्यंजन नहीं हैं</string>
+    <string name="please_cook_these_dishes_on">कृपया इन व्यंजनों को %s की रात को पकाएं</string>
 </resources>
