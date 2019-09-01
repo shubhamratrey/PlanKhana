@@ -168,18 +168,13 @@
             app:cardBackgroundColor="@color/white"
             app:cardElevation="@dimen/dp_15">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/nextBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                app:cardElevation="0dp">
-
                 <LinearLayout
+                    android:id="@+id/nextBtn"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:layout_gravity="center"
-                    android:background="@drawable/d_accent"
+                    android:layout_margin="20dp"
+                    android:background="@drawable/d_accent_stroke"
                     android:gravity="center">
 
                     <androidx.appcompat.widget.AppCompatImageView
@@ -187,6 +182,7 @@
                         android:layout_height="@dimen/dp_15"
                         android:layout_marginEnd="@dimen/dp_5"
                         android:layout_marginRight="@dimen/dp_5"
+                        app:tint="@color/colorAccent"
                         app:srcCompat="@drawable/ic_phone_white" />
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -194,10 +190,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_medium"
                         android:text="@string/call_bhaiya_log"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/colorAccent" />
                 </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
 
         </com.sillylife.plankhana.widgets.xcardview.CardView>
 
@@ -208,7 +202,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
