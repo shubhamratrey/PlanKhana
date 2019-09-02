@@ -104,28 +104,32 @@ class FindOrRegisterFragment : BaseFragment() {
                             return
                         }
 
-                        activity?.runOnUiThread {
-                            if (isRegistered) {
-                                if (mutableListOf(response.data())[0]?.plankhana_houses_house()?.size!! >= 1) {
+                        if (isRegistered) {
+                            if (mutableListOf(response.data())[0]?.plankhana_houses_house()?.size!! >= 1) {
+                                activity?.runOnUiThread {
                                     SharedPreferenceManager.setHouseId(response.data()?.plankhana_houses_house()!![0]?.id()!!)
                                     replaceFragment(SelectRoleFragment.newInstance(), AddBhaiyaFragment.TAG)
-                                } else {
+                                }
+                            } else {
+                                activity?.runOnUiThread {
                                     nameEt.setErrorState()
                                     nameEt.setTitleHint(getString(R.string.new_house_key))
                                     nextBtnProgress?.visibility = View.GONE
                                     nextBtn?.text = getString(R.string.find)
                                     nameEt?.toggleLoginVisibility(true, getString(R.string.generate_now))
                                 }
-                            } else {
-                                if (mutableListOf(response.data())[0]?.plankhana_houses_house()?.size!! >= 1) {
+                            }
+                        } else {
+                            if (mutableListOf(response.data())[0]?.plankhana_houses_house()?.size!! >= 1) {
+                                activity?.runOnUiThread {
                                     nameEt.setErrorState()
                                     nameEt.setTitleHint(getString(R.string.house_key_already_exists))
                                     nextBtnProgress?.visibility = View.GONE
                                     nextBtn?.text = getString(R.string.generate)
                                     nameEt?.toggleLoginVisibility(true, getString(R.string.login_now))
-                                } else {
-                                    addHouseKey(key)
                                 }
+                            } else {
+                                addHouseKey(key)
                             }
                         }
                     }
@@ -144,7 +148,9 @@ class FindOrRegisterFragment : BaseFragment() {
                 if (isAdded) {
                     SharedPreferenceManager.setHouseId(response.data()?.insert_plankhana_houses_house()?.returning()!![0]?.id()!!)
                     SharedPreferenceManager.setUserRegistrationRequired(true)
-                    replaceFragment(AddBhaiyaFragment.newInstance(), AddBhaiyaFragment.TAG)
+                    activity?.runOnUiThread {
+                        replaceFragment(AddBhaiyaFragment.newInstance(), AddBhaiyaFragment.TAG)
+                    }
                 }
             }
         })

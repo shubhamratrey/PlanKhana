@@ -127,7 +127,9 @@ class AddBhaiyaFragment : BaseFragment() {
 
                     override fun onResponse(@NotNull response: Response<AddResidentListMutation.Data>) {
                         if (isAdded) {
-                            replaceFragment(SelectRoleFragment.newInstance(), SelectRoleFragment.TAG)
+                            activity?.runOnUiThread {
+                                replaceFragment(SelectRoleFragment.newInstance(), SelectRoleFragment.TAG)
+                            }
                         }
                     }
                 })

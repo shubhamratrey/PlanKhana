@@ -171,10 +171,12 @@ class ChangePlanFragment : BaseFragment() {
 
             override fun onResponse(@NotNull response: Response<InsertUserDishWeekPlanMutation.Data>) {
                 if (isAdded) {
-                    Log.d(TAG, response.data().toString())
-                    addResponse = true
-                    finishFragment()
-                    LocalDishManager.saveFavouriteDishes(LocalDishManager.getTempDishList())
+                    activity?.runOnUiThread {
+                        Log.d(TAG, response.data().toString())
+                        addResponse = true
+                        finishFragment()
+                        LocalDishManager.saveFavouriteDishes(LocalDishManager.getTempDishList())
+                    }
                 }
             }
         })
@@ -197,9 +199,10 @@ class ChangePlanFragment : BaseFragment() {
 
             override fun onResponse(@NotNull response: Response<DeleteUserDishWeekPlanMutation.Data>) {
                 if (isAdded) {
-                    response.data()
-                    deleteResponse = true
-                    finishFragment()
+                    activity?.runOnUiThread {
+                        deleteResponse = true
+                        finishFragment()
+                    }
                 }
             }
         })
@@ -247,7 +250,7 @@ class ChangePlanFragment : BaseFragment() {
 
     private fun setAdapter(list: ArrayList<Dish>?) {
         if (list != null) {
-            val adapter = DishesAdapter(context!!,DishesAdapter.Add_A_DISH, list) { any, type, pos ->
+            val adapter = DishesAdapter(context!!, DishesAdapter.Add_A_DISH, list) { any, type, pos ->
                 if (any is Int && any == DishesAdapter.ADD_DISH_BTN) {
                     addFragment(AddDishFragment.newInstance(), AddDishFragment.TAG)
                 } else if (any is Dish && type.contains(DishesAdapter.REMOVE)) {
