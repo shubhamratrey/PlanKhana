@@ -22,14 +22,12 @@ import com.karumi.dexter.PermissionToken
 import com.sillylife.plankhana.AddResidentListMutation
 import com.sillylife.plankhana.GetHouseResidentListQuery
 import com.sillylife.plankhana.R
-import com.sillylife.plankhana.views.activities.BhaiyaActivity
 import com.sillylife.plankhana.constants.Constants
 import com.sillylife.plankhana.enums.ImageType
 import com.sillylife.plankhana.enums.UserType
 import com.sillylife.plankhana.managers.ImageUploadTask
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.User
-import com.sillylife.plankhana.views.activities.RegistrationActivity
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.type.Plankhana_houses_houseuser_insert_input
@@ -37,6 +35,8 @@ import com.sillylife.plankhana.utils.CommonUtil
 import com.sillylife.plankhana.utils.DexterUtil
 import com.sillylife.plankhana.utils.ImageManager
 import com.sillylife.plankhana.utils.MapObjects
+import com.sillylife.plankhana.views.activities.BhaiyaActivity
+import com.sillylife.plankhana.views.activities.RegistrationActivity
 import com.sillylife.plankhana.views.adapter.SelectBhaiyaAdapter
 import com.sillylife.plankhana.views.adapter.item_decorator.GridItemDecoration
 import com.sillylife.plankhana.views.adapter.item_decorator.WrapContentGridLayoutManager
@@ -77,7 +77,7 @@ class SelectBhaiyaFragment : BaseFragment() {
 
         nextBtn.text = getString(R.string.string_continue)
         nextBtn.setOnClickListener {
-            if (SharedPreferenceManager.getUser()!= null) {
+            if (SharedPreferenceManager.getUser() != null) {
                 SharedPreferenceManager.setUserType(UserType.RESIDENT)
                 val intent = Intent(activity, BhaiyaActivity::class.java)
                 startActivity(intent)
@@ -246,7 +246,6 @@ class SelectBhaiyaFragment : BaseFragment() {
                     val phone = sheetView?.inputPhone?.mInputEt?.text.toString()
                     ImageUploadTask(imageUri?.path!!, ImageType.USER_IMAGE, object : ImageUploadTask.Callback {
                         override fun onUploadSuccess(imageUri: Uri) {
-                            adapter?.addBhaiyaData(User(name = name, imageUrl = imageUri.toString(), phone = phone))
                             addResidentList(name, imageUri.toString(), phone)
                         }
 
@@ -311,9 +310,14 @@ class SelectBhaiyaFragment : BaseFragment() {
             }
 
             override fun onResponse(@NotNull response: Response<AddResidentListMutation.Data>) {
-                addResidentBottomSheet?.dismiss()
-                sheetView?.nextBtn?.isEnabled = true
-                sheetView?.nextBtn?.text = getString(R.string.add)
+                activity?.runOnUiThread {
+                    val id = response.data()?.insert_plankhana_houses_houseuser()?.returning()?.get(0)?.users_userprofile()?.id()
+                    val langugaeId = response.data()?.insert_plankhana_houses_houseuser()?.returning()?.get(0)?.users_userprofile()?.language_id()
+                    adapter?.addBhaiyaData(User(id = id, name = residentName, imageUrl = residentPicture, phone = residentNumber, languageId = langugaeId))
+                    addResidentBottomSheet?.dismiss()
+                    sheetView?.nextBtn?.isEnabled = true
+                    sheetView?.nextBtn?.text = getString(R.string.add)
+                }
             }
         })
     }
