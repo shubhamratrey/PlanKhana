@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit
 
 object ApolloService {
 
-    val GRAPHQL_ENDPOINT: String = "http://hasura-plankhana.herokuapp.com/v1/graphql"
+    val GRAPHQL_ENDPOINT: String = "https://hasura-plankhana.herokuapp.com/v1/graphql"
     val GRAPHQL_WEBSOCKET_ENDPOINT: String = "wss://hasura-plankhana.herokuapp.com/v1/graphql"
     private val SQL_CACHE_NAME = "mktodo"
 
