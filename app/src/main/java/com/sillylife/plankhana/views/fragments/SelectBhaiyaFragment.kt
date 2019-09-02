@@ -312,8 +312,8 @@ class SelectBhaiyaFragment : BaseFragment() {
             override fun onResponse(@NotNull response: Response<AddResidentListMutation.Data>) {
                 activity?.runOnUiThread {
                     val id = response.data()?.insert_plankhana_houses_houseuser()?.returning()?.get(0)?.users_userprofile()?.id()
-                    val langugaeId = response.data()?.insert_plankhana_houses_houseuser()?.returning()?.get(0)?.users_userprofile()?.language_id()
-                    adapter?.addBhaiyaData(User(id = id, name = residentName, imageUrl = residentPicture, phone = residentNumber, languageId = langugaeId))
+                    val languageId = response.data()?.insert_plankhana_houses_houseuser()?.returning()?.get(0)?.users_userprofile()?.language_id()
+                    adapter?.addBhaiyaData(User(id = id, name = residentName, imageUrl = residentPicture, phone = residentNumber, languageId = languageId))
                     addResidentBottomSheet?.dismiss()
                     sheetView?.nextBtn?.isEnabled = true
                     sheetView?.nextBtn?.text = getString(R.string.add)
