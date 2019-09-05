@@ -11,17 +11,18 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
-import com.sillylife.plankhana.DeleteUserDishWeekPlanMutation
-import com.sillylife.plankhana.GetDayOfWeekQuery
-import com.sillylife.plankhana.InsertUserDishWeekPlanMutation
-import com.sillylife.plankhana.R
+import com.sillylife.plankhana.*
 import com.sillylife.plankhana.enums.WeekType
 import com.sillylife.plankhana.managers.LocalDishManager
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.Dish
+import com.sillylife.plankhana.models.Message
+import com.sillylife.plankhana.models.NotifyData
 import com.sillylife.plankhana.models.User
+import com.sillylife.plankhana.models.responses.EmptyResponse
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
+import com.sillylife.plankhana.services.CallbackWrapper
 import com.sillylife.plankhana.type.Plankhana_users_userdishweekplan_insert_input
 import com.sillylife.plankhana.utils.CommonUtil
 import com.sillylife.plankhana.utils.MapObjects
@@ -30,6 +31,8 @@ import com.sillylife.plankhana.utils.rxevents.RxEvent
 import com.sillylife.plankhana.utils.rxevents.RxEventType
 import com.sillylife.plankhana.views.adapter.DishesAdapter
 import com.sillylife.plankhana.views.adapter.item_decorator.ItemDecorator
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_change_plan.*
 import kotlinx.android.synthetic.main.layout_bottom_button.*
 import org.jetbrains.annotations.NotNull
@@ -146,6 +149,8 @@ class ChangePlanFragment : BaseFragment() {
                             if (LocalDishManager.getTempSavedDishesIds().size > 0) {
                                 addDishes(response.data()?.plankhana_users_planweekday()!![0]?.id()!!)
                             }
+
+                            sendNotification(houseId.toString(), NotifyData("${user?.name!!} bhaiya ne kuch badla hai", "haan badla hai"))
                         }
                     }
                 })
@@ -281,5 +286,20 @@ class ChangePlanFragment : BaseFragment() {
             LocalDishManager.clearTempDishList()
         }
         appDisposable.dispose()
+    }
+
+    fun sendNotification(to: String, notifyData: NotifyData) {
+        appDisposable.add(PlanKhana.getInstance().getFCMService()
+                .sendMessage(Message("/topics/$to", notifyData))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribeWith(object : CallbackWrapper<retrofit2.Response<EmptyResponse>>() {
+                    override fun onSuccess(t: retrofit2.Response<EmptyResponse>) {
+                        Log.d("Response ", "onResponse")
+                    }
+
+                    override fun onFailure(code: Int, message: String) {
+                        Log.d("Response ", "onFailure")
+                    }
+                }))
     }
 }

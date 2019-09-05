@@ -4,6 +4,8 @@ import android.content.IntentFilter
 import android.net.ConnectivityManager
 import androidx.multidex.MultiDexApplication
 import com.apollographql.apollo.ApolloClient
+import com.sillylife.plankhana.fcm.FCMService
+import com.sillylife.plankhana.fcm.FirebaseAPI
 import com.sillylife.plankhana.services.*
 import com.sillylife.plankhana.utils.rxevents.RxBus
 import com.sillylife.plankhana.utils.rxevents.RxEvent
@@ -26,6 +28,8 @@ class PlanKhana : MultiDexApplication(), ConnectivityReceiverListener {
             RxBus.publish(RxEvent.NetworkConnectivity(isConnected))
         }
     }
+
+    private var mIAPIService: FirebaseAPI? = null
 
     @Volatile
     private var mApolloClient: ApolloClient? = null
@@ -60,6 +64,14 @@ class PlanKhana : MultiDexApplication(), ConnectivityReceiverListener {
             mApolloClient = ApolloService.buildApollo()
         }
         return mApolloClient!!
+    }
+
+    @Synchronized
+    fun getFCMService(): FirebaseAPI {
+        if (mIAPIService == null) {
+            mIAPIService = FCMService.build()
+        }
+        return mIAPIService!!
     }
 
 }

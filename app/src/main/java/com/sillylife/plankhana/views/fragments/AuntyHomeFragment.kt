@@ -150,7 +150,15 @@ class AuntyHomeFragment : BaseFragment() {
 
     private fun subscribeCommonTopic() {
         val commonTopic = SharedPreferenceManager.getHouseId().toString()//"all-users"
-        FirebaseMessaging.getInstance().subscribeToTopic(commonTopic).addOnCompleteListener { }
+        FirebaseMessaging.getInstance().subscribeToTopic(commonTopic).addOnCompleteListener {
+            if (it.isSuccessful){
+                Log.d(TAG, "subscribeCommonTopic isSuccessful")
+            } else {
+                Log.d(TAG, "subscribeCommonTopic isFailed")
+            }
+        }.addOnFailureListener {
+            Log.d(TAG, "subscribeCommonTopic ${it.stackTrace}")
+        }
     }
 
     private fun toggleYesterdayBtn() {
