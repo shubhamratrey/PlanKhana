@@ -14,7 +14,7 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="backgroundTint">@color/primaryColor</item>
     </style>
 
     <style name="ThemeButtonSecondary" parent="Widget.MaterialComponents.Button.OutlinedButton">
