@@ -57,7 +57,7 @@ android {
             minifyEnabled false
             applicationIdSuffix ".preprod"
             signingConfig signingConfigs.debug
-            resValue "string", "app_name_", "Preprod " + APP_NAME_EN
+            resValue "string", "app_name", "Preprod " + APP_NAME_EN
             buildConfigField("String", "BASE_URL", "\"" + PREPROD_DOMAIN + "\"")
             buildConfigField("String", "GRAPHQL_WEBSOCKET_ENDPOINT", "\"" + PREPROD_GRAPHQL_WEBSOCKET_ENDPOINT + "\"")
             buildConfigField("String", "HASURA_ADMIN_SECRET", "\"" + HASURA_ADMIN_SECRET + "\"")
@@ -66,7 +66,7 @@ android {
             debuggable true
             minifyEnabled false
             signingConfig signingConfigs.release
-            resValue "string", "app_name_", APP_NAME_EN
+            resValue "string", "app_name", APP_NAME_EN
             buildConfigField("String", "BASE_URL", "\"" + PROD_DOMAIN + "\"")
             buildConfigField("String", "GRAPHQL_WEBSOCKET_ENDPOINT", "\"" + PROD_GRAPHQL_WEBSOCKET_ENDPOINT + "\"")
             buildConfigField("String", "HASURA_ADMIN_SECRET", "\"" + HASURA_ADMIN_SECRET + "\"")

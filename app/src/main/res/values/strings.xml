@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">PlanKhana</string>
-
     <string name="click_here">Click Here</string>
     <string name="register_your_house">Register your House</string>
     <string name="already_have_a_house_key">Already have a house key?</string>
