@@ -1,5 +1,6 @@
 package com.sillylife.plankhana.views.activities
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.sillylife.plankhana.R
@@ -36,5 +37,11 @@ class AuntyActivity : BaseActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        val fragment:AuntyHomeFragment? = supportFragmentManager.findFragmentByTag(AuntyHomeFragment.TAG) as AuntyHomeFragment
+        fragment?.onNewIntent(intent)
+        super.onNewIntent(intent)
     }
 }

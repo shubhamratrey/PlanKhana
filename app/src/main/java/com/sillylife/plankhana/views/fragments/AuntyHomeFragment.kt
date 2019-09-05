@@ -25,6 +25,7 @@ import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.messaging.FirebaseMessaging
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
@@ -83,6 +84,7 @@ class AuntyHomeFragment : BaseFragment() {
         houseId = SharedPreferenceManager.getHouseId()!!
 
         setHouseResidents()
+        subscribeCommonTopic()
         getHouseDishes(WeekType.TODAY.day)
         nextBtn?.setOnClickListener {
             showUserList(userList)
@@ -144,6 +146,11 @@ class AuntyHomeFragment : BaseFragment() {
         expandedCloseBtn?.setOnClickListener {
             closeExpandedImage(startBounds!!, startScale!!, thumbView!!)
         }
+    }
+
+    private fun subscribeCommonTopic() {
+        val commonTopic = SharedPreferenceManager.getHouseId().toString()//"all-users"
+        FirebaseMessaging.getInstance().subscribeToTopic(commonTopic).addOnCompleteListener { }
     }
 
     private fun toggleYesterdayBtn() {
@@ -448,6 +455,10 @@ class AuntyHomeFragment : BaseFragment() {
             return false
         }
         return true
+    }
+
+    fun onNewIntent(intent: Intent?) {
+
     }
 
     override fun onDestroy() {

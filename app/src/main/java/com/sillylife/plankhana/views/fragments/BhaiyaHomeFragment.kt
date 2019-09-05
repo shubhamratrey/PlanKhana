@@ -10,6 +10,8 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.RemoteMessage
 import com.sillylife.plankhana.GetHouseUserDishesListQuery
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.enums.UserType
@@ -34,9 +36,20 @@ import kotlinx.android.synthetic.main.layout_bottom_button.*
 import org.jetbrains.annotations.NotNull
 import java.util.*
 import kotlin.collections.ArrayList
+import org.json.JSONObject
+import android.os.AsyncTask
+import android.provider.SyncStateContract
+import com.sillylife.plankhana.PlanKhana
+import com.sillylife.plankhana.models.Message
+import com.sillylife.plankhana.models.NotifyData
+import com.sillylife.plankhana.services.CallbackWrapper
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import okhttp3.*
+import com.sillylife.plankhana.models.responses.EmptyResponse
 
 
-class BhaiyaHomeFragment : BaseFragment() {
+abstract class BhaiyaHomeFragment : BaseFragment() {
 
     companion object {
         fun newInstance() = BhaiyaHomeFragment()
@@ -226,6 +239,72 @@ class BhaiyaHomeFragment : BaseFragment() {
             rcv?.adapter = adapter
             nextBtn?.isEnabled = true
         }
+    }
+
+    fun sendNotification(){
+        val topic = "highScores"
+
+// See documentation on defining a message payload.
+        val message = RemoteMessage.Builder().setTtl().build()
+                .putData("score", "850")
+                .putData("time", "2:45")
+                .setTopic(topic)
+                .build()
+
+// Send a message to the devices subscribed to the provided topic.
+        val response = FirebaseMessaging.getInstance().send(message)
+// Response is a message ID string.
+        println("Successfully sent message: $response")
+    }
+
+    val JSON = MediaType.parse("application/json; charset=utf-8")
+    private fun sendNotification(regToken: String) {
+        object : AsyncTask<Void, Void, Void>() {
+            override fun doInBackground(vararg params: Void): Void? {
+                try {
+                    val client = OkHttpClient()
+                    val json = JSONObject()
+                    val dataJson = JSONObject()
+                    dataJson.put("body", "Hi this is sent from device to device")
+                    dataJson.put("title", "dummy title")
+                    json.put("notification", dataJson)
+                    json.put("to", regToken)
+                    val body = RequestBody.create(JSON, json.toString())
+                    val request = Request.Builder()
+                            .header("Authorization", "key=" + SyncStateContract.Constants.LEGACY_SERVER_KEY)
+                            .url("https://fcm.googleapis.com/fcm/send")
+                            .post(body)
+                            .build()
+                    val response = client.newCall(request).execute()
+                    val finalResponse = response.body()!!.string()
+                } catch (e: Exception) {
+                    //Log.d(TAG,e+"");
+                }
+
+                return null
+            }
+        }.execute()
+
+    }
+
+    fun send(){
+
+    }
+
+    fun send() {
+        appDisposable.add(PlanKhana.getInstance().getFCMService()
+                .sendMessage(Message("", NotifyData("", "")))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread()).subscribeWith(object : CallbackWrapper<retrofit2.Response<EmptyResponse>>() {
+                    override fun onSuccess(t: retrofit2.Response<EmptyResponse>) {
+                        Log.d("Response ", "onResponse")
+                    }
+
+                    override fun onFailure(code: Int, message: String) {
+                        Log.d("Response ", "onFailure")
+                    }
+                }))
     }
 
     override fun onDestroy() {

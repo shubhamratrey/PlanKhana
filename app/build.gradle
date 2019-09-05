@@ -150,4 +150,10 @@ dependencies {
     // IMPORTANT: Without this project will not build
     // (because @Generated annotation in generated classes is unknown)
     implementation 'javax.annotation:jsr250-api:1.0'
+
+    //Google play services
+    implementation "com.google.android.gms:play-services-auth:$versions.googlePlayService"
+
+    //Firebase push notification
+    implementation "com.google.firebase:firebase-messaging:$versions.firebaseMessaging"
 }
