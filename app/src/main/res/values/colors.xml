@@ -4,6 +4,10 @@
     <color name="colorPrimaryDark">#80474B53</color>
     <color name="colorAccent">#282E34</color>
 
+    <!--Theme Colors-->
+    <color name="primaryColor">#6D75F1</color>
+
+
     <color name="textHeading">#1C0A41</color>
     <color name="textSubHeading">#7f1c0a41</color>
     <color name="clickableTextColor">#4A90E2</color>

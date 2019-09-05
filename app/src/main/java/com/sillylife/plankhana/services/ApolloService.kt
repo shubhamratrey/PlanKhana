@@ -21,21 +21,14 @@ import java.util.concurrent.TimeUnit
 
 object ApolloService {
 
-    val GRAPHQL_ENDPOINT: String = "https://hasura-plankhana.herokuapp.com/v1/graphql"
-    val GRAPHQL_WEBSOCKET_ENDPOINT: String = "wss://hasura-plankhana.herokuapp.com/v1/graphql"
     private val SQL_CACHE_NAME = "mktodo"
 
     fun buildApollo(): ApolloClient {
         return ApolloClient.builder()
-            .serverUrl(GRAPHQL_ENDPOINT)
+            .serverUrl(BuildConfig.BASE_URL)
             .okHttpClient(okHttpClient())
             .normalizedCache(normalizedCacheFactory(), cacheKeyResolver())
-            .subscriptionTransportFactory(
-                WebSocketSubscriptionTransport.Factory(
-                    GRAPHQL_WEBSOCKET_ENDPOINT,
-                    okHttpClient()
-                )
-            )
+            .subscriptionTransportFactory(WebSocketSubscriptionTransport.Factory(BuildConfig.GRAPHQL_WEBSOCKET_ENDPOINT, okHttpClient()))
             .build()
     }
 
@@ -80,6 +73,7 @@ object ApolloService {
             val original = chain.request()
             val requestBuilder = original.newBuilder()
             requestBuilder.addHeader("content-type", "application/json")
+            requestBuilder.addHeader("x-hasura-admin-secret", BuildConfig.HASURA_ADMIN_SECRET)
 //            if(!CommonUtil.textIsEmpty(FirebaseAuthUserManager.getFirebaseAuthToken())){
 //                requestBuilder.addHeader("Authorization", "Bearer ${FirebaseAuthUserManager.getFirebaseAuthToken()}")
 //            }

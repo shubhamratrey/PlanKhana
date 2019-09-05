@@ -26,9 +26,49 @@ android {
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    buildTypes {
+
+    signingConfigs {
+        preprod {
+            try {
+                keyAlias "plankhana"
+                keyPassword DEBUG_KEYSTORE_PASSWORD
+                storePassword DEBUG_KEYSTORE_PASSWORD
+                storeFile file("../debug_key")
+            } catch (ex) {
+                throw new InvalidUserDataException("You should define DEBUG_KEYSTORE_PASSWORD in gradle.properties.")
+            }
+        }
         release {
+            try {
+                keyAlias "plankhana"
+                keyPassword RELEASE_KEYSTORE_PASSWORD
+                storePassword RELEASE_KEYSTORE_PASSWORD
+                storeFile file("../release")
+            } catch (ex) {
+                throw new InvalidUserDataException("You should define DEBUG_KEYSTORE_PASSWORD in gradle.properties.")
+            }
+
+        }
+    }
+
+    buildTypes {
+        preprod {
+            debuggable true
             minifyEnabled false
+            signingConfig signingConfigs.debug
+            resValue "string", "app_name_", "Preprod " + APP_NAME_EN
+            buildConfigField("String", "BASE_URL", "\"" + PREPROD_DOMAIN + "\"")
+            buildConfigField("String", "GRAPHQL_WEBSOCKET_ENDPOINT", "\"" + PREPROD_GRAPHQL_WEBSOCKET_ENDPOINT + "\"")
+            buildConfigField("String", "HASURA_ADMIN_SECRET", "\"" + HASURA_ADMIN_SECRET + "\"")
+        }
+        release {
+            debuggable false
+            minifyEnabled false
+            signingConfig signingConfigs.release
+            resValue "string", "app_name_", APP_NAME_EN
+            buildConfigField("String", "BASE_URL", "\"" + PROD_DOMAIN + "\"")
+            buildConfigField("String", "GRAPHQL_WEBSOCKET_ENDPOINT", "\"" + PROD_GRAPHQL_WEBSOCKET_ENDPOINT + "\"")
+            buildConfigField("String", "HASURA_ADMIN_SECRET", "\"" + HASURA_ADMIN_SECRET + "\"")
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
