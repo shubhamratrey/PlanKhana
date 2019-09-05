@@ -42,6 +42,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:560057647984:android:3a1e9891e5cabee8a245b5",
+        "android_client_info": {
+          "package_name": "com.sillylife.plankhana.preprod"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "560057647984-phso5vqvv0soa0odotuelob5par7booq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOnPgUUKw-HVbRv7Hv-iBctbHUHiGZ-y4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "560057647984-phso5vqvv0soa0odotuelob5par7booq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
