@@ -13,6 +13,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
+import com.google.firebase.analytics.FirebaseAnalytics
 
 class PlanKhana : MultiDexApplication(), ConnectivityReceiverListener {
     override fun onNetworkConnectionChanged(isConnected: Boolean) {
@@ -38,6 +39,8 @@ class PlanKhana : MultiDexApplication(), ConnectivityReceiverListener {
 
     var appDisposable: AppDisposable = AppDisposable()
 
+    private var mFirebaseAnalytics: FirebaseAnalytics? = null
+
     companion object {
         @Volatile
         private var application: PlanKhana? = null
@@ -56,6 +59,10 @@ class PlanKhana : MultiDexApplication(), ConnectivityReceiverListener {
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION)
         connectivityReceiver = ConnectivityReceiver(this)
         registerReceiver(connectivityReceiver, intentFilter)
+
+        if (!BuildConfig.DEBUG) {
+            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        }
     }
 
     @Synchronized

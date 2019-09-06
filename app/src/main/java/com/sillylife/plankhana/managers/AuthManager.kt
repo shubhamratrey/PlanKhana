@@ -32,7 +32,7 @@ object AuthManager {
     }
 
     interface IAuthCredentialAnonymouslyLoginCallback {
-        fun onSignInAnonymously()
+        fun onSignInAnonymously(userId:String)
     }
 
     private val TAG = AuthManager::class.java.simpleName
@@ -69,7 +69,7 @@ object AuthManager {
                 .addOnCompleteListener { task ->
                     Log.d(TAG, "Inside onComplete of signInAnonymously: issuccess - " + task.isSuccessful + " and user - " + task.result?.user?.uid!!)
                     if (task.isSuccessful) {
-                        mListener.onSignInAnonymously()
+                        mListener.onSignInAnonymously(task.result?.user?.uid!!)
                     }
                 }
     }

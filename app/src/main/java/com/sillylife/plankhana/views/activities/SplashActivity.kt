@@ -2,15 +2,23 @@ package com.sillylife.plankhana.views.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.enums.UserType
+import com.sillylife.plankhana.managers.AuthManager
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 
 class SplashActivity : BaseActivity() {
 
+    val TAG: String = SplashActivity::class.java.name
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+        AuthManager.signInAnonymously(object : AuthManager.IAuthCredentialAnonymouslyLoginCallback {
+            override fun onSignInAnonymously(userId: String) {
+                Log.d(TAG, userId)
+            }
+        })
         redirect()
     }
 

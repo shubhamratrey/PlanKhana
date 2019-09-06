@@ -52,6 +52,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "560057647984-odkcn4pth9ep2dvje8sich9u8oq39iub.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sillylife.plankhana.preprod",
+            "certificate_hash": "ff9111068edd2e113edc95f34a315ada21089551"
+          }
+        },
+        {
           "client_id": "560057647984-phso5vqvv0soa0odotuelob5par7booq.apps.googleusercontent.com",
           "client_type": 3
         }

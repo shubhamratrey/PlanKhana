@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.sillylife.plankhana">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -41,7 +42,8 @@
         <activity
             android:name="com.sillylife.plankhana.views.activities.SplashActivity"
             android:screenOrientation="portrait">
-            <intent-filter>
+            <intent-filter android:autoVerify="true"
+                tools:ignore="UnusedAttribute">
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
