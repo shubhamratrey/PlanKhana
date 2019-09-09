@@ -4,6 +4,8 @@ import android.content.IntentFilter
 import android.net.ConnectivityManager
 import androidx.multidex.MultiDexApplication
 import com.apollographql.apollo.ApolloClient
+import com.crashlytics.android.Crashlytics
+import com.crashlytics.android.core.CrashlyticsCore
 import com.sillylife.plankhana.fcm.FCMService
 import com.sillylife.plankhana.fcm.FirebaseAPI
 import com.sillylife.plankhana.services.*
@@ -14,6 +16,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import com.google.firebase.analytics.FirebaseAnalytics
+import io.fabric.sdk.android.Fabric
 
 class PlanKhana : MultiDexApplication(), ConnectivityReceiverListener {
     override fun onNetworkConnectionChanged(isConnected: Boolean) {
@@ -62,6 +65,11 @@ class PlanKhana : MultiDexApplication(), ConnectivityReceiverListener {
 
         if (!BuildConfig.DEBUG) {
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        }
+
+        if (BuildConfig.IS_FABRIC_REQUIRED) {
+            val core = CrashlyticsCore.Builder().disabled(!BuildConfig.IS_FABRIC_REQUIRED).build()
+            Fabric.with(this, Crashlytics.Builder().core(core).build())
         }
     }
 
