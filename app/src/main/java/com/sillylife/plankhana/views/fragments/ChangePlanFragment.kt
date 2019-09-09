@@ -150,7 +150,7 @@ class ChangePlanFragment : BaseFragment() {
                                 addDishes(response.data()?.plankhana_users_planweekday()!![0]?.id()!!)
                             }
 
-                            sendNotification(houseId.toString(), NotifyData("${user?.name!!} bhaiya ne kuch badla hai", "haan badla hai"))
+                            sendNotificationAsString(houseId.toString(), NotifyData(title = "${user?.name!!} भैया ने कुछ बदला है", description = "Please check $day plan", image = ""))
                         }
                     }
                 })
@@ -288,9 +288,9 @@ class ChangePlanFragment : BaseFragment() {
         appDisposable.dispose()
     }
 
-    fun sendNotification(to: String, notifyData: NotifyData) {
+    fun sendNotificationAsString(to: String, notifyData: NotifyData) {
         appDisposable.add(PlanKhana.getInstance().getFCMService()
-                .sendMessage(Message("/topics/$to", notifyData))
+                .sendNotification(Message("/topics/$to",86400, notifyData))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribeWith(object : CallbackWrapper<retrofit2.Response<EmptyResponse>>() {
                     override fun onSuccess(t: retrofit2.Response<EmptyResponse>) {

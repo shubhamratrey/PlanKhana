@@ -9,5 +9,5 @@ import retrofit2.http.POST
 
 interface FirebaseAPI {
     @POST("/fcm/send")
-    fun sendMessage(@Body message: Message): Observable<Response<EmptyResponse>>
+    fun sendNotification(@Body message: Message): Observable<Response<EmptyResponse>>
 }
