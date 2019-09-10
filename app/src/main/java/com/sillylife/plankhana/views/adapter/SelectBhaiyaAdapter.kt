@@ -5,6 +5,7 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.models.User
@@ -65,8 +66,8 @@ class SelectBhaiyaAdapter(val context: Context, list: ArrayList<User>, val liste
     private fun setBhaiyaView(holder: ViewHolder) {
         val item = commonItemLists[holder.adapterPosition] as User
 
+        holder.bhaiyaPhotoIv.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_placeholder_user))
         if (item.imageUrl != null && !CommonUtil.textIsEmpty(item.imageUrl)) {
-            holder.bhaiyaPhotoIv.setImageURI(Uri.parse(item.imageUrl))
             ImageManager.loadImageCircular(holder.bhaiyaPhotoIv, item.imageUrl)
         }
 

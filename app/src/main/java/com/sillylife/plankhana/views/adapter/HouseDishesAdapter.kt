@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.enums.UserType
@@ -29,6 +30,7 @@ class HouseDishesAdapter(val context: Context,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val dish = dishList[holder.adapterPosition]
+        holder.dishImageIv.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_placeholder_food))
         ImageManager.loadImage(holder.dishImageIv, dish.dishImage)
         holder.dishNameTv.text = dish.dishName
         if (userType == UserType.COOK && dish.userList != null && dish.userList?.size!! > 0) {

@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.models.User
@@ -29,6 +30,7 @@ class UserListAdapter(val context: Context, var items: ArrayList<User>, val list
     private fun setChannel(holder: ViewHolder) {
         val item = items[holder.adapterPosition]
         holder.bhaiyaNameTv.text = item.name
+        holder.bhaiyaPhotoIv.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_placeholder_user))
         ImageManager.loadImageCircular(holder.bhaiyaPhotoIv, item.imageUrl)
         holder.containerView?.setOnClickListener {
             listener(item)

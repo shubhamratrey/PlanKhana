@@ -78,6 +78,7 @@ class DishesAdapter(val context: Context, val type: String, list: ArrayList<Dish
 
     private fun setDishView(holder: ViewHolder) {
         val item = commonItemLists[holder.adapterPosition] as Dish
+        holder.dishPhotoIv.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_placeholder_food))
         ImageManager.loadImage(holder.dishPhotoIv, item.dishImage)
         holder.dishNameTv.text = item.dishName
         holder.removeIv.visibility = View.GONE
