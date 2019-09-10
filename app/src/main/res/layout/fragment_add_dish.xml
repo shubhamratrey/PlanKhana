@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/dp_16"
-                android:visibility="visible"
+                android:visibility="invisible"
                 app:srcCompat="@drawable/ic_search" />
 
             <androidx.appcompat.widget.AppCompatImageView
