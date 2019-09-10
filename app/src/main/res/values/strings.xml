@@ -50,4 +50,6 @@
     <string name="empty_dish_list">No dishes for %s\nAdd dishes to the plan</string>
     <string name="aunty_empty_dish_list">No dishes to cook for %s</string>
     <string name="please_cook_these_dishes_on">Please cook these dishes on %s night</string>
+    <string name="i_cook">I cook</string>
+    <string name="i_eat">I eat</string>
 </resources>

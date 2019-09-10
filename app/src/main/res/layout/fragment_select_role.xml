@@ -54,109 +54,139 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginEnd="25dp">
+            android:layout_marginEnd="25dp"
+            android:orientation="vertical">
 
-            <com.sillylife.plankhana.widgets.xcardview.CardView
-                android:layout_width="135dp"
-                android:layout_height="135dp"
-                app:cardBackgroundColor="@color/redAlert"
-                app:cardCornerRadius="@dimen/dp_5"
-                app:cardElevation="@dimen/dp_7"
-                app:cardPreventCornerOverlap="true"
-                app:cardUseCompatPadding="true">
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center">
+                <com.sillylife.plankhana.widgets.xcardview.CardView
+                    android:layout_width="135dp"
+                    android:layout_height="135dp"
+                    app:cardBackgroundColor="@color/redAlert"
+                    app:cardCornerRadius="@dimen/dp_5"
+                    app:cardElevation="@dimen/dp_7"
+                    app:cardPreventCornerOverlap="true"
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="73dp"
+                            android:layout_height="73dp"
+                            android:layout_gravity="center"
+                            app:srcCompat="@drawable/ic_dining" />
+
+                    </LinearLayout>
+                </com.sillylife.plankhana.widgets.xcardview.CardView>
+
+                <FrameLayout
+                    android:id="@+id/dining"
+                    android:layout_width="121dp"
+                    android:layout_height="115dp"
+                    android:layout_marginStart="@dimen/dp_7"
+                    android:layout_marginLeft="@dimen/dp_7"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:background="@drawable/d_input_field">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="73dp"
                         android:layout_height="73dp"
                         android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/dp_10"
+                        android:layout_marginTop="@dimen/dp_6"
+                        android:layout_marginEnd="@dimen/dp_10"
+                        android:layout_marginBottom="@dimen/dp_6"
                         app:srcCompat="@drawable/ic_dining" />
 
-                </LinearLayout>
-            </com.sillylife.plankhana.widgets.xcardview.CardView>
-
-            <FrameLayout
-                android:id="@+id/dining"
-                android:layout_width="121dp"
-                android:layout_height="115dp"
-                android:layout_marginStart="@dimen/dp_7"
-                android:layout_marginLeft="@dimen/dp_7"
-                android:layout_marginTop="@dimen/dp_10"
-                android:background="@drawable/d_input_field">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="73dp"
-                    android:layout_height="73dp"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/dp_10"
-                    android:layout_marginTop="@dimen/dp_6"
-                    android:layout_marginEnd="@dimen/dp_10"
-                    android:layout_marginBottom="@dimen/dp_6"
-                    app:srcCompat="@drawable/ic_dining" />
+                </FrameLayout>
 
             </FrameLayout>
 
-        </FrameLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/i_eat"
+                android:textColor="@color/textHeading" />
+        </LinearLayout>
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="25dp"
             android:layout_marginEnd="25dp"
-            android:layout_marginRight="25dp">
+            android:orientation="vertical">
 
-            <com.sillylife.plankhana.widgets.xcardview.CardView
-                android:layout_width="135dp"
-                android:layout_height="135dp"
-                app:cardBackgroundColor="@color/redAlert"
-                app:cardCornerRadius="@dimen/dp_5"
-                app:cardElevation="@dimen/dp_7"
-                app:cardPreventCornerOverlap="true"
-                app:cardUseCompatPadding="true">
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center">
+                <com.sillylife.plankhana.widgets.xcardview.CardView
+                    android:layout_width="135dp"
+                    android:layout_height="135dp"
+                    app:cardBackgroundColor="@color/redAlert"
+                    app:cardCornerRadius="@dimen/dp_5"
+                    app:cardElevation="@dimen/dp_7"
+                    app:cardPreventCornerOverlap="true"
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="73dp"
+                            android:layout_height="73dp"
+                            android:layout_gravity="center"
+                            app:srcCompat="@drawable/ic_cooking" />
+
+                    </LinearLayout>
+                </com.sillylife.plankhana.widgets.xcardview.CardView>
+
+                <FrameLayout
+                    android:id="@+id/cooking"
+                    android:layout_width="121dp"
+                    android:layout_height="115dp"
+                    android:layout_marginStart="@dimen/dp_7"
+                    android:layout_marginLeft="@dimen/dp_7"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:background="@drawable/d_input_field">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="73dp"
                         android:layout_height="73dp"
                         android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/dp_10"
+                        android:layout_marginTop="@dimen/dp_6"
+                        android:layout_marginEnd="@dimen/dp_10"
+                        android:layout_marginBottom="@dimen/dp_6"
                         app:srcCompat="@drawable/ic_cooking" />
 
-                </LinearLayout>
-            </com.sillylife.plankhana.widgets.xcardview.CardView>
-
-            <FrameLayout
-                android:id="@+id/cooking"
-                android:layout_width="121dp"
-                android:layout_height="115dp"
-                android:layout_marginStart="@dimen/dp_7"
-                android:layout_marginLeft="@dimen/dp_7"
-                android:layout_marginTop="@dimen/dp_10"
-                android:background="@drawable/d_input_field">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="73dp"
-                    android:layout_height="73dp"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/dp_10"
-                    android:layout_marginTop="@dimen/dp_6"
-                    android:layout_marginEnd="@dimen/dp_10"
-                    android:layout_marginBottom="@dimen/dp_6"
-                    app:srcCompat="@drawable/ic_cooking" />
+                </FrameLayout>
 
             </FrameLayout>
 
-        </FrameLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/i_cook"
+                android:textColor="@color/textHeading" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
