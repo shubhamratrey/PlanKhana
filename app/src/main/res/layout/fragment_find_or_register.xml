@@ -85,13 +85,86 @@
         android:layout_gravity="center"
         android:orientation="vertical">
 
-        <com.sillylife.plankhana.widgets.UIComponentInputFieldV2
-            android:id="@+id/nameEt"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
             android:layout_marginEnd="14dp"
-            app:titleHint="@string/enter_your_house_key" />
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginBottom="4dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/help"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginLeft="4dp"
+                        android:visibility="gone" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:text="@string/enter_your_house_key"
+                        android:textColor="@color/textSubHeading"
+                        android:textSize="12sp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/title2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_regular"
+                        android:padding="@dimen/dp_5"
+                        android:text="@string/login_now"
+                        android:textColor="@color/clickableTextColor"
+                        android:textSize="12sp"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+
+                <com.sillylife.plankhana.widgets.xcardview.CardView
+                    android:id="@+id/card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="6dp"
+                    app:cardUseCompatPadding="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/d_input_field"
+                        android:digits="abcdefghijklmnopqrstuvwxyz1234567890"
+                        android:fontFamily="@font/roboto_regular"
+                        android:hint="Type Here"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:paddingLeft="15dp"
+                        android:paddingTop="17dp"
+                        android:paddingRight="15dp"
+                        android:paddingBottom="17dp"
+                        android:textSize="14sp" />
+
+                </com.sillylife.plankhana.widgets.xcardview.CardView>
+
+            </LinearLayout>
+
+        </FrameLayout>
 
         <FrameLayout
             android:layout_width="match_parent"

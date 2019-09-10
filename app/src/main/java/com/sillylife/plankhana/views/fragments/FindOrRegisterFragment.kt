@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
@@ -44,7 +45,7 @@ class FindOrRegisterFragment : BaseFragment() {
             stepProgressTv?.visibility = View.GONE
             stepProgressLl?.visibility = View.GONE
 
-            nameEt?.setTitleHint(getString(R.string.enter_your_house_key))
+            title?.text = getString(R.string.enter_your_house_key)
             nextBtn?.text = getString(R.string.find)
             headerTv?.text = getString(R.string.find_your_house)
 
@@ -55,7 +56,7 @@ class FindOrRegisterFragment : BaseFragment() {
             stepProgressTv?.visibility = View.VISIBLE
             stepProgressLl?.visibility = View.VISIBLE
 
-            nameEt?.setTitleHint(getString(R.string.enter_a_unique_house_key))
+            title?.text = getString(R.string.enter_a_unique_house_key)
             nextBtn?.text = getString(R.string.generate)
             headerTv?.text = getString(R.string.register_your_house)
 
@@ -70,21 +71,21 @@ class FindOrRegisterFragment : BaseFragment() {
 
         nextBtnProgress?.visibility = View.GONE
         nextBtn?.setOnClickListener {
-            if (nameEt.mInputEt?.text?.length!! > 3) {
+            if (inputEt?.text?.length!! > 3) {
                 nextBtnProgress?.visibility = View.VISIBLE
                 nextBtn?.text = ""
-                searchHouseKey(nameEt.mInputEt?.text.toString())
+                searchHouseKey(inputEt?.text.toString())
             } else {
                 showToast(getString(R.string.please_enter_more_then), Toast.LENGTH_SHORT)
             }
         }
-        nameEt?.loginClick {
+        title2?.setOnClickListener {
             isRegistered = !isRegistered
             setView()
         }
-        nameEt?.setNormalStateAll()
-        nameEt?.setTitle("")
-        nameEt?.toggleLoginVisibility(false, "")
+        setNormalStateAll()
+        inputEt?.setText("")
+        toggleLoginVisibility(false, "")
     }
 
     /**
@@ -112,21 +113,21 @@ class FindOrRegisterFragment : BaseFragment() {
                                 }
                             } else {
                                 activity?.runOnUiThread {
-                                    nameEt.setErrorState()
-                                    nameEt.setTitleHint(getString(R.string.new_house_key))
+                                    setErrorState()
+                                    title?.text = getString(R.string.new_house_key)
                                     nextBtnProgress?.visibility = View.GONE
                                     nextBtn?.text = getString(R.string.find)
-                                    nameEt?.toggleLoginVisibility(true, getString(R.string.generate_now))
+                                    toggleLoginVisibility(true, getString(R.string.generate_now))
                                 }
                             }
                         } else {
                             if (mutableListOf(response.data())[0]?.plankhana_houses_house()?.size!! >= 1) {
                                 activity?.runOnUiThread {
-                                    nameEt.setErrorState()
-                                    nameEt.setTitleHint(getString(R.string.house_key_already_exists))
+                                    setErrorState()
+                                    title.text = getString(R.string.house_key_already_exists)
                                     nextBtnProgress?.visibility = View.GONE
                                     nextBtn?.text = getString(R.string.generate)
-                                    nameEt?.toggleLoginVisibility(true, getString(R.string.login_now))
+                                    toggleLoginVisibility(true, getString(R.string.login_now))
                                 }
                             } else {
                                 addHouseKey(key)
@@ -134,6 +135,21 @@ class FindOrRegisterFragment : BaseFragment() {
                         }
                     }
                 })
+    }
+
+    fun toggleLoginVisibility(visibility: Boolean, text: String) {
+        title2?.visibility = if (visibility) View.VISIBLE else View.GONE
+        title2?.text = text
+    }
+
+    fun setErrorState() {
+        title?.setTextColor(ContextCompat.getColor(context!!, R.color.redAlert))
+        inputEt?.isSelected = true
+    }
+
+    fun setNormalStateAll() {
+        title?.setTextColor(ContextCompat.getColor(context!!, R.color.textSubHeading))
+        inputEt?.isSelected = false
     }
 
     private fun addHouseKey(key: String) {
