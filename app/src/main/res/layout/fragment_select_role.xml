@@ -68,7 +68,7 @@
                 <com.sillylife.plankhana.widgets.xcardview.CardView
                     android:layout_width="135dp"
                     android:layout_height="135dp"
-                    app:cardBackgroundColor="@color/redAlert"
+                    app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="@dimen/dp_5"
                     app:cardElevation="@dimen/dp_7"
                     app:cardPreventCornerOverlap="true"
@@ -90,10 +90,10 @@
 
                 <FrameLayout
                     android:id="@+id/dining"
-                    android:layout_width="121dp"
-                    android:layout_height="115dp"
-                    android:layout_marginStart="@dimen/dp_7"
-                    android:layout_marginLeft="@dimen/dp_7"
+                    android:layout_width="123dp"
+                    android:layout_height="117dp"
+                    android:layout_marginStart="@dimen/dp_6"
+                    android:layout_marginLeft="@dimen/dp_6"
                     android:layout_marginTop="@dimen/dp_10"
                     android:background="@drawable/d_input_field">
 
@@ -134,7 +134,7 @@
                 <com.sillylife.plankhana.widgets.xcardview.CardView
                     android:layout_width="135dp"
                     android:layout_height="135dp"
-                    app:cardBackgroundColor="@color/redAlert"
+                    app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="@dimen/dp_5"
                     app:cardElevation="@dimen/dp_7"
                     app:cardPreventCornerOverlap="true"
@@ -156,10 +156,10 @@
 
                 <FrameLayout
                     android:id="@+id/cooking"
-                    android:layout_width="121dp"
-                    android:layout_height="115dp"
-                    android:layout_marginStart="@dimen/dp_7"
-                    android:layout_marginLeft="@dimen/dp_7"
+                    android:layout_width="123dp"
+                    android:layout_height="117dp"
+                    android:layout_marginStart="@dimen/dp_6"
+                    android:layout_marginLeft="@dimen/dp_6"
                     android:layout_marginTop="@dimen/dp_10"
                     android:background="@drawable/d_input_field">
 
