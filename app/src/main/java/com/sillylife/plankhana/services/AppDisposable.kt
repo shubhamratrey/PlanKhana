@@ -21,7 +21,7 @@ class AppDisposable {
     fun add(disposable: Disposable) {
         if (compositeDisposable == null)
             init()
-        compositeDisposable?.add(disposable);
+        compositeDisposable?.add(disposable)
     }
 
     fun addTo(disposable: Disposable) {

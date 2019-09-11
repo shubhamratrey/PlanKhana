@@ -32,7 +32,7 @@ class UploadUsersTask(var userList: ArrayList<User>, val houseId: Int) {
             userList.forEachIndexed { index, user ->
                 ImageUploadTask(FileUtils.getPath(CommonUtil.context, Uri.parse(user.imageUrl!!))!!, ImageType.USER_IMAGE, object : ImageUploadTask.Callback {
                     override fun onUploadSuccess(imageUri: Uri) {
-                        Log.d(TAG, "onUploadSuccess  ${imageUri.toString()}")
+                        Log.d(TAG, "onUploadSuccess  $imageUri")
                         list.add(MapObjects.addResident(houseId, user.name!!, imageUri.toString(), user.phone!!, UserType.RESIDENT))
                         if (userList.size - 1 == index) {
                             latch.countDown()

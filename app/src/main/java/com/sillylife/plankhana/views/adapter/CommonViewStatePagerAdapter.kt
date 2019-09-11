@@ -56,8 +56,4 @@ class CommonViewStatePagerAdapter(fragmentManager: FragmentManager) : FragmentSt
         return mFragmentList
     }
 
-    override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        return super.instantiateItem(container, position)
-    }
-
 }

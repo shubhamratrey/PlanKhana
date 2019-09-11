@@ -41,7 +41,7 @@ class WebViewFragment : BaseFragment() {
     private fun loadWebUrl(url: String?) {
         try {
             preLoader?.visibility = View.VISIBLE
-            val webSettings = webView.getSettings()
+            val webSettings = webView.settings
             if (!webSettings.javaScriptEnabled) {
                 webSettings.javaScriptEnabled = true
             }
@@ -56,11 +56,4 @@ class WebViewFragment : BaseFragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 }

@@ -49,7 +49,7 @@ class UIComponentCloseBtn : FrameLayout {
         addView(view)
     }
 
-    public fun setImageResource(resId: Int) {
+    fun setImageResource(resId: Int) {
         mImageIv?.setImageResource(resId)
     }
 }

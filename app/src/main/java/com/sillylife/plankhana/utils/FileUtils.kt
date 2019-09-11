@@ -706,8 +706,8 @@ object FileUtils {
 
     fun checkAndGetAudioUri(audioFile: Uri?, context: Context): Uri? {
         var file = File(audioFile.toString())
-        if (audioFile != null && File(audioFile?.path).path.split("/")[1].contains("root_path")){
-            file = File(File(audioFile?.path).path.removePrefix("/root_path"))
+        if (audioFile != null && File(audioFile.path).path.split("/")[1].contains("root_path")){
+            file = File(File(audioFile.path).path.removePrefix("/root_path"))
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && audioFile != null) {
                 file = File(getPath(context, audioFile))
@@ -723,7 +723,7 @@ object FileUtils {
     fun getPublicAlbumStorageDir(context:Context): File? {
         val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), context.getString(
             R.string.app_name))
-        if (file?.mkdirs()) {
+        if (file.mkdirs()) {
 
         }
         return file

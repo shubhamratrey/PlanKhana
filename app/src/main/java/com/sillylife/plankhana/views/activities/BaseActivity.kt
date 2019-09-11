@@ -51,24 +51,12 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             RxBus.publish(RxEvent.ActivityResult(requestCode, resultCode, data))
             return
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 
     fun setSearchableInfo(searchableInfo: SearchableInfo) {

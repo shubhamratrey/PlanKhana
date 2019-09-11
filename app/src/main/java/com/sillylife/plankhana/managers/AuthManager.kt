@@ -123,7 +123,7 @@ object AuthManager {
                 mVerificationId = p0
                 mResendToken = token
                 Log.d(TAG, "onCodeSent: $p0\n$token")
-                mListener.onCodeSent(p0!!)
+                mListener.onCodeSent(p0)
 
             }
 

@@ -141,7 +141,4 @@ class FirebaseMessaging : FirebaseMessagingService() {
         return PendingIntent.getActivity(context, 0 /* Request code */, intent, PendingIntent.FLAG_ONE_SHOT)
     }
 
-    override fun onNewToken(s: String?) {
-        super.onNewToken(s)
-    }
 }

@@ -16,7 +16,7 @@ class ConnectivityReceiver() : BroadcastReceiver() {
     override fun onReceive(context: Context?, p1: Intent?) {
         val connectivityService = context?.getSystemService(Context.CONNECTIVITY_SERVICE)
         if (connectivityService != null && connectivityService is ConnectivityManager) {
-            val cm = connectivityService as ConnectivityManager
+            val cm = connectivityService
             val activeNetwork = cm.activeNetworkInfo
             val isConnected =
                     activeNetwork != null && activeNetwork.isAvailable && activeNetwork.isConnectedOrConnecting
@@ -27,7 +27,7 @@ class ConnectivityReceiver() : BroadcastReceiver() {
     }
 
     companion object {
-        public fun isConnected(context: Context?): Boolean {
+        fun isConnected(context: Context?): Boolean {
             val cm = context?.applicationContext?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val activeNetwork = cm.activeNetworkInfo
             return activeNetwork != null && activeNetwork.isAvailable && activeNetwork.isConnectedOrConnecting

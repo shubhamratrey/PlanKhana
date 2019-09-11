@@ -22,10 +22,6 @@ open class BaseFragment : Fragment() {
         mContext = context
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
     fun showToast(message: String, length: Int) {
         if (activity != null && !activity?.isFinishing!!) {
             Toast.makeText(activity, message, length).show()

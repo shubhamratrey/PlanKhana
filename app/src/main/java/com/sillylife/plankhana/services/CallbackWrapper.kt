@@ -34,7 +34,7 @@ abstract class CallbackWrapper<T> : DisposableObserver<T> {
         baseActivity = activity
     }
 
-    constructor() {}
+    constructor()
 
     override fun onComplete() {
 
@@ -63,7 +63,7 @@ abstract class CallbackWrapper<T> : DisposableObserver<T> {
             var httpStatus: HTTPStatus = HTTPStatus.SERVER_ERROR
             logFailure(httpStatus.code, httpStatus.message)
         } else {
-            logFailure(HTTPStatus.BAD_REQUEST.code, e.message.toString());
+            logFailure(HTTPStatus.BAD_REQUEST.code, e.message.toString())
         }
     }
 
@@ -81,7 +81,7 @@ abstract class CallbackWrapper<T> : DisposableObserver<T> {
             } else {
                 val restError = handleError(br.errorBody())
                 if (baseActivity != null && restError != null && !CommonUtil.textIsEmpty(restError.errorCode) &&
-                        restError?.errorCode.equals("INVALID_MEDIA_URL", true)) {
+                        restError.errorCode.equals("INVALID_MEDIA_URL", true)) {
                     //restError.errorMessage = baseActivity?.getString(R.string.invalid_file_format_message)!!
                 }
                 logFailure(HTTPStatus.BAD_REQUEST.code, restError.errorMessage)

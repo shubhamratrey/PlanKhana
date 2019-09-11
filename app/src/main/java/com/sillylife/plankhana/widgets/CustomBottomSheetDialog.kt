@@ -23,7 +23,7 @@ class CustomBottomSheetDialog(
     var listener: Listener
 ) : BottomSheetDialog(ct, R.style.BottomSheetDialog) {
 
-    public interface Listener {
+    interface Listener {
         fun onDone(view: CustomBottomSheetDialog)
         fun onCancel(view: CustomBottomSheetDialog)
     }
@@ -41,7 +41,7 @@ class CustomBottomSheetDialog(
         dialogSubTitle = sheetView.findViewById(R.id.dialogSubTitle)
         var done: MaterialButton = sheetView.findViewById(R.id.done)
         var cancel: MaterialButton = sheetView.findViewById(R.id.cancel)
-        dialogTitle?.setText(title)
+        dialogTitle?.text = title
 
         if (!CommonUtil.textIsEmpty(doneTxt)) {
             done.text = doneTxt

@@ -44,7 +44,7 @@ class HouseDishesAdapter(val context: Context,
             listener(dish, it, holder.adapterPosition)
         }
 
-        holder.dishImageIv?.isLongClickable = true;
+        holder.dishImageIv?.isLongClickable = true
         holder.dishImageIv?.setOnLongClickListener {
             Toast.makeText(context, dish.dishName, Toast.LENGTH_SHORT).show()
             return@setOnLongClickListener true
