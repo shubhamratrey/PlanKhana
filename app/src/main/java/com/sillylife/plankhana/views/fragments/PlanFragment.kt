@@ -1,7 +1,6 @@
 package com.sillylife.plankhana.views.fragments
 
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,37 +9,41 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
-import com.sillylife.plankhana.GetHouseUserDishesListQuery
+import com.sillylife.plankhana.GetHouseDishesListQuery
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.enums.UserType
 import com.sillylife.plankhana.enums.WeekType
 import com.sillylife.plankhana.managers.LocalDishManager
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.Dish
-import com.sillylife.plankhana.models.DishStatus
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.utils.CommonUtil
 import com.sillylife.plankhana.utils.OnSwipeTouchListener
-import com.sillylife.plankhana.utils.rxevents.RxBus
-import com.sillylife.plankhana.utils.rxevents.RxEvent
-import com.sillylife.plankhana.utils.rxevents.RxEventType
 import com.sillylife.plankhana.views.adapter.HouseDishesAdapter
 import com.sillylife.plankhana.views.adapter.item_decorator.GridItemDecoration
 import com.sillylife.plankhana.views.adapter.item_decorator.WrapContentGridLayoutManager
-import kotlinx.android.synthetic.main.fragment_bhaiya_home.*
+import kotlinx.android.synthetic.main.fragment_plan.*
 import kotlinx.android.synthetic.main.layout_bottom_button.*
 import org.jetbrains.annotations.NotNull
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class BhaiyaHomeFragment : BaseFragment() {
+class PlanFragment : BaseFragment() {
 
     companion object {
-        fun newInstance() = BhaiyaHomeFragment()
-        var TAG = BhaiyaHomeFragment::class.java.simpleName
+        fun newInstance() = PlanFragment()
+        fun newInstance(count: Int): PlanFragment {
+            val fragment = PlanFragment()
+            val args = Bundle()
+            args.putInt("count", count)
+            fragment.arguments = args
+            return fragment
+        }
+
+        var TAG = PlanFragment::class.java.simpleName
     }
 
     var appDisposable: AppDisposable = AppDisposable()
@@ -51,17 +54,21 @@ class BhaiyaHomeFragment : BaseFragment() {
     var count = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return LayoutInflater.from(context).inflate(R.layout.fragment_bhaiya_home, null, false)
+        return LayoutInflater.from(context).inflate(R.layout.fragment_plan, null, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (arguments != null && arguments!!.containsKey("count")) {
+            count = arguments?.getInt("count")!!
+        }
 
         houseId = SharedPreferenceManager.getHouseId()!!
         user = SharedPreferenceManager.getUser()
-        getDishes(WeekType.TODAY.day)
+        getDishes(if (count != 0) CommonUtil.getDay(count).toLowerCase() else WeekType.TODAY.day)
         nextBtn.text = getString(R.string.change_plan)
-
+        nextBtn?.alpha = 0.6f
+        nextBtn?.isEnabled = false
         nextBtn.setOnClickListener {
             if (LocalDishManager.getTempDishList().size > 0) {
                 LocalDishManager.clearTempDishList()
@@ -69,21 +76,6 @@ class BhaiyaHomeFragment : BaseFragment() {
             SharedPreferenceManager.setMyFoods(list)
             addFragment(ChangePlanFragment.newInstance(CommonUtil.getDay(count).toLowerCase()), ChangePlanFragment.TAG)
         }
-
-        appDisposable.add(RxBus.listen(RxEvent.Action::class.java).subscribe { action ->
-            if (isAdded) {
-                when (action.eventType) {
-                    RxEventType.REFRESH_DISH_LIST -> {
-                        activity?.runOnUiThread {
-                            Handler().postDelayed({
-                                getDishes(CommonUtil.getDay(count).toLowerCase())
-                                toggleYesterdayBtn()
-                            }, 200)
-                        }
-                    }
-                }
-            }
-        })
 
         yesterdayTv?.setOnClickListener {
             count -= 1
@@ -138,9 +130,9 @@ class BhaiyaHomeFragment : BaseFragment() {
             }
         })
 
-        changeSideIv?.visibility = View.VISIBLE
-        changeSideIv?.setOnClickListener {
-            addFragment(PlanFragment.newInstance(count), PlanFragment.TAG)
+        backIv?.visibility = View.VISIBLE
+        backIv?.setOnClickListener {
+            fragmentManager?.popBackStack()
         }
     }
 
@@ -156,7 +148,7 @@ class BhaiyaHomeFragment : BaseFragment() {
             yesterdayTv?.isEnabled = false
 
             todayTv.text = getString(R.string.today)
-            subtextTv.text = getString(R.string.you_ll_get_to_eat_these_dishes_tonight)
+            subtextTv.text = getString(R.string.you_all_get_to_eat_these_dishes_tonight)
             zeroCaseTv.text = getString(R.string.empty_dish_list, getString(R.string.today))
         } else {
             leftArrowsIv?.alpha = 1f
@@ -167,7 +159,7 @@ class BhaiyaHomeFragment : BaseFragment() {
 
             todayTv.text = CommonUtil.getDay(count)
             val arg = CommonUtil.getDay(count, Locale.US)
-            subtextTv.text = getString(R.string.you_ll_get_to_eat_these_dishes, arg.toLowerCase())
+            subtextTv.text = getString(R.string.you_all_get_to_eat_these_dishes, arg.toLowerCase())
             zeroCaseTv.text = getString(R.string.empty_dish_list, arg)
         }
         val tempYesterDay = count - 1
@@ -179,28 +171,32 @@ class BhaiyaHomeFragment : BaseFragment() {
     private fun getDishes(dayOfWeek: String) {
         progress?.visibility = View.VISIBLE
         nextBtn?.isEnabled = false
-        val query = GetHouseUserDishesListQuery.builder()
+        val query = GetHouseDishesListQuery.builder()
                 .dayOfWeek(dayOfWeek)
-                .houseId(houseId)
                 .languageId(user?.languageId!!)
-                .userId(user?.id!!)
+                .houseId(houseId)
                 .build()
 
         ApolloService.buildApollo().query(query)
                 .responseFetcher(ApolloResponseFetchers.NETWORK_ONLY)
-                .enqueue(object : ApolloCall.Callback<GetHouseUserDishesListQuery.Data>() {
+                .enqueue(object : ApolloCall.Callback<GetHouseDishesListQuery.Data>() {
                     override fun onFailure(error: ApolloException) {
                         Log.d(SelectBhaiyaFragment.TAG, error.toString())
                     }
 
-                    override fun onResponse(@NotNull response: Response<GetHouseUserDishesListQuery.Data>) {
+                    override fun onResponse(@NotNull response: Response<GetHouseDishesListQuery.Data>) {
                         if (!isAdded) {
                             return
                         }
                         list.clear()
-                        for (dishes in response.data()?.plankhana_users_userdishweekplan()?.toMutableList()!!) {
+                        for (dishes in response.data()?.plankhana_users_userdishweekplan_aggregate()?.nodes()?.toMutableList()!!) {
+                            val userList: ArrayList<User> = ArrayList()
+                            userList.clear()
+                            for (users in dishes.dishes_dish().users_userdishweekplans().toMutableList()) {
+                                userList.add(User(users.users_userprofile().id(), users.users_userprofile().username(), users.users_userprofile().display_picture()))
+                            }
                             val name = if (dishes.dishes_dish().dishes_dishlanguagenames().size > 0) dishes.dishes_dish().dishes_dishlanguagenames()[0].dish_name() else ""
-                            list.add(Dish(dishes.dishes_dish().id(), name, dishes.dishes_dish().dish_image(), DishStatus(added = true)))
+                            list.add(Dish(dishes.dishes_dish().id(), name, dishes.dishes_dish().dish_image(), userList))
                         }
                         activity?.runOnUiThread {
                             setAdapter(list)
@@ -212,7 +208,7 @@ class BhaiyaHomeFragment : BaseFragment() {
     fun setAdapter(list: ArrayList<Dish>?) {
         if (list != null) {
             SharedPreferenceManager.setMyFoods(list)
-            val adapter = HouseDishesAdapter(context!!, UserType.RESIDENT, list) { any: Any, view: View, i: Int ->
+            val adapter = HouseDishesAdapter(context!!, UserType.COOK, list) { any: Any, view: View, i: Int ->
 
             }
             rcv?.layoutManager = WrapContentGridLayoutManager(context!!, 3)
@@ -229,7 +225,7 @@ class BhaiyaHomeFragment : BaseFragment() {
                 subtextTv.visibility = View.GONE
             }
             rcv?.adapter = adapter
-            nextBtn?.isEnabled = true
+//            nextBtn?.isEnabled = true
         }
     }
 

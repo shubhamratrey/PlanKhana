@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.sillylife.plankhana.widgets.xcardview.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
@@ -11,23 +12,57 @@
     app:cardBackgroundColor="@color/white"
     app:cardElevation="@dimen/dp_15">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/nextBtn"
-        style="@style/ThemeButtonPrimary"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_gravity="bottom|center_horizontal"
+        android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:letterSpacing="0"
-        android:text="@string/proceed" />
+        android:orientation="horizontal">
 
-    <ProgressBar
-        android:id="@+id/nextBtnProgress"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_gravity="center"
-        android:theme="@style/ProgressWhiteTheme"
-        android:visibility="gone" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/backIv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="@dimen/dp_15"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_back"
+            tools:visibility="visible" />
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/nextBtn"
+                style="@style/ThemeButtonPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:letterSpacing="0"
+                android:text="@string/proceed" />
+
+            <ProgressBar
+                android:id="@+id/nextBtnProgress"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:theme="@style/ProgressWhiteTheme"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/changeSideIv"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_change_side" />
+
+    </LinearLayout>
 
 </com.sillylife.plankhana.widgets.xcardview.CardView>
 

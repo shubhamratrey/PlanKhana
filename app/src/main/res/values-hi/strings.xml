@@ -28,6 +28,7 @@
     <string name="please_cook_these_dishes_for_dinner_tonight">कृपया आज रात के खाने के लिए इन व्यंजनों को पकाएं</string>
     <string name="who_do_you_want_to_call">आप किसे कॉल करना चाहते हैं?</string>
     <string name="you_ll_get_to_eat_these_dishes_tonight">You’ll get to eat these dishes tonight</string>
+    <string name="you_all_get_to_eat_these_dishes_tonight">You all will have to eat these dishes tonight</string>
     <string name="change_plan">Change plan</string>
     <string name="files_permission_message">Please provide permission to access files</string>
     <string name="new_house_key">House key not found</string>
@@ -42,6 +43,7 @@
     <string name="call_bhaiya_log">भैया लॉग को कॉल करें</string>
     <string name="string_save">Save</string>
     <string name="you_ll_get_to_eat_these_dishes">You’ll get to eat these dishes on %s night</string>
+    <string name="you_all_get_to_eat_these_dishes">You all will have to eat these dishes on %s night</string>
     <string name="your_house_has_got_no_n_one_but_ghosts">Your house has got no \n one but ghosts!</string>
     <string name="add_your_details">Add your details</string>
     <string name="phone_number">Phone Number</string>
