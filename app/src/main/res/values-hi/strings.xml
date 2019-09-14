@@ -30,6 +30,7 @@
     <string name="you_ll_get_to_eat_these_dishes_tonight">You’ll get to eat these dishes tonight</string>
     <string name="you_all_get_to_eat_these_dishes_tonight">You all will have to eat these dishes tonight</string>
     <string name="change_plan">Change plan</string>
+    <string name="change_plan_for">Change plan for %s</string>
     <string name="files_permission_message">Please provide permission to access files</string>
     <string name="new_house_key">House key not found</string>
     <string name="house_key_already_exists">House key already exists</string>

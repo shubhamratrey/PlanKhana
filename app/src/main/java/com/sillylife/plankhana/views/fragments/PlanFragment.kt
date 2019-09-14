@@ -66,15 +66,9 @@ class PlanFragment : BaseFragment() {
         houseId = SharedPreferenceManager.getHouseId()!!
         user = SharedPreferenceManager.getUser()
         getDishes(if (count != 0) CommonUtil.getDay(count).toLowerCase() else WeekType.TODAY.day)
-        nextBtn.text = getString(R.string.change_plan)
-        nextBtn?.alpha = 0.6f
-        nextBtn?.isEnabled = false
+        nextBtn.text = "Go Back"
         nextBtn.setOnClickListener {
-            if (LocalDishManager.getTempDishList().size > 0) {
-                LocalDishManager.clearTempDishList()
-            }
-            SharedPreferenceManager.setMyFoods(list)
-            addFragment(ChangePlanFragment.newInstance(CommonUtil.getDay(count).toLowerCase()), ChangePlanFragment.TAG)
+            fragmentManager?.popBackStack()
         }
 
         yesterdayTv?.setOnClickListener {
@@ -130,7 +124,7 @@ class PlanFragment : BaseFragment() {
             }
         })
 
-        backIv?.visibility = View.VISIBLE
+//        backIv?.visibility = View.VISIBLE
         backIv?.setOnClickListener {
             fragmentManager?.popBackStack()
         }
@@ -170,7 +164,7 @@ class PlanFragment : BaseFragment() {
 
     private fun getDishes(dayOfWeek: String) {
         progress?.visibility = View.VISIBLE
-        nextBtn?.isEnabled = false
+//        nextBtn?.isEnabled = false
         val query = GetHouseDishesListQuery.builder()
                 .dayOfWeek(dayOfWeek)
                 .languageId(user?.languageId!!)

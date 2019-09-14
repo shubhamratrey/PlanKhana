@@ -60,7 +60,7 @@ class BhaiyaHomeFragment : BaseFragment() {
         houseId = SharedPreferenceManager.getHouseId()!!
         user = SharedPreferenceManager.getUser()
         getDishes(WeekType.TODAY.day)
-        nextBtn.text = getString(R.string.change_plan)
+        nextBtn.text = ""//getString(R.string.change_plan)
 
         nextBtn.setOnClickListener {
             if (LocalDishManager.getTempDishList().size > 0) {
@@ -179,6 +179,9 @@ class BhaiyaHomeFragment : BaseFragment() {
     private fun getDishes(dayOfWeek: String) {
         progress?.visibility = View.VISIBLE
         nextBtn?.isEnabled = false
+        nextBtnProgress?.visibility = View.VISIBLE
+        nextBtn.text = ""
+
         val query = GetHouseUserDishesListQuery.builder()
                 .dayOfWeek(dayOfWeek)
                 .houseId(houseId)
@@ -221,12 +224,20 @@ class BhaiyaHomeFragment : BaseFragment() {
             }
             progress?.visibility = View.GONE
             rcv?.visibility = View.VISIBLE
+            nextBtnProgress?.visibility = View.GONE
             if (list.size > 0) {
                 zeroCaseLl.visibility = View.GONE
                 subtextTv.visibility = View.VISIBLE
+                if (CommonUtil.getDay(count).toLowerCase() == WeekType.TODAY.day) {
+                    nextBtn.text = getString(R.string.change_plan)
+                } else {
+                    val arg = CommonUtil.getDay(count, Locale.US)
+                    nextBtn.text = getString(R.string.change_plan_for, arg)
+                }
             } else {
                 zeroCaseLl.visibility = View.VISIBLE
                 subtextTv.visibility = View.GONE
+                nextBtn.text = getString(R.string.add_dish)
             }
             rcv?.adapter = adapter
             nextBtn?.isEnabled = true
