@@ -35,8 +35,11 @@ import com.karumi.dexter.listener.single.PermissionListener
 import com.sillylife.plankhana.GetHouseDishesListQuery
 import com.sillylife.plankhana.GetHouseResidentListQuery
 import com.sillylife.plankhana.R
+import com.sillylife.plankhana.constants.BundleConstants
+import com.sillylife.plankhana.constants.EventConstants
 import com.sillylife.plankhana.enums.UserType
 import com.sillylife.plankhana.enums.WeekType
+import com.sillylife.plankhana.managers.EventsManager
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.Dish
 import com.sillylife.plankhana.models.User
@@ -73,7 +76,7 @@ class AuntyHomeFragment : BaseFragment() {
     private var startScale: Float? = null
     private var isImageExpanded: Boolean = false
     private var mShortAnimationDuration: Int = 250
-    private var thumbView:View? = null
+    private var thumbView: View? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return LayoutInflater.from(context).inflate(R.layout.fragment_aunty_home, null, false)
@@ -81,35 +84,43 @@ class AuntyHomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        EventsManager.setEventName(EventConstants.AUNTY_SCREEN_VIEWED).send()
         houseId = SharedPreferenceManager.getHouseId()!!
 
         setHouseResidents()
         subscribeCommonTopic()
         getHouseDishes(WeekType.TODAY.day)
         nextBtn?.setOnClickListener {
+            EventsManager.setEventName(EventConstants.AUNTY_CALL_BHAIYA_LOG_CLICKED)
+                    .addProperty(BundleConstants.CURRENT_DAY, CommonUtil.getDay(count).toLowerCase())
+                    .send()
             showUserList(userList)
         }
 
         yesterdayTv?.setOnClickListener {
             count -= 1
+            changeDayEvent(count + 1)
             getHouseDishes(CommonUtil.getDay(count).toLowerCase())
             toggleYesterdayBtn()
         }
 
         tomorrowTv?.setOnClickListener {
             count += 1
+            changeDayEvent(count - 1)
             getHouseDishes(CommonUtil.getDay(count).toLowerCase())
             toggleYesterdayBtn()
         }
 
         leftArrowsIv?.setOnClickListener {
             count -= 1
+            changeDayEvent(count + 1)
             getHouseDishes(CommonUtil.getDay(count).toLowerCase())
             toggleYesterdayBtn()
         }
 
         rightArrowsIv?.setOnClickListener {
             count += 1
+            changeDayEvent(count - 1)
             getHouseDishes(CommonUtil.getDay(count).toLowerCase())
             toggleYesterdayBtn()
         }
@@ -124,6 +135,7 @@ class AuntyHomeFragment : BaseFragment() {
             override fun onSwipeRight(): Boolean {
                 if (CommonUtil.getDay(count).toLowerCase() != WeekType.TODAY.day) {
                     count -= 1
+                    changeDayEvent(count + 1)
                     getHouseDishes(CommonUtil.getDay(count).toLowerCase())
                     toggleYesterdayBtn()
                     return true
@@ -133,6 +145,7 @@ class AuntyHomeFragment : BaseFragment() {
 
             override fun onSwipeLeft(): Boolean {
                 count += 1
+                changeDayEvent(count - 1)
                 getHouseDishes(CommonUtil.getDay(count).toLowerCase())
                 toggleYesterdayBtn()
                 return true
@@ -148,10 +161,17 @@ class AuntyHomeFragment : BaseFragment() {
         }
     }
 
+    fun changeDayEvent(currentDayCount: Int) {
+        EventsManager.setEventName(EventConstants.AUNTY_DAY_CHANGE_SWIPED)
+                .addProperty(BundleConstants.CURRENT_DAY, CommonUtil.getDay(currentDayCount).toLowerCase())
+                .addProperty(BundleConstants.DAY_CHANGED_TO, CommonUtil.getDay(count).toLowerCase())
+                .send()
+    }
+
     private fun subscribeCommonTopic() {
         val commonTopic = SharedPreferenceManager.getHouseId().toString()//"all-users"
         FirebaseMessaging.getInstance().subscribeToTopic(commonTopic).addOnCompleteListener {
-            if (it.isSuccessful){
+            if (it.isSuccessful) {
                 Log.d(TAG, "subscribeCommonTopic isSuccessful")
             } else {
                 Log.d(TAG, "subscribeCommonTopic isFailed")
@@ -233,7 +253,12 @@ class AuntyHomeFragment : BaseFragment() {
     fun setAdapter(list: ArrayList<Dish>?) {
         if (list != null) {
             val adapter = HouseDishesAdapter(context!!, UserType.COOK, list) { any: Any, view: View, i: Int ->
-                if (any is Dish){
+                if (any is Dish) {
+                    EventsManager.setEventName(EventConstants.AUNTY_DISH_CLICKED)
+                            .addProperty(BundleConstants.CURRENT_DAY, CommonUtil.getDay(count).toLowerCase())
+                            .addProperty(BundleConstants.DISH_ID, any.id)
+                            .addProperty(BundleConstants.DISH_NAME, any.dishName)
+                            .send()
                     thumbView = view
                     zoomImageFromThumb(view, any)
                 }
@@ -329,7 +354,7 @@ class AuntyHomeFragment : BaseFragment() {
                 }).check()
     }
 
-    private fun zoomImageFromThumb(thumbView: View, dish:Dish) {
+    private fun zoomImageFromThumb(thumbView: View, dish: Dish) {
         // If there's an animation in progress, cancel it
         // immediately and proceed with this one.
         mCurrentAnimator?.cancel()
@@ -392,7 +417,8 @@ class AuntyHomeFragment : BaseFragment() {
 
         // Construct and run the parallel animation of the four translation and
         // scale properties (X, Y, SCALE_X, and SCALE_Y).
-        mCurrentAnimator = AnimatorSet().apply { play(ObjectAnimator.ofFloat(rlExpandedImage!!, View.X, startBounds!!.left, finalBounds!!.left)).apply {
+        mCurrentAnimator = AnimatorSet().apply {
+            play(ObjectAnimator.ofFloat(rlExpandedImage!!, View.X, startBounds!!.left, finalBounds!!.left)).apply {
                 with(ObjectAnimator.ofFloat(rlExpandedImage!!, View.Y, startBounds!!.top, finalBounds!!.top))
                 with(ObjectAnimator.ofFloat(rlExpandedImage!!, View.SCALE_X, startScale!!, 1f))
                 with(ObjectAnimator.ofFloat(rlExpandedImage!!, View.SCALE_Y, startScale!!, 1f))

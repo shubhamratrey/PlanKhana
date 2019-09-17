@@ -163,7 +163,7 @@ class BhaiyaHomeFragment : BaseFragment() {
     }
 
     fun changeDayEvent(currentDayCount: Int) {
-        EventsManager.setEventName(EventConstants.DAY_CHANGE_SWIPED)
+        EventsManager.setEventName(EventConstants.RESIDENT_DAY_CHANGE_SWIPED)
                 .addProperty(BundleConstants.CURRENT_DAY, CommonUtil.getDay(currentDayCount).toLowerCase())
                 .addProperty(BundleConstants.DAY_CHANGED_TO, CommonUtil.getDay(count).toLowerCase())
                 .send()
@@ -241,7 +241,13 @@ class BhaiyaHomeFragment : BaseFragment() {
         if (list != null) {
             SharedPreferenceManager.setMyFoods(list)
             val adapter = HouseDishesAdapter(context!!, UserType.RESIDENT, list) { any: Any, view: View, i: Int ->
-
+                if (any is Dish) {
+                    EventsManager.setEventName(EventConstants.RESIDENT_DISH_CLICKED)
+                            .addProperty(BundleConstants.CURRENT_DAY, CommonUtil.getDay(count).toLowerCase())
+                            .addProperty(BundleConstants.DISH_ID, any.id)
+                            .addProperty(BundleConstants.DISH_NAME, any.dishName)
+                            .send()
+                }
             }
             rcv?.layoutManager = WrapContentGridLayoutManager(context!!, 3)
             if (rcv?.itemDecorationCount == 0) {
