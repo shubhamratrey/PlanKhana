@@ -133,6 +133,10 @@ class SelectBhaiyaFragment : BaseFragment() {
             rcv.layoutManager = WrapContentGridLayoutManager(context!!, 3)
             rcv.adapter = adapter
             progress?.visibility = View.GONE
+            if (list.size < 2) {
+                SharedPreferenceManager.setUser(list[0])
+                adapter?.setId(list[0].id!!)
+            }
         }
     }
 
