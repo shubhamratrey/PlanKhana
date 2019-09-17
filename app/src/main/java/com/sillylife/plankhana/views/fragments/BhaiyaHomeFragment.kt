@@ -10,6 +10,7 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
+import com.google.firebase.messaging.FirebaseMessaging
 import com.sillylife.plankhana.GetHouseUserDishesListQuery
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.constants.BundleConstants
@@ -63,6 +64,8 @@ class BhaiyaHomeFragment : BaseFragment() {
         houseId = SharedPreferenceManager.getHouseId()!!
         user = SharedPreferenceManager.getUser()
         getDishes(WeekType.TODAY.day)
+        subscribeCommonTopic()
+
         nextBtn.text = ""//getString(R.string.change_plan)
 
         nextBtn.setOnClickListener {
@@ -263,6 +266,19 @@ class BhaiyaHomeFragment : BaseFragment() {
             }
             rcv?.adapter = adapter
             nextBtn?.isEnabled = true
+        }
+    }
+
+    private fun subscribeCommonTopic() {
+        val commonTopic = SharedPreferenceManager.getHouseId().toString()//"all-users"
+        FirebaseMessaging.getInstance().subscribeToTopic(commonTopic).addOnCompleteListener {
+            if (it.isSuccessful){
+                Log.d(TAG, "subscribeCommonTopic isSuccessful")
+            } else {
+                Log.d(TAG, "subscribeCommonTopic isFailed")
+            }
+        }.addOnFailureListener {
+            Log.d(TAG, "subscribeCommonTopic ${it.stackTrace}")
         }
     }
 

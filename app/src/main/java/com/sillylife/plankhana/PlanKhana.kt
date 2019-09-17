@@ -7,7 +7,6 @@ import com.apollographql.apollo.ApolloClient
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import com.sillylife.plankhana.fcm.FCMService
-import com.sillylife.plankhana.fcm.FirebaseAPI
 import com.sillylife.plankhana.services.*
 import com.sillylife.plankhana.utils.rxevents.RxBus
 import com.sillylife.plankhana.utils.rxevents.RxEvent
@@ -33,7 +32,7 @@ class PlanKhana : MultiDexApplication(), ConnectivityReceiverListener {
         }
     }
 
-    private var mIAPIService: FirebaseAPI? = null
+    private var mIAPIService: FCMService.FirebaseAPI? = null
 
     @Volatile
     private var mApolloClient: ApolloClient? = null
@@ -82,7 +81,7 @@ class PlanKhana : MultiDexApplication(), ConnectivityReceiverListener {
     }
 
     @Synchronized
-    fun getFCMService(): FirebaseAPI {
+    fun getFCMService(): FCMService.FirebaseAPI {
         if (mIAPIService == null) {
             mIAPIService = FCMService.build()
         }
