@@ -13,19 +13,18 @@ import com.sillylife.plankhana.GetHouseDishesListQuery
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.enums.UserType
 import com.sillylife.plankhana.enums.WeekType
-import com.sillylife.plankhana.managers.LocalDishManager
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.Dish
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.services.ApolloService
 import com.sillylife.plankhana.services.AppDisposable
 import com.sillylife.plankhana.utils.CommonUtil
+import com.sillylife.plankhana.utils.ImageManager
 import com.sillylife.plankhana.utils.OnSwipeTouchListener
 import com.sillylife.plankhana.views.adapter.HouseDishesAdapter
 import com.sillylife.plankhana.views.adapter.item_decorator.GridItemDecoration
 import com.sillylife.plankhana.views.adapter.item_decorator.WrapContentGridLayoutManager
 import kotlinx.android.synthetic.main.fragment_plan.*
-import kotlinx.android.synthetic.main.layout_bottom_button.*
 import org.jetbrains.annotations.NotNull
 import java.util.*
 import kotlin.collections.ArrayList
@@ -66,8 +65,7 @@ class PlanFragment : BaseFragment() {
         houseId = SharedPreferenceManager.getHouseId()!!
         user = SharedPreferenceManager.getUser()
         getDishes(if (count != 0) CommonUtil.getDay(count).toLowerCase() else WeekType.TODAY.day)
-        nextBtn.text = "Go Back"
-        nextBtn.setOnClickListener {
+        backArrowFl.setOnClickListener {
             fragmentManager?.popBackStack()
         }
 
@@ -123,10 +121,8 @@ class PlanFragment : BaseFragment() {
                 return false
             }
         })
-
-//        backIv?.visibility = View.VISIBLE
-        backIv?.setOnClickListener {
-            fragmentManager?.popBackStack()
+        if (!CommonUtil.textIsEmpty(user?.imageUrl)){
+            ImageManager.loadImageCircular(userImageIv, user?.imageUrl)
         }
     }
 
@@ -164,7 +160,6 @@ class PlanFragment : BaseFragment() {
 
     private fun getDishes(dayOfWeek: String) {
         progress?.visibility = View.VISIBLE
-//        nextBtn?.isEnabled = false
         val query = GetHouseDishesListQuery.builder()
                 .dayOfWeek(dayOfWeek)
                 .languageId(user?.languageId!!)
@@ -219,7 +214,6 @@ class PlanFragment : BaseFragment() {
                 subtextTv.visibility = View.GONE
             }
             rcv?.adapter = adapter
-//            nextBtn?.isEnabled = true
         }
     }
 

@@ -12,8 +12,11 @@ import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.sillylife.plankhana.GetHouseUserDishesListQuery
 import com.sillylife.plankhana.R
+import com.sillylife.plankhana.constants.BundleConstants
+import com.sillylife.plankhana.constants.EventConstants
 import com.sillylife.plankhana.enums.UserType
 import com.sillylife.plankhana.enums.WeekType
+import com.sillylife.plankhana.managers.EventsManager
 import com.sillylife.plankhana.managers.LocalDishManager
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.Dish
@@ -56,13 +59,16 @@ class BhaiyaHomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        EventsManager.setEventName(EventConstants.RESIDENT_SCREEN_VIEWED).send()
         houseId = SharedPreferenceManager.getHouseId()!!
         user = SharedPreferenceManager.getUser()
         getDishes(WeekType.TODAY.day)
         nextBtn.text = ""//getString(R.string.change_plan)
 
         nextBtn.setOnClickListener {
+            EventsManager.setEventName(EventConstants.ADD_DISH_CLICKED)
+                    .addProperty(BundleConstants.CURRENT_DAY, CommonUtil.getDay(count).toLowerCase())
+                    .send()
             if (LocalDishManager.getTempDishList().size > 0) {
                 LocalDishManager.clearTempDishList()
             }
@@ -87,24 +93,28 @@ class BhaiyaHomeFragment : BaseFragment() {
 
         yesterdayTv?.setOnClickListener {
             count -= 1
+            changeDayEvent(count + 1)
             getDishes(CommonUtil.getDay(count).toLowerCase())
             toggleYesterdayBtn()
         }
 
         tomorrowTv?.setOnClickListener {
             count += 1
+            changeDayEvent(count - 1)
             getDishes(CommonUtil.getDay(count).toLowerCase())
             toggleYesterdayBtn()
         }
 
         leftArrowsIv?.setOnClickListener {
             count -= 1
+            changeDayEvent(count + 1)
             getDishes(CommonUtil.getDay(count).toLowerCase())
             toggleYesterdayBtn()
         }
 
         rightArrowsIv?.setOnClickListener {
             count += 1
+            changeDayEvent(count - 1)
             getDishes(CommonUtil.getDay(count).toLowerCase())
             toggleYesterdayBtn()
         }
@@ -119,6 +129,7 @@ class BhaiyaHomeFragment : BaseFragment() {
             override fun onSwipeRight(): Boolean {
                 if (CommonUtil.getDay(count).toLowerCase() != WeekType.TODAY.day) {
                     count -= 1
+                    changeDayEvent(count + 1)
                     getDishes(CommonUtil.getDay(count).toLowerCase())
                     toggleYesterdayBtn()
                     return true
@@ -128,6 +139,7 @@ class BhaiyaHomeFragment : BaseFragment() {
 
             override fun onSwipeLeft(): Boolean {
                 count += 1
+                changeDayEvent(count - 1)
                 getDishes(CommonUtil.getDay(count).toLowerCase())
                 toggleYesterdayBtn()
                 return true
@@ -140,8 +152,18 @@ class BhaiyaHomeFragment : BaseFragment() {
 
         changeSideIv?.visibility = View.VISIBLE
         changeSideIv?.setOnClickListener {
+            EventsManager.setEventName(EventConstants.SWITCH_USER_CLICKED)
+                    .addProperty(BundleConstants.CURRENT_DAY, CommonUtil.getDay(count).toLowerCase())
+                    .send()
             addFragment(PlanFragment.newInstance(count), PlanFragment.TAG)
         }
+    }
+
+    fun changeDayEvent(currentDayCount: Int) {
+        EventsManager.setEventName(EventConstants.DAY_CHANGE_SWIPED)
+                .addProperty(BundleConstants.CURRENT_DAY, CommonUtil.getDay(currentDayCount).toLowerCase())
+                .addProperty(BundleConstants.DAY_CHANGED_TO, CommonUtil.getDay(count).toLowerCase())
+                .send()
     }
 
     private fun toggleYesterdayBtn() {

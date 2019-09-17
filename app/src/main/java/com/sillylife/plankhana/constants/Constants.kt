@@ -1,6 +1,7 @@
 package com.sillylife.plankhana.constants
 
 object Constants {
+    const val USER_ID: String = "user_id"
     const val FIREBASE_REMOTE_CONFIG_CACHE_EXPIRATION: Long = 3600
     const val KEY: String = "key"
     const val RC_EPISODE_GALLERY:Int = 1002
