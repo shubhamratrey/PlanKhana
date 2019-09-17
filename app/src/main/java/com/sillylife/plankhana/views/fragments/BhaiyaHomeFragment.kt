@@ -70,7 +70,7 @@ class BhaiyaHomeFragment : BaseFragment() {
 
         nextBtn.setOnClickListener {
             EventsManager.setEventName(EventConstants.CHANGE_PLAN_CLICKED)
-                    .addProperty(BundleConstants.CURRENT_DAY, CommonUtil.getDay(count).toLowerCase())
+                    .addProperty(BundleConstants.DAY, CommonUtil.getDay(count).toLowerCase())
                     .send()
             if (LocalDishManager.getTempDishList().size > 0) {
                 LocalDishManager.clearTempDishList()
@@ -156,7 +156,7 @@ class BhaiyaHomeFragment : BaseFragment() {
         changeSideIv?.visibility = View.VISIBLE
         changeSideIv?.setOnClickListener {
             EventsManager.setEventName(EventConstants.SWITCH_USER_CLICKED)
-                    .addProperty(BundleConstants.CURRENT_DAY, CommonUtil.getDay(count).toLowerCase())
+                    .addProperty(BundleConstants.DAY, CommonUtil.getDay(count).toLowerCase())
                     .send()
             addFragment(PlanFragment.newInstance(count), PlanFragment.TAG)
         }
@@ -165,7 +165,7 @@ class BhaiyaHomeFragment : BaseFragment() {
     fun changeDayEvent(currentDayCount: Int) {
         EventsManager.setEventName(EventConstants.RESIDENT_DAY_CHANGE_SWIPED)
                 .addProperty(BundleConstants.CURRENT_DAY, CommonUtil.getDay(currentDayCount).toLowerCase())
-                .addProperty(BundleConstants.DAY_CHANGED_TO, CommonUtil.getDay(count).toLowerCase())
+                .addProperty(BundleConstants.CHANGED_DAY, CommonUtil.getDay(count).toLowerCase())
                 .send()
     }
 
@@ -243,7 +243,7 @@ class BhaiyaHomeFragment : BaseFragment() {
             val adapter = HouseDishesAdapter(context!!, UserType.RESIDENT, list) { any: Any, view: View, i: Int ->
                 if (any is Dish) {
                     EventsManager.setEventName(EventConstants.RESIDENT_DISH_CLICKED)
-                            .addProperty(BundleConstants.CURRENT_DAY, CommonUtil.getDay(count).toLowerCase())
+                            .addProperty(BundleConstants.DAY, CommonUtil.getDay(count).toLowerCase())
                             .addProperty(BundleConstants.DISH_ID, any.id)
                             .addProperty(BundleConstants.DISH_NAME, any.dishName)
                             .send()

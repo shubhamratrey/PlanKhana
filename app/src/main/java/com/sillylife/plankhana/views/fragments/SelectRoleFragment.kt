@@ -14,7 +14,9 @@ import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.sillylife.plankhana.AddWorkerMutation
 import com.sillylife.plankhana.GetHouseResidentListQuery
 import com.sillylife.plankhana.R
+import com.sillylife.plankhana.constants.EventConstants
 import com.sillylife.plankhana.enums.UserType
+import com.sillylife.plankhana.managers.EventsManager
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.User
 import com.sillylife.plankhana.services.ApolloService
@@ -40,6 +42,7 @@ class SelectRoleFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        EventsManager.setEventName(EventConstants.SELECT_ROLE_SCREEN_VIEWED).send()
         houseId = SharedPreferenceManager.getHouseId()!!
 
         dining.setOnClickListener {

@@ -148,7 +148,7 @@ class ChangePlanFragment : BaseFragment() {
                         }
                         if (mutableListOf(response.data())[0]?.plankhana_users_planweekday()?.size!! >= 1) {
                             val event = EventsManager.setEventName(EventConstants.PLAN_CHANGED)
-                                    .addProperty(BundleConstants.CURRENT_DAY, if (CommonUtil.textIsEmpty(day)) WeekType.TODAY.day else day)
+                                    .addProperty(BundleConstants.DAY, if (CommonUtil.textIsEmpty(day)) WeekType.TODAY.day else day)
                             if (toBeDeletingDishesIds.size > 0) {
                                 event.addProperty(BundleConstants.REMOVED_DISHES_IDS, toBeDeletingDishesIds.toString())
                                 deleteDishes(response.data()?.plankhana_users_planweekday()!![0]?.id()!!)
@@ -267,7 +267,7 @@ class ChangePlanFragment : BaseFragment() {
             val adapter = DishesAdapter(context!!, DishesAdapter.Add_A_DISH, list) { any, type, pos ->
                 if (any is Int && any == DishesAdapter.ADD_DISH_BTN) {
                     EventsManager.setEventName(EventConstants.ADD_DISH_CLICKED)
-                            .addProperty(BundleConstants.CURRENT_DAY, if (CommonUtil.textIsEmpty(day)) WeekType.TODAY.day else day)
+                            .addProperty(BundleConstants.DAY, if (CommonUtil.textIsEmpty(day)) WeekType.TODAY.day else day)
                             .send()
                     addFragment(AddDishFragment.newInstance(), AddDishFragment.TAG)
                 } else if (any is Dish && type.contains(DishesAdapter.REMOVE)) {

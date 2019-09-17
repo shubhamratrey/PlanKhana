@@ -11,8 +11,10 @@ import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.sillylife.plankhana.GetHouseDishesListQuery
 import com.sillylife.plankhana.R
+import com.sillylife.plankhana.constants.EventConstants
 import com.sillylife.plankhana.enums.UserType
 import com.sillylife.plankhana.enums.WeekType
+import com.sillylife.plankhana.managers.EventsManager
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.Dish
 import com.sillylife.plankhana.models.User
@@ -58,6 +60,7 @@ class PlanFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        EventsManager.setEventName(EventConstants.HOUSE_PLAN_SCREEN_VIEWED).send()
         if (arguments != null && arguments!!.containsKey("count")) {
             count = arguments?.getInt("count")!!
         }
@@ -121,8 +124,11 @@ class PlanFragment : BaseFragment() {
                 return false
             }
         })
-        if (!CommonUtil.textIsEmpty(user?.imageUrl)){
+        if (!CommonUtil.textIsEmpty(user?.imageUrl)) {
             ImageManager.loadImageCircular(userImageIv, user?.imageUrl)
+        }
+        userImageFl?.setOnClickListener {
+            EventsManager.setEventName(EventConstants.HOUSE_PLAN_RESIDENT_PHOTO_CLICKED).send()
         }
     }
 

@@ -18,6 +18,8 @@ import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.sillylife.plankhana.GetDishCategoriesQuery
 import com.sillylife.plankhana.R
+import com.sillylife.plankhana.constants.EventConstants
+import com.sillylife.plankhana.managers.EventsManager
 import com.sillylife.plankhana.managers.LocalDishManager
 import com.sillylife.plankhana.models.DishCategory
 import com.sillylife.plankhana.services.ApolloService
@@ -50,7 +52,9 @@ class AddDishFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        EventsManager.setEventName(EventConstants.ADD_DISH_SCREEN_VIEWED).send()
         initializeSearch()
+        nextBtn.text = getString(R.string.string_continue)
         nextBtn?.alpha = 0.7f
         backArrowFl?.setOnClickListener {
             fragmentManager?.popBackStack()

@@ -23,8 +23,10 @@ import com.sillylife.plankhana.AddResidentListMutation
 import com.sillylife.plankhana.GetHouseResidentListQuery
 import com.sillylife.plankhana.R
 import com.sillylife.plankhana.constants.Constants
+import com.sillylife.plankhana.constants.EventConstants
 import com.sillylife.plankhana.enums.ImageType
 import com.sillylife.plankhana.enums.UserType
+import com.sillylife.plankhana.managers.EventsManager
 import com.sillylife.plankhana.managers.ImageUploadTask
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.User
@@ -72,6 +74,7 @@ class SelectBhaiyaFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        EventsManager.setEventName(EventConstants.SELECT_RESIDENT_SCREEN_VIEWED).send()
         houseId = SharedPreferenceManager.getHouseId()!!
         setHouseResidents(houseId)
 

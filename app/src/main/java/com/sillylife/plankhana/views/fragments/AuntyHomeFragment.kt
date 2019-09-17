@@ -92,7 +92,7 @@ class AuntyHomeFragment : BaseFragment() {
         getHouseDishes(WeekType.TODAY.day)
         nextBtn?.setOnClickListener {
             EventsManager.setEventName(EventConstants.AUNTY_CALL_BHAIYA_LOG_CLICKED)
-                    .addProperty(BundleConstants.CURRENT_DAY, CommonUtil.getDay(count).toLowerCase())
+                    .addProperty(BundleConstants.DAY, CommonUtil.getDay(count).toLowerCase())
                     .send()
             showUserList(userList)
         }
@@ -164,7 +164,7 @@ class AuntyHomeFragment : BaseFragment() {
     fun changeDayEvent(currentDayCount: Int) {
         EventsManager.setEventName(EventConstants.AUNTY_DAY_CHANGE_SWIPED)
                 .addProperty(BundleConstants.CURRENT_DAY, CommonUtil.getDay(currentDayCount).toLowerCase())
-                .addProperty(BundleConstants.DAY_CHANGED_TO, CommonUtil.getDay(count).toLowerCase())
+                .addProperty(BundleConstants.CHANGED_DAY, CommonUtil.getDay(count).toLowerCase())
                 .send()
     }
 
@@ -255,7 +255,7 @@ class AuntyHomeFragment : BaseFragment() {
             val adapter = HouseDishesAdapter(context!!, UserType.COOK, list) { any: Any, view: View, i: Int ->
                 if (any is Dish) {
                     EventsManager.setEventName(EventConstants.AUNTY_DISH_CLICKED)
-                            .addProperty(BundleConstants.CURRENT_DAY, CommonUtil.getDay(count).toLowerCase())
+                            .addProperty(BundleConstants.DAY, CommonUtil.getDay(count).toLowerCase())
                             .addProperty(BundleConstants.DISH_ID, any.id)
                             .addProperty(BundleConstants.DISH_NAME, any.dishName)
                             .send()
