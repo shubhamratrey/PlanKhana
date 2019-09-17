@@ -71,6 +71,7 @@ class ChangePlanFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        EventsManager.setEventName(EventConstants.CHANGE_PLAN_SCREEN_VIEWED).send()
         if (arguments != null && arguments!!.containsKey("day")) {
             day = arguments?.getString("day")!!
         }

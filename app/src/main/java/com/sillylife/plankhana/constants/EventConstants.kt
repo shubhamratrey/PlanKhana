@@ -14,6 +14,7 @@ object EventConstants {
     /**
      * ChangePlan Screen Events
      */
+    const val CHANGE_PLAN_SCREEN_VIEWED = "change_plan_screen_viewed"
     const val PLAN_CHANGED = "plan_changed"
     const val ADD_DISH_CLICKED = "add_dish_clicked"
 }
