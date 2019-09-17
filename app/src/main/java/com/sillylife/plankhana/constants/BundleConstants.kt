@@ -11,4 +11,5 @@ object BundleConstants {
     const val DAY_CHANGED_TO = "day_changed_to"
     const val REMOVED_DISHES_IDS = "removed_dishes_ids"
     const val ADDED_DISHES_IDS = "added_dishes_ids"
+    const val HOUSE_ID = "house_id"
 }

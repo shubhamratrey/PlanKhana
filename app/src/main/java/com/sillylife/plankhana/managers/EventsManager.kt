@@ -6,7 +6,9 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.sillylife.plankhana.BuildConfig
 import com.sillylife.plankhana.PlanKhana
+import com.sillylife.plankhana.constants.BundleConstants
 import com.sillylife.plankhana.constants.Constants
+import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 
 object EventsManager {
     val TAG = EventsManager::class.java.simpleName
@@ -48,6 +50,10 @@ object EventsManager {
         if (!BuildConfig.DEBUG) {
             if (mFirebaseAnalytics == null) {
                 init()
+            }
+            val houseId = SharedPreferenceManager.getHouseId()!!
+            if (houseId > 1) {
+                eventBundle.putString(BundleConstants.HOUSE_ID, houseId.toString())
             }
             val user = FirebaseAuth.getInstance().currentUser
             if (user != null) {
