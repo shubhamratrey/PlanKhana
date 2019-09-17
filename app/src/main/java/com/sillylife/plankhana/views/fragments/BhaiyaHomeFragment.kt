@@ -69,7 +69,7 @@ class BhaiyaHomeFragment : BaseFragment() {
         nextBtn.text = ""//getString(R.string.change_plan)
 
         nextBtn.setOnClickListener {
-            EventsManager.setEventName(EventConstants.ADD_DISH_CLICKED)
+            EventsManager.setEventName(EventConstants.CHANGE_PLAN_CLICKED)
                     .addProperty(BundleConstants.CURRENT_DAY, CommonUtil.getDay(count).toLowerCase())
                     .send()
             if (LocalDishManager.getTempDishList().size > 0) {

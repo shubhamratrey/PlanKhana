@@ -12,7 +12,10 @@ import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
 import com.sillylife.plankhana.*
+import com.sillylife.plankhana.constants.BundleConstants
+import com.sillylife.plankhana.constants.EventConstants
 import com.sillylife.plankhana.enums.WeekType
+import com.sillylife.plankhana.managers.EventsManager
 import com.sillylife.plankhana.managers.LocalDishManager
 import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.models.Dish
@@ -143,12 +146,17 @@ class ChangePlanFragment : BaseFragment() {
                             return
                         }
                         if (mutableListOf(response.data())[0]?.plankhana_users_planweekday()?.size!! >= 1) {
+                            val event = EventsManager.setEventName(EventConstants.PLAN_CHANGED)
+                                    .addProperty(BundleConstants.CURRENT_DAY, if (CommonUtil.textIsEmpty(day)) WeekType.TODAY.day else day)
                             if (toBeDeletingDishesIds.size > 0) {
+                                event.addProperty(BundleConstants.REMOVED_DISHES_IDS, toBeDeletingDishesIds.toString())
                                 deleteDishes(response.data()?.plankhana_users_planweekday()!![0]?.id()!!)
                             }
                             if (LocalDishManager.getTempSavedDishesIds().size > 0) {
+                                event.addProperty(BundleConstants.ADDED_DISHES_IDS, LocalDishManager.getTempSavedDishesIds().toString())
                                 addDishes(response.data()?.plankhana_users_planweekday()!![0]?.id()!!)
                             }
+                            event.send()
 
                             sendNotificationAsString(houseId.toString(), NotifyData(title = "${user?.name!!} भैया ने कुछ बदला है", description = "Please check $day plan", image = ""))
                         }
@@ -257,6 +265,9 @@ class ChangePlanFragment : BaseFragment() {
         if (list != null) {
             val adapter = DishesAdapter(context!!, DishesAdapter.Add_A_DISH, list) { any, type, pos ->
                 if (any is Int && any == DishesAdapter.ADD_DISH_BTN) {
+                    EventsManager.setEventName(EventConstants.ADD_DISH_CLICKED)
+                            .addProperty(BundleConstants.CURRENT_DAY, if (CommonUtil.textIsEmpty(day)) WeekType.TODAY.day else day)
+                            .send()
                     addFragment(AddDishFragment.newInstance(), AddDishFragment.TAG)
                 } else if (any is Dish && type.contains(DishesAdapter.REMOVE)) {
                     val adapter = rcv.adapter as DishesAdapter
