@@ -94,8 +94,8 @@ android {
         }
         release {
             initWith releasedebug
-            minifyEnabled true
-            shrinkResources = true
+//            minifyEnabled true
+//            shrinkResources = false
             debuggable false
         }
     }

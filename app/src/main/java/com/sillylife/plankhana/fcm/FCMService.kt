@@ -23,6 +23,7 @@ object FCMService {
     }
 
     val BASE_URL = "https://fcm.googleapis.com"
+    const val key = "AAAAgmYJg3A:APA91bFa0hXgXwJFC2FAT5j-NDI5TjHzdhLceJSVj8P4T3UKABnJo57B8ssv-EFqDQV__gj0gIKWqv8xR2jGMEXIyH0NrHbZ6ckMYwkRBnnGksew4oWxOxxgkRRjx2zX8TsKfPPlsn51"
 
     fun build(): FirebaseAPI {
         val retrofit = Retrofit.Builder()
@@ -48,7 +49,7 @@ object FCMService {
         return Interceptor { chain ->
             val original = chain.request()
             val requestBuilder = original.newBuilder()
-            requestBuilder.header("Authorization", "key=AIzaSyCgJlIuJIJfF6cll4NlNIJM2EZUesPIgWs")
+            requestBuilder.header("Authorization", "key=$key")
             requestBuilder.header("content-type", "application/json")
             val request = requestBuilder.build()
             val response = chain.proceed(request)
