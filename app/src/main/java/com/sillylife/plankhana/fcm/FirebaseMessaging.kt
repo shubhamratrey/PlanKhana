@@ -22,6 +22,7 @@ import com.sillylife.plankhana.R
 import com.sillylife.plankhana.constants.BundleConstants
 import com.sillylife.plankhana.constants.IntentConstants
 import com.sillylife.plankhana.constants.NotificationKeys
+import com.sillylife.plankhana.managers.sharedpreference.SharedPreferenceManager
 import com.sillylife.plankhana.utils.CommonUtil
 import com.sillylife.plankhana.views.activities.AuntyActivity
 import java.util.concurrent.atomic.AtomicInteger
@@ -43,6 +44,11 @@ class FirebaseMessaging : FirebaseMessagingService() {
         }
         Log.d(TAG, Gson().toJson(remoteMessage.data))
         val data = remoteMessage.data
+        val user = SharedPreferenceManager.getUser()?.name
+        val userName = data[NotificationKeys.TITLE].toString().split(" ")[0]
+        if (user == userName){
+            return
+        }
         if (data != null) {
             val title = data[NotificationKeys.TITLE]
             val description = data[NotificationKeys.DESCRIPTION]
