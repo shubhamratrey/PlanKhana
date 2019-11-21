@@ -154,13 +154,15 @@ class AddDishChildFragment : BaseFragment() {
                         Log.d(TAG, "STARTED")
                         for (dishes in response.data()?.plankhana_dishes_dish()?.toMutableList()!!) {
                             val name = if (dishes.dishes_dishlanguagenames().size > 0) dishes.dishes_dishlanguagenames()[0].dish_name() else ""
+                            val same_day_available = dishes.same_day_available()
                             when {
                                 tempDishIds.contains(dishes.id()) -> list.add(
                                     Dish(
                                         id = dishes.id(),
                                         dishName = name,
                                         dishImage = dishes.dish_image(),
-                                        dishStatus = DishStatus(added = true)
+                                        dishStatus = DishStatus(added = true),
+                                        same_day_available = same_day_available
                                     )
                                 )
                                 dishIds.contains(dishes.id()) -> list.add(
@@ -168,7 +170,8 @@ class AddDishChildFragment : BaseFragment() {
                                         id = dishes.id(),
                                         dishName = name,
                                         dishImage = dishes.dish_image(),
-                                        dishStatus = DishStatus(alreadyAdded = true)
+                                        dishStatus = DishStatus(alreadyAdded = true),
+                                        same_day_available = same_day_available
                                     )
                                 )
                                 else -> list.add(
@@ -176,7 +179,8 @@ class AddDishChildFragment : BaseFragment() {
                                         id = dishes.id(),
                                         dishName = name,
                                         dishImage = dishes.dish_image(),
-                                        dishStatus = DishStatus(add = true)
+                                        dishStatus = DishStatus(add = true),
+                                        same_day_available = same_day_available
                                     )
                                 )
                             }
@@ -214,13 +218,14 @@ class AddDishChildFragment : BaseFragment() {
                         }
                         for (dishes in response.data()?.plankhana_dishes_dish()?.toMutableList()!!) {
                             val name = if (dishes.dishes_dishlanguagenames().size > 0) dishes.dishes_dishlanguagenames()[0].dish_name() else ""
+                            val same_day_available = dishes.same_day_available()
                             when {
                                 tempDishIds.contains(dishes.id()) -> list.add(
                                     Dish(
                                         id = dishes.id(),
                                         dishName = name,
                                         dishImage = dishes.dish_image(),
-                                        same_day_available = dishes.same_day_available(),
+                                        same_day_available = same_day_available,
                                         dishStatus = DishStatus(added = true)
                                     )
                                 )
@@ -229,7 +234,7 @@ class AddDishChildFragment : BaseFragment() {
                                         id = dishes.id(),
                                         dishName = name,
                                         dishImage = dishes.dish_image(),
-                                        same_day_available = dishes.same_day_available(),
+                                        same_day_available = same_day_available,
                                         dishStatus = DishStatus(alreadyAdded = true)
                                     )
                                 )
@@ -238,7 +243,7 @@ class AddDishChildFragment : BaseFragment() {
                                         id = dishes.id(),
                                         dishName = name,
                                         dishImage = dishes.dish_image(),
-                                        same_day_available = dishes.same_day_available(),
+                                        same_day_available = same_day_available,
                                         dishStatus = DishStatus(add = true)
                                     )
                                 )

@@ -71,6 +71,7 @@ query GetDishes($categoryId:Int!, $offset:Int!, $limit:Int!, $languageId :Int!) 
 query GetAllDishes($offset:Int!, $limit:Int!, $languageId :Int!) {
     plankhana_dishes_dish(offset: $offset, limit: $limit) {
         id
+        same_day_available
         dishes_dishlanguagenames(where: {language_id: {_eq: $languageId}}) {
             dish_name
         }
