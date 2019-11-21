@@ -126,10 +126,10 @@ class DishesAdapter(val context: Context, val type: String, list: ArrayList<Dish
         }
 
         holder.dishStatusFl.setOnClickListener {
-            if (item.same_day_available != null && item.same_day_available!!) {
-                if (type.equals(Add_A_DISH, true)) {
-                    listener(item, REMOVE, holder.adapterPosition)
-                } else {
+            if (type.equals(Add_A_DISH, true)) {
+                listener(item, REMOVE, holder.adapterPosition)
+            } else {
+                if (item.same_day_available != null && item.same_day_available!!) {
                     when {
                         item.dishStatus!!.added -> {
                             listener(item, REMOVE, holder.adapterPosition)
@@ -137,10 +137,13 @@ class DishesAdapter(val context: Context, val type: String, list: ArrayList<Dish
                         item.dishStatus!!.add -> {
                             listener(item, ADD, holder.adapterPosition)
                         }
+                        item.dishStatus!!.alreadyAdded -> {
+                            listener(item, "snackbar", holder.adapterPosition)
+                        }
                     }
+                } else {
+                    listener(item, "snackbar", holder.adapterPosition)
                 }
-            } else {
-                listener("snackbar", "", holder.adapterPosition)
             }
         }
     }

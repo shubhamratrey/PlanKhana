@@ -277,25 +277,38 @@ class AddDishChildFragment : BaseFragment() {
     fun setAdapter(list: ArrayList<Dish>?) {
         if (list != null) {
             val adapter = DishesAdapter(context!!, DishesAdapter.REQUEST_A_DISH, list) { any, type, pos ->
-                if (any is String) {
-                    if (any.contentEquals(DishesAdapter.Add_A_DISH)) {
-                        val intent = Intent(activity, WebActivity::class.java)
-                        startActivity(intent)
-                    } else {
-                        val snackBar = Snackbar.make(rcv, "You can not add this today", Snackbar.LENGTH_LONG)
-                        snackBar.anchorView = snackbar_action
-                        snackBar.setBackgroundTint(Color.parseColor("#CE3044"))
-                        snackBar.setTextColor(Color.parseColor("#FFFFFFFF"))
-                        snackBar.show()
-                    }
+                if (any is String && any.contentEquals(DishesAdapter.Add_A_DISH)) {
+                    val intent = Intent(activity, WebActivity::class.java)
+                    startActivity(intent)
                 } else if (any is Dish) {
-                    RxBus.publish(RxEvent.Action(RxEventType.DISH_ADDED_REMOVED, any))
-                    if (type.contains(DishesAdapter.ADD)) {
-                        RxBus.publish(RxEvent.Action(RxEventType.CHANGE_PLAN_LIST_DISH_ADD, any))
-                        LocalDishManager.addTempDish(any)
-                    } else if (type.contains(DishesAdapter.REMOVE)) {
-                        RxBus.publish(RxEvent.Action(RxEventType.CHANGE_PLAN_LIST_DISH_REMOVE, any))
-                        LocalDishManager.removeTempDish(any)
+                    when {
+                        type.contains(DishesAdapter.ADD) -> {
+                            RxBus.publish(RxEvent.Action(RxEventType.DISH_ADDED_REMOVED, any))
+                            RxBus.publish(RxEvent.Action(RxEventType.CHANGE_PLAN_LIST_DISH_ADD, any))
+                            LocalDishManager.addTempDish(any)
+                        }
+                        type.contains(DishesAdapter.REMOVE) -> {
+                            RxBus.publish(RxEvent.Action(RxEventType.DISH_ADDED_REMOVED, any))
+                            RxBus.publish(RxEvent.Action(RxEventType.CHANGE_PLAN_LIST_DISH_REMOVE, any))
+                            LocalDishManager.removeTempDish(any)
+                        }
+                        type.contains("snackbar", true) -> {
+                            val snackBar = Snackbar.make(rcv, "You can not add this today", Snackbar.LENGTH_LONG)
+                            snackBar.anchorView = snackbar_action
+                            when {
+                                any.dishStatus!!.add -> {
+                                    snackBar.setText("You can not add this today \uD83D\uDE15 \uD83D\uDE45\uD83C\uDFFB\u200D♀")
+                                    snackBar.setBackgroundTint(Color.parseColor("#CE3044"))
+                                    snackBar.setTextColor(Color.parseColor("#FFFFFFFF"))
+                                }
+                                any.dishStatus!!.alreadyAdded -> {
+                                    snackBar.setText("You have already added ${any.dishName?.toLowerCase()} \uD83D\uDE0B \uD83C\uDF7D")
+                                    snackBar.setBackgroundTint(Color.parseColor("#00C781"))
+                                    snackBar.setTextColor(Color.parseColor("#FFFFFFFF"))
+                                }
+                            }
+                            snackBar.show()
+                        }
                     }
 
                     //toggleBtn
