@@ -2471,7 +2471,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "text_comparison_exp",
+              "name": "String_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -2491,7 +2491,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "integer_comparison_exp",
+              "name": "Int_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -2503,8 +2503,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "text_comparison_exp",
-        "description": "expression to compare columns of type text. All fields are combined with logical 'AND'.",
+        "name": "String_comparison_exp",
+        "description": "expression to compare columns of type String. All fields are combined with logical 'AND'.",
         "fields": null,
         "inputFields": [
           {
@@ -2747,7 +2747,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "integer_comparison_exp",
+              "name": "Int_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -2757,7 +2757,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "text_comparison_exp",
+              "name": "String_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -2767,7 +2767,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "text_comparison_exp",
+              "name": "String_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -2797,7 +2797,17 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "integer_comparison_exp",
+              "name": "Int_comparison_exp",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "same_day_available",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "Boolean_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -2819,8 +2829,8 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "integer_comparison_exp",
-        "description": "expression to compare columns of type integer. All fields are combined with logical 'AND'.",
+        "name": "Int_comparison_exp",
+        "description": "expression to compare columns of type Int. All fields are combined with logical 'AND'.",
         "fields": null,
         "inputFields": [
           {
@@ -2937,7 +2947,7 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "plankhana_dishes_dishlanguagename_bool_exp",
-        "description": "Boolean expression to filter rows from the table \"plankhana.dishes_dishlanguagename\". All fields are combined with a logical 'AND'.",
+        "description": "Boolean expression to filter rows from the table\n\"plankhana.dishes_dishlanguagename\". All fields are combined with a logical 'AND'.",
         "fields": null,
         "inputFields": [
           {
@@ -2983,7 +2993,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "integer_comparison_exp",
+              "name": "Int_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -2993,7 +3003,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "text_comparison_exp",
+              "name": "String_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3013,7 +3023,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "integer_comparison_exp",
+              "name": "Int_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3023,7 +3033,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "integer_comparison_exp",
+              "name": "Int_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3046,7 +3056,7 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "plankhana_languages_language_bool_exp",
-        "description": "Boolean expression to filter rows from the table \"plankhana.languages_language\". All fields are combined with a logical 'AND'.",
+        "description": "Boolean expression to filter rows from the table \"plankhana.languages_language\".\nAll fields are combined with a logical 'AND'.",
         "fields": null,
         "inputFields": [
           {
@@ -3102,7 +3112,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "integer_comparison_exp",
+              "name": "Int_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3112,7 +3122,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "text_comparison_exp",
+              "name": "String_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3135,7 +3145,7 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "plankhana_users_userprofile_bool_exp",
-        "description": "Boolean expression to filter rows from the table \"plankhana.users_userprofile\". All fields are combined with a logical 'AND'.",
+        "description": "Boolean expression to filter rows from the table \"plankhana.users_userprofile\".\nAll fields are combined with a logical 'AND'.",
         "fields": null,
         "inputFields": [
           {
@@ -3191,7 +3201,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "text_comparison_exp",
+              "name": "String_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3211,7 +3221,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "integer_comparison_exp",
+              "name": "Int_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3221,7 +3231,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "integer_comparison_exp",
+              "name": "Int_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3241,7 +3251,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "text_comparison_exp",
+              "name": "String_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3251,7 +3261,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "text_comparison_exp",
+              "name": "String_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3261,7 +3271,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "text_comparison_exp",
+              "name": "String_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3467,7 +3477,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "integer_comparison_exp",
+              "name": "Int_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3487,7 +3497,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "integer_comparison_exp",
+              "name": "Int_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3497,7 +3507,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "integer_comparison_exp",
+              "name": "Int_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3576,7 +3586,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "text_comparison_exp",
+              "name": "String_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3596,7 +3606,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "integer_comparison_exp",
+              "name": "Int_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3609,7 +3619,7 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "plankhana_users_userdishweekplan_bool_exp",
-        "description": "Boolean expression to filter rows from the table \"plankhana.users_userdishweekplan\". All fields are combined with a logical 'AND'.",
+        "description": "Boolean expression to filter rows from the table\n\"plankhana.users_userdishweekplan\". All fields are combined with a logical 'AND'.",
         "fields": null,
         "inputFields": [
           {
@@ -3665,7 +3675,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "integer_comparison_exp",
+              "name": "Int_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3685,7 +3695,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "integer_comparison_exp",
+              "name": "Int_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3695,7 +3705,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "integer_comparison_exp",
+              "name": "Int_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3705,7 +3715,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "integer_comparison_exp",
+              "name": "Int_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3735,7 +3745,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "integer_comparison_exp",
+              "name": "Int_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3748,7 +3758,7 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "plankhana_users_planweekday_bool_exp",
-        "description": "Boolean expression to filter rows from the table \"plankhana.users_planweekday\". All fields are combined with a logical 'AND'.",
+        "description": "Boolean expression to filter rows from the table \"plankhana.users_planweekday\".\nAll fields are combined with a logical 'AND'.",
         "fields": null,
         "inputFields": [
           {
@@ -3794,7 +3804,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "text_comparison_exp",
+              "name": "String_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3804,7 +3814,7 @@
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
-              "name": "integer_comparison_exp",
+              "name": "Int_comparison_exp",
               "ofType": null
             },
             "defaultValue": null
@@ -3816,6 +3826,123 @@
               "kind": "INPUT_OBJECT",
               "name": "plankhana_users_userdishweekplan_bool_exp",
               "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "Boolean_comparison_exp",
+        "description": "expression to compare columns of type Boolean. All fields are combined with logical 'AND'.",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "_eq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "_gt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "_gte",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "_in",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "_is_null",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "_lt",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "_lte",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "_neq",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "_nin",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "Boolean",
+                  "ofType": null
+                }
+              }
             },
             "defaultValue": null
           }
@@ -4072,6 +4199,12 @@
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "same_day_available",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "possibleTypes": null
@@ -4134,6 +4267,16 @@
           },
           {
             "name": "id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "order_by",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "same_day_available",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -5708,6 +5851,22 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "same_day_available",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               }
             },
@@ -16698,6 +16857,16 @@
             "defaultValue": null
           },
           {
+            "name": "same_day_available",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "users_userdishweekplans",
             "description": null,
             "type": {
@@ -17087,6 +17256,12 @@
           },
           {
             "name": "id",
+            "description": "column name",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "same_day_available",
             "description": "column name",
             "isDeprecated": false,
             "deprecationReason": null
@@ -18655,6 +18830,16 @@
             "type": {
               "kind": "SCALAR",
               "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "same_day_available",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
               "ofType": null
             },
             "defaultValue": null
@@ -21875,16 +22060,6 @@
         "possibleTypes": null
       },
       {
-        "kind": "SCALAR",
-        "name": "ID",
-        "description": "The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `\"4\"`) or integer (such as `4`) input value will be accepted as an ID.",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
         "kind": "ENUM",
         "name": "conflict_action",
         "description": "conflict action",
@@ -23611,8 +23786,8 @@
     ],
     "directives": [
       {
-        "name": "include",
-        "description": null,
+        "name": "skip",
+        "description": "Directs the executor to skip this field or fragment when the `if` argument is true.",
         "locations": [
           "FIELD",
           "FRAGMENT_SPREAD",
@@ -23621,7 +23796,7 @@
         "args": [
           {
             "name": "if",
-            "description": null,
+            "description": "Skipped when true.",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -23636,8 +23811,8 @@
         ]
       },
       {
-        "name": "skip",
-        "description": null,
+        "name": "include",
+        "description": "Directs the executor to include this field or fragment only when the `if` argument is true.",
         "locations": [
           "FIELD",
           "FRAGMENT_SPREAD",
@@ -23646,7 +23821,7 @@
         "args": [
           {
             "name": "if",
-            "description": null,
+            "description": "Included when true.",
             "type": {
               "kind": "NON_NULL",
               "name": null,
@@ -23654,6 +23829,111 @@
                 "kind": "SCALAR",
                 "name": "Boolean",
                 "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ]
+      },
+      {
+        "name": "deprecated",
+        "description": "Marks an element of a GraphQL schema as no longer supported.",
+        "locations": [
+          "FIELD_DEFINITION",
+          "ENUM_VALUE"
+        ],
+        "args": [
+          {
+            "name": "reason",
+            "description": "Explains why this element was deprecated, usually also including a suggestion for how to access supported similar data. Formatted using the Markdown syntax (as specified by [CommonMark](https://commonmark.org/).",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": "\"No longer supported\""
+          }
+        ]
+      },
+      {
+        "name": "client",
+        "description": "Direct the client to resolve this field locally, either from the cache or local resolvers.",
+        "locations": [
+          "FIELD",
+          "FRAGMENT_DEFINITION",
+          "INLINE_FRAGMENT"
+        ],
+        "args": [
+          {
+            "name": "always",
+            "description": "When true, the client will never use the cache for this value. See\nhttps://www.apollographql.com/docs/react/essentials/local-state/#forcing-resolvers-with-clientalways-true",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ]
+      },
+      {
+        "name": "export",
+        "description": "Export this locally resolved field as a variable to be used in the remainder of this query. See\nhttps://www.apollographql.com/docs/react/essentials/local-state/#using-client-fields-as-variables",
+        "locations": [
+          "FIELD"
+        ],
+        "args": [
+          {
+            "name": "as",
+            "description": "The variable name to export this field as.",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ]
+      },
+      {
+        "name": "connection",
+        "description": "Specify a custom store key for this result. See\nhttps://www.apollographql.com/docs/react/advanced/caching/#the-connection-directive",
+        "locations": [
+          "FIELD"
+        ],
+        "args": [
+          {
+            "name": "key",
+            "description": "Specify the store key.",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "filter",
+            "description": "An array of query argument names to include in the generated custom store key.",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null

@@ -228,7 +228,14 @@ class BhaiyaHomeFragment : BaseFragment() {
                         list.clear()
                         for (dishes in response.data()?.plankhana_users_userdishweekplan()?.toMutableList()!!) {
                             val name = if (dishes.dishes_dish().dishes_dishlanguagenames().size > 0) dishes.dishes_dish().dishes_dishlanguagenames()[0].dish_name() else ""
-                            list.add(Dish(dishes.dishes_dish().id(), name, dishes.dishes_dish().dish_image(), DishStatus(added = true)))
+                            list.add(
+                                Dish(
+                                    id = dishes.dishes_dish().id(),
+                                    dishName = name,
+                                    dishImage = dishes.dishes_dish().dish_image(),
+                                    dishStatus = DishStatus(added = true)
+                                )
+                            )
                         }
                         activity?.runOnUiThread {
                             setAdapter(list)

@@ -1,9 +1,12 @@
 package com.sillylife.plankhana.views.adapter
 
 import android.content.Context
+import android.os.Build
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.sillylife.plankhana.R
@@ -111,20 +114,36 @@ class DishesAdapter(val context: Context, val type: String, list: ArrayList<Dish
                     }
                 }
             }
+
+            if (item.same_day_available != null && !item.same_day_available!!){
+                holder.dishPhotoIv.alpha = 0.5f
+                holder.dishNameTv.alpha = 0.5f
+                holder.addedIv.alpha = 0.5f
+                holder.addIv.alpha = 0.5f
+            } else {
+                holder.dishPhotoIv.alpha = 1f
+                holder.dishNameTv.alpha = 1f
+                holder.addedIv.alpha = 1f
+                holder.addIv.alpha = 1f
+            }
         }
 
         holder.dishStatusFl.setOnClickListener {
-            if (type.equals(Add_A_DISH, true)) {
-                listener(item, REMOVE, holder.adapterPosition)
-            } else {
-                when {
-                    item.dishStatus!!.added -> {
-                        listener(item, REMOVE, holder.adapterPosition)
-                    }
-                    item.dishStatus!!.add -> {
-                        listener(item, ADD, holder.adapterPosition)
+            if (item.same_day_available != null && item.same_day_available!!) {
+                if (type.equals(Add_A_DISH, true)) {
+                    listener(item, REMOVE, holder.adapterPosition)
+                } else {
+                    when {
+                        item.dishStatus!!.added -> {
+                            listener(item, REMOVE, holder.adapterPosition)
+                        }
+                        item.dishStatus!!.add -> {
+                            listener(item, ADD, holder.adapterPosition)
+                        }
                     }
                 }
+            } else {
+                listener("snackbar", "", holder.adapterPosition)
             }
         }
     }
