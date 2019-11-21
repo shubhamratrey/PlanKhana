@@ -94,13 +94,18 @@ class AddDishChildFragment : BaseFragment() {
         } else {
             val list: ArrayList<Dish> = ArrayList()
             LocalDishManager.getFavouriteDishes().forEach { dishes ->
+                var sameDayAvailable = true
+                if(CommonUtil.getDay(0).toLowerCase().equals(day, false)){
+                    sameDayAvailable = dishes.same_day_available!!
+                }
                 when {
                     tempDishIds.contains(dishes.id) -> list.add(
                         Dish(
                             id = dishes.id,
                             dishName = dishes.dishName,
                             dishImage = dishes.dishImage,
-                            dishStatus = DishStatus(added = true)
+                            dishStatus = DishStatus(added = true),
+                            same_day_available = sameDayAvailable
                         )
                     )
                     dishIds.contains(dishes.id) -> list.add(
@@ -108,7 +113,8 @@ class AddDishChildFragment : BaseFragment() {
                             id = dishes.id,
                             dishName = dishes.dishName,
                             dishImage = dishes.dishImage,
-                            dishStatus = DishStatus(alreadyAdded = true)
+                            dishStatus = DishStatus(alreadyAdded = true),
+                            same_day_available = sameDayAvailable
                         )
                     )
                     else -> list.add(
@@ -116,7 +122,8 @@ class AddDishChildFragment : BaseFragment() {
                             id = dishes.id,
                             dishName = dishes.dishName,
                             dishImage = dishes.dishImage,
-                            dishStatus = DishStatus(add = true)
+                            dishStatus = DishStatus(add = true),
+                            same_day_available = sameDayAvailable
                         )
                     )
                 }
@@ -164,8 +171,6 @@ class AddDishChildFragment : BaseFragment() {
                         Log.d(TAG, "STARTED")
                         for (dishes in response.data()?.plankhana_dishes_dish()?.toMutableList()!!) {
                             val name = if (dishes.dishes_dishlanguagenames().size > 0) dishes.dishes_dishlanguagenames()[0].dish_name() else ""
-                            CommonUtil.getDay(0).toLowerCase()
-                            Log.d(TAG, "Today's day ${CommonUtil.getDay(0).toLowerCase()}   and day = $day")
                             var sameDayAvailable = true
                             if(CommonUtil.getDay(0).toLowerCase().equals(day)){
                                 sameDayAvailable = dishes.same_day_available()
@@ -292,7 +297,7 @@ class AddDishChildFragment : BaseFragment() {
                             RxBus.publish(RxEvent.Action(RxEventType.CHANGE_PLAN_LIST_DISH_REMOVE, any))
                             LocalDishManager.removeTempDish(any)
                         }
-                        type.contains("snackbar", true) -> {
+                        type.contains(DishesAdapter.SNACKBAR, true) -> {
                             val snackBar = Snackbar.make(rcv, "You can not add this today", Snackbar.LENGTH_LONG)
                             snackBar.anchorView = snackbar_action
                             when {

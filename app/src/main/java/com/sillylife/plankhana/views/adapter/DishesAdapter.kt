@@ -25,6 +25,7 @@ class DishesAdapter(val context: Context, val type: String, list: ArrayList<Dish
         const val REQUEST_A_DISH: String = "request_a_dish"
         const val REMOVE: String = "remove"
         const val ADD: String = "add_a_dish"
+        const val SNACKBAR: String = "snackbar"
         const val DISH_VIEW = 0
         const val ADD_DISH_BTN = 1
     }
@@ -138,11 +139,11 @@ class DishesAdapter(val context: Context, val type: String, list: ArrayList<Dish
                             listener(item, ADD, holder.adapterPosition)
                         }
                         item.dishStatus!!.alreadyAdded -> {
-                            listener(item, "snackbar", holder.adapterPosition)
+                            listener(item, SNACKBAR, holder.adapterPosition)
                         }
                     }
                 } else {
-                    listener(item, "snackbar", holder.adapterPosition)
+                    listener(item, SNACKBAR, holder.adapterPosition)
                 }
             }
         }
