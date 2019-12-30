@@ -1,6 +1,7 @@
 package com.sillylife.plankhana.views.fragments
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.apollographql.apollo.fetcher.ApolloResponseFetchers
+import com.google.android.material.snackbar.Snackbar
 import com.sillylife.plankhana.GetAllDishesQuery
 import com.sillylife.plankhana.GetDishesQuery
 import com.sillylife.plankhana.R
@@ -35,23 +37,29 @@ import org.jetbrains.annotations.NotNull
 class AddDishChildFragment : BaseFragment() {
 
     companion object {
-        fun newInstance(): AddDishChildFragment {
-            return AddDishChildFragment()
+        fun newInstance(day: String): AddDishChildFragment {
+            val fragment = AddDishChildFragment()
+            val args = Bundle()
+            args.putString("day", day)
+            fragment.arguments = args
+            return fragment
         }
 
-        fun newInstance(type: String): AddDishChildFragment {
+        fun newInstance(day: String, type: String): AddDishChildFragment {
             val fragment = AddDishChildFragment()
             val args = Bundle()
             args.putString("type", type)
+            args.putString("day", day)
             fragment.arguments = args
             return fragment
         }
 
 
-        fun newInstance(dishCategory: DishCategory): AddDishChildFragment {
+        fun newInstance(day: String, dishCategory: DishCategory): AddDishChildFragment {
             val fragment = AddDishChildFragment()
             val args = Bundle()
             args.putParcelable("dishCategory", dishCategory)
+            args.putString("day", day)
             fragment.arguments = args
             return fragment
         }
@@ -62,6 +70,7 @@ class AddDishChildFragment : BaseFragment() {
     private var mDishCategory: DishCategory? = null
     private var user: User? = null
     var appDisposable: AppDisposable = AppDisposable()
+    private var day: String = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_add_dish_child, container, false)
@@ -73,6 +82,9 @@ class AddDishChildFragment : BaseFragment() {
 
         val dishIds = LocalDishManager.getSavedDishesIds()
         val tempDishIds = LocalDishManager.getTempSavedDishesIds()
+        if (arguments != null && arguments!!.containsKey("day")) {
+            day = arguments?.getString("day")!!
+        }
 
         if (arguments != null && arguments!!.containsKey("dishCategory")) {
             mDishCategory = arguments?.getParcelable("dishCategory")
@@ -82,12 +94,38 @@ class AddDishChildFragment : BaseFragment() {
         } else {
             val list: ArrayList<Dish> = ArrayList()
             LocalDishManager.getFavouriteDishes().forEach { dishes ->
-                if (tempDishIds.contains(dishes.id)) {
-                    list.add(Dish(dishes.id, dishes.dishName, dishes.dishImage, DishStatus(added = true)))
-                } else if (dishIds.contains(dishes.id)) {
-                    list.add(Dish(dishes.id, dishes.dishName, dishes.dishImage, DishStatus(alreadyAdded = true)))
-                } else {
-                    list.add(Dish(dishes.id, dishes.dishName, dishes.dishImage, DishStatus(add = true)))
+                var sameDayAvailable = true
+                if(CommonUtil.getDay(0).toLowerCase().equals(day, false)){
+                    sameDayAvailable = dishes.same_day_available!!
+                }
+                when {
+                    tempDishIds.contains(dishes.id) -> list.add(
+                        Dish(
+                            id = dishes.id,
+                            dishName = dishes.dishName,
+                            dishImage = dishes.dishImage,
+                            dishStatus = DishStatus(added = true),
+                            same_day_available = sameDayAvailable
+                        )
+                    )
+                    dishIds.contains(dishes.id) -> list.add(
+                        Dish(
+                            id = dishes.id,
+                            dishName = dishes.dishName,
+                            dishImage = dishes.dishImage,
+                            dishStatus = DishStatus(alreadyAdded = true),
+                            same_day_available = sameDayAvailable
+                        )
+                    )
+                    else -> list.add(
+                        Dish(
+                            id = dishes.id,
+                            dishName = dishes.dishName,
+                            dishImage = dishes.dishImage,
+                            dishStatus = DishStatus(add = true),
+                            same_day_available = sameDayAvailable
+                        )
+                    )
                 }
             }
             setAdapter(list)
@@ -133,12 +171,38 @@ class AddDishChildFragment : BaseFragment() {
                         Log.d(TAG, "STARTED")
                         for (dishes in response.data()?.plankhana_dishes_dish()?.toMutableList()!!) {
                             val name = if (dishes.dishes_dishlanguagenames().size > 0) dishes.dishes_dishlanguagenames()[0].dish_name() else ""
-                            if (tempDishIds.contains(dishes.id())) {
-                                list.add(Dish(dishes.id(), name, dishes.dish_image(), DishStatus(added = true)))
-                            } else if (dishIds.contains(dishes.id())) {
-                                list.add(Dish(dishes.id(), name, dishes.dish_image(), DishStatus(alreadyAdded = true)))
-                            } else {
-                                list.add(Dish(dishes.id(), name, dishes.dish_image(), DishStatus(add = true)))
+                            var sameDayAvailable = true
+                            if(CommonUtil.getDay(0).toLowerCase().equals(day)){
+                                sameDayAvailable = dishes.same_day_available()
+                            }
+                            when {
+                                tempDishIds.contains(dishes.id()) -> list.add(
+                                    Dish(
+                                        id = dishes.id(),
+                                        dishName = name,
+                                        dishImage = dishes.dish_image(),
+                                        dishStatus = DishStatus(added = true),
+                                        same_day_available = sameDayAvailable
+                                    )
+                                )
+                                dishIds.contains(dishes.id()) -> list.add(
+                                    Dish(
+                                        id = dishes.id(),
+                                        dishName = name,
+                                        dishImage = dishes.dish_image(),
+                                        dishStatus = DishStatus(alreadyAdded = true),
+                                        same_day_available = sameDayAvailable
+                                    )
+                                )
+                                else -> list.add(
+                                    Dish(
+                                        id = dishes.id(),
+                                        dishName = name,
+                                        dishImage = dishes.dish_image(),
+                                        dishStatus = DishStatus(add = true),
+                                        same_day_available = sameDayAvailable
+                                    )
+                                )
                             }
                         }
                         activity?.runOnUiThread {
@@ -174,12 +238,38 @@ class AddDishChildFragment : BaseFragment() {
                         }
                         for (dishes in response.data()?.plankhana_dishes_dish()?.toMutableList()!!) {
                             val name = if (dishes.dishes_dishlanguagenames().size > 0) dishes.dishes_dishlanguagenames()[0].dish_name() else ""
-                            if (tempDishIds.contains(dishes.id())) {
-                                list.add(Dish(dishes.id(), name, dishes.dish_image(), DishStatus(added = true)))
-                            } else if (dishIds.contains(dishes.id())) {
-                                list.add(Dish(dishes.id(), name, dishes.dish_image(), DishStatus(alreadyAdded = true)))
-                            } else {
-                                list.add(Dish(dishes.id(), name, dishes.dish_image(), DishStatus(add = true)))
+                            var sameDayAvailable = true
+                            if(CommonUtil.getDay(0).toLowerCase().equals(day)){
+                                sameDayAvailable = dishes.same_day_available()
+                            }
+                            when {
+                                tempDishIds.contains(dishes.id()) -> list.add(
+                                    Dish(
+                                        id = dishes.id(),
+                                        dishName = name,
+                                        dishImage = dishes.dish_image(),
+                                        same_day_available = sameDayAvailable,
+                                        dishStatus = DishStatus(added = true)
+                                    )
+                                )
+                                dishIds.contains(dishes.id()) -> list.add(
+                                    Dish(
+                                        id = dishes.id(),
+                                        dishName = name,
+                                        dishImage = dishes.dish_image(),
+                                        same_day_available = sameDayAvailable,
+                                        dishStatus = DishStatus(alreadyAdded = true)
+                                    )
+                                )
+                                else -> list.add(
+                                    Dish(
+                                        id = dishes.id(),
+                                        dishName = name,
+                                        dishImage = dishes.dish_image(),
+                                        same_day_available = sameDayAvailable,
+                                        dishStatus = DishStatus(add = true)
+                                    )
+                                )
                             }
                         }
                         activity?.runOnUiThread {
@@ -196,13 +286,34 @@ class AddDishChildFragment : BaseFragment() {
                     val intent = Intent(activity, WebActivity::class.java)
                     startActivity(intent)
                 } else if (any is Dish) {
-                    RxBus.publish(RxEvent.Action(RxEventType.DISH_ADDED_REMOVED, any))
-                    if (type.contains(DishesAdapter.ADD)) {
-                        RxBus.publish(RxEvent.Action(RxEventType.CHANGE_PLAN_LIST_DISH_ADD, any))
-                        LocalDishManager.addTempDish(any)
-                    } else if (type.contains(DishesAdapter.REMOVE)) {
-                        RxBus.publish(RxEvent.Action(RxEventType.CHANGE_PLAN_LIST_DISH_REMOVE, any))
-                        LocalDishManager.removeTempDish(any)
+                    when {
+                        type.contains(DishesAdapter.ADD) -> {
+                            RxBus.publish(RxEvent.Action(RxEventType.DISH_ADDED_REMOVED, any))
+                            RxBus.publish(RxEvent.Action(RxEventType.CHANGE_PLAN_LIST_DISH_ADD, any))
+                            LocalDishManager.addTempDish(any)
+                        }
+                        type.contains(DishesAdapter.REMOVE) -> {
+                            RxBus.publish(RxEvent.Action(RxEventType.DISH_ADDED_REMOVED, any))
+                            RxBus.publish(RxEvent.Action(RxEventType.CHANGE_PLAN_LIST_DISH_REMOVE, any))
+                            LocalDishManager.removeTempDish(any)
+                        }
+                        type.contains(DishesAdapter.SNACKBAR, true) -> {
+                            val snackBar = Snackbar.make(rcv, "You can not add this today", Snackbar.LENGTH_LONG)
+                            snackBar.anchorView = snackbar_action
+                            when {
+                                any.dishStatus!!.add -> {
+                                    snackBar.setText("You can not add this today \uD83D\uDE15 \uD83D\uDE45\uD83C\uDFFB\u200D♀")
+                                    snackBar.setBackgroundTint(Color.parseColor("#CE3044"))
+                                    snackBar.setTextColor(Color.parseColor("#FFFFFFFF"))
+                                }
+                                any.dishStatus!!.alreadyAdded -> {
+                                    snackBar.setText("You have already added ${any.dishName?.toLowerCase()} \uD83D\uDE0B \uD83C\uDF7D")
+                                    snackBar.setBackgroundTint(Color.parseColor("#00C781"))
+                                    snackBar.setTextColor(Color.parseColor("#FFFFFFFF"))
+                                }
+                            }
+                            snackBar.show()
+                        }
                     }
 
                     //toggleBtn

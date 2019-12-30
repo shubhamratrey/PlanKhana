@@ -269,7 +269,7 @@ class ChangePlanFragment : BaseFragment() {
                     EventsManager.setEventName(EventConstants.ADD_DISH_CLICKED)
                             .addProperty(BundleConstants.DAY, if (CommonUtil.textIsEmpty(day)) WeekType.TODAY.day else day)
                             .send()
-                    addFragment(AddDishFragment.newInstance(), AddDishFragment.TAG)
+                    addFragment(AddDishFragment.newInstance(day), AddDishFragment.TAG)
                 } else if (any is Dish && type.contains(DishesAdapter.REMOVE)) {
                     val adapter = rcv.adapter as DishesAdapter
                     adapter.removeItem(any)

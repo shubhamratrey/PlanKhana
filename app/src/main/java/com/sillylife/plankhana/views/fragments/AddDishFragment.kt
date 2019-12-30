@@ -34,8 +34,12 @@ import org.jetbrains.annotations.NotNull
 class AddDishFragment : BaseFragment() {
 
     companion object {
-        fun newInstance(): AddDishFragment {
-            return AddDishFragment()
+        fun newInstance(day: String): AddDishFragment {
+            val fragment = AddDishFragment()
+            val args = Bundle()
+            args.putString("day", day)
+            fragment.arguments = args
+            return fragment
         }
 
         val TAG: String = AddDishFragment::class.java.simpleName
@@ -45,6 +49,7 @@ class AddDishFragment : BaseFragment() {
     private var rootView: View? = null
     lateinit var viewPagerAdapter: CommonViewStatePagerAdapter
     private var appDisposable: AppDisposable = AppDisposable()
+    private var day: String = ""
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         rootView = inflater.inflate(R.layout.fragment_add_dish, container, false)
         return rootView!!
@@ -53,6 +58,9 @@ class AddDishFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         EventsManager.setEventName(EventConstants.ADD_DISH_SCREEN_VIEWED).send()
+        if (arguments != null && arguments!!.containsKey("day")) {
+            day = arguments?.getString("day")!!
+        }
         initializeSearch()
         nextBtn.text = getString(R.string.string_continue)
         nextBtn?.alpha = 0.7f
@@ -124,20 +132,20 @@ class AddDishFragment : BaseFragment() {
         val allGenres = ArrayList<AddDishChildFragment>()
 
         for (b in category) {
-            val genreFragment = AddDishChildFragment.newInstance(b)
+            val genreFragment = AddDishChildFragment.newInstance(day, b)
             allGenres.add(genreFragment)
         }
 
         if (LocalDishManager.getFavouriteDishes().size > 0) {
-            val favorite = AddDishChildFragment.newInstance()
+            val favorite = AddDishChildFragment.newInstance(day)
             viewPagerAdapter.addItem(favorite, "Favorites")
         }
 
-        val all = AddDishChildFragment.newInstance("all")
+        val all = AddDishChildFragment.newInstance(day, "all")
         viewPagerAdapter.addItem(all, "All")
 
         for (b in category) {
-            val fragment = AddDishChildFragment.newInstance(b)
+            val fragment = AddDishChildFragment.newInstance(day, b)
             viewPagerAdapter.addItem(fragment, b.category!!)
         }
 

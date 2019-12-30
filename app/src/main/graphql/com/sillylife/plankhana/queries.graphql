@@ -60,6 +60,7 @@ query getDishCategories {
 query GetDishes($categoryId:Int!, $offset:Int!, $limit:Int!, $languageId :Int!) {
     plankhana_dishes_dish(where: {category_id: {_eq: $categoryId}}, limit: $limit, offset: $offset) {
         id
+        same_day_available
         dishes_dishlanguagenames(where: {language_id: {_eq: $languageId}}) {
             dish_name
         }
@@ -70,6 +71,7 @@ query GetDishes($categoryId:Int!, $offset:Int!, $limit:Int!, $languageId :Int!) 
 query GetAllDishes($offset:Int!, $limit:Int!, $languageId :Int!) {
     plankhana_dishes_dish(offset: $offset, limit: $limit) {
         id
+        same_day_available
         dishes_dishlanguagenames(where: {language_id: {_eq: $languageId}}) {
             dish_name
         }

@@ -241,7 +241,14 @@ class AuntyHomeFragment : BaseFragment() {
                                 userList.add(User(users.users_userprofile().id(), users.users_userprofile().username(), users.users_userprofile().display_picture()))
                             }
                             val name = if (dishes.dishes_dish().dishes_dishlanguagenames().size > 0) dishes.dishes_dish().dishes_dishlanguagenames()[0].dish_name() else ""
-                            list.add(Dish(dishes.dishes_dish().id(), name, dishes.dishes_dish().dish_image(), userList))
+                            list.add(
+                                Dish(
+                                    id = dishes.dishes_dish().id(),
+                                    dishName = name,
+                                    dishImage = dishes.dishes_dish().dish_image(),
+                                    userList = userList
+                                )
+                            )
                         }
                         activity?.runOnUiThread {
                             setAdapter(list)
