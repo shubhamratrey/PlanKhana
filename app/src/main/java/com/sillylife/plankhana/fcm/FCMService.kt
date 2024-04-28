@@ -23,7 +23,7 @@ object FCMService {
     }
 
     val BASE_URL = "https://fcm.googleapis.com"
-    const val key = "AAAAgmYJg3A:APA91bFa0hXgXwJFC2FAT5j-NDI5TjHzdhLceJSVj8P4T3UKABnJo57B8ssv-EFqDQV__gj0gIKWqv8xR2jGMEXIyH0NrHbZ6ckMYwkRBnnGksew4oWxOxxgkRRjx2zX8TsKfPPlsn51"
+    const val key = ""
 
     fun build(): FirebaseAPI {
         val retrofit = Retrofit.Builder()
